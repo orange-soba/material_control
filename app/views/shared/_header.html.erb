@@ -11,7 +11,7 @@
         <% unless current_page?(controller: "static_pages", action: "home") %>
           <li><%= link_to "使い方", root_path %>
         <% else %>
-          <%= link_to "マイページ", user_path(current_user.id) %>
+          <li><%= link_to "マイページ", user_path(current_user.id) %></li>
         <% end %>
         <li><%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
       <% else %>
