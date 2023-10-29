@@ -13,6 +13,7 @@
 ActiveRecord::Schema[7.0].define(version: 2023_10_29_130438) do
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
+    t.integer "registered_material_nums", default: 0, null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
