@@ -1,0 +1,36 @@
+.header {
+  width: 100vw;
+  background-color: #f6eaea;
+  padding-bottom: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.title {
+  font-size: xx-large;
+  text-align: center;
+}
+
+.links {
+  width: 60vw;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.links ul {
+  display: flex;
+}
+
+.links li {
+  width: 10vw;
+  font-size: 20px;
+  margin: 0 10px;
+}
+
+.links a {
+  text-decoration: none;
+  color: blue;
+  border-radius: 5px;
+}
