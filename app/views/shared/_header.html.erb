@@ -7,8 +7,17 @@
     </ul>
     <ul class="user_links">
       <%# ユーザーがサインしているかどうかで分岐(devise導入後実装、まずは未ログイン時のみ) %>
-      <li><%= link_to "新規登録", "#" %></li>
-      <li><%= link_to "ログイン", "#" %></li>
+      <% if user_signed_in? %>
+        <% unless current_page?(controller: "static_pages", action: "home") %>
+          <li><%= link_to "使い方", root_path %>
+        <% else %>
+          <li><%= link_to "マイページ", user_path(current_user.id) %></li>
+        <% end %>
+        <li><%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
+      <% else %>
+        <li><%= link_to "新規登録", new_user_registration_path %></li>
+        <li><%= link_to "ログイン", new_user_session_path %></li>
+      <% end %>
     </ul>
   </div>
 </div>
