@@ -1,1 +1,25 @@
-TESTnew
+<h1 class="parts-register__title">完成品/部品登録</h1>
+
+<div class="register-area">
+  <%= form_with model: @part, url: parts_path, local: true do |f| %>
+    <%# エラー情報を表示 %>
+    <%# /エラー情報を表示 %>
+
+    <div class="input-field">
+      <%= f.label :name, "完成品名/部品名：" %>
+      <%= f.text_field :name, placeholder: "完成品名or部品名" %><br>
+    </div>
+
+    <div class="input-field">
+      <%= f.label :stock, "在庫数：" %>
+      <%= f.text_field :stock, class: "stock-input" , value: 0 %>
+    </div>
+
+    <div class="input-field">
+      <%= f.check_box :finished, checked_vlaue: "true", unchecked_value: "false" %>
+      <%= f.label :finished, "完成品の場合はチェックを入れてください" %>
+    </div>
+
+    <%= f.submit "登録" %>
+  <% end %>
+</div>

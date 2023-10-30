@@ -1,0 +1,18 @@
+.parts-register__title {
+  font-size: xx-large;
+  margin-left: 20px;
+}
+
+.register-area {
+  margin: 10px 0 0 20px;
+}
+
+.input-field {
+  margin-bottom: 5px;
+}
+
+.stock-input {
+  width: 100px;
+  text-align: right;
+  padding-right: 5px;
+}
