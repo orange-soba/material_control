@@ -1,0 +1,30 @@
+.home-area {
+  width: 100vw;
+  margin-top: 100px;
+  padding-left: 20px;
+}
+
+.home-title {
+  width: 170px;
+  font-size: xx-large;
+  border-bottom: thick double black;
+}
+
+.how-to-use {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.how-to-use__lists {
+  list-style: decimal;
+}
+
+.how-to-use__title {
+  font-size: large;
+  font-weight: bold;
+}
+
+.how-to-use__explanation {
+  font-size: medium;
+  font-weight: 400;
+}
