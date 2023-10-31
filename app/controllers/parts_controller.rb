@@ -3,6 +3,7 @@ class PartsController < ApplicationController
 
   def new
     @part = Part.new
+    @parts = Part.where(user_id: current_user.id).order('created_at DESC')
   end
 
   def create

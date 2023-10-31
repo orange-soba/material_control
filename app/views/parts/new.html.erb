@@ -1,5 +1,6 @@
 <h1 class="parts-register__title">完成品/部品登録</h1>
 
+<%#= 完成品/部品登録 %>
 <div class="register-area">
   <%= form_with model: @part, url: parts_path, local: true do |f| %>
     <%# エラー情報を表示 %>
@@ -23,3 +24,28 @@
     <%= f.submit "登録" %>
   <% end %>
 </div>
+<%#= /完成品/部品登録 %>
+
+<%#= 登録履歴の表示 %>
+<div class="parts-history">
+  <div class="history-title">登録履歴</div>
+  <table>
+    <thead>
+      <tr>
+        <th>完成品名/部品名</th>
+        <th>在庫数</th>
+        <th>登録日時</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @parts.each do |part| %>
+        <tr>
+          <td><%= part.name %></td>
+          <td class="parts-history-stock"><%= part.stock %></td>
+          <td><%= part.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%#= /登録履歴の表示 %>
