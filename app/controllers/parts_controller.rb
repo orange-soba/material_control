@@ -4,13 +4,14 @@ class PartsController < ApplicationController
 
   def new
     @part = Part.new
+    @part.stock = 0 # デフォルトで「0」を入力
   end
 
   def create
     @part = Part.new(part_params)
     if @part.valid?
       @part.save
-      redirect_to root_path # 本当はマイページ
+      redirect_to root_path # 本当はマイページ(or Javascriptで遷移しない)
     else
       render :new, status: :unprocessable_entity
     end
