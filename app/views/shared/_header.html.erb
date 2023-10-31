@@ -2,7 +2,11 @@
   <div class="title">完成品/部品/材料管理アプリ</div>
   <div class="links">
     <ul class="register_links">
-      <li><%= link_to "完成品/部品登録", new_parts_path %></li>
+      <% if current_page?(controller: "parts", action: "new") %>
+        <li>完成品/部品登録</li>
+      <% else %>
+        <li><%= link_to "完成品/部品登録", new_parts_path %></li>
+      <% end %>
       <li><%= link_to "材料登録", "#" %></li>
     </ul>
     <ul class="user_links">
