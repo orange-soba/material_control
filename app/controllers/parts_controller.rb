@@ -8,13 +8,13 @@ class PartsController < ApplicationController
   end
 
   def create
-    @part = Part.new(part_params)
-    if @part.valid?
-      @part.save
-      redirect_to root_path # 本当はマイページ(or Javascriptで遷移しない)
+    part = Part.new(part_params)
+    if part.valid?
+      part.save
+      render json: { success: true, part: part }
     else
-      @part.stock ||= 0 # 在庫数を消してしまった時に自動で「0」を入力
-      render :new, status: :unprocessable_entity
+      part.stock ||= 0
+      render json: { success: false, part: part, errors: part.errors.full_messages }
     end
   end
   

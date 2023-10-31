@@ -4,23 +4,25 @@
 
 <%#= 完成品/部品登録 %>
 <div class="register-area">
-  <%= form_with model: @part, url: parts_path, local: true do |f| %>
+  <%= form_with model: @part, url: parts_path, id: "parts_register_form", local: true do |f| %>
     <%# エラー情報を表示 %>
-    <%= render 'shared/error_messages', model: f.object %>
+    <div class="error-alert" id="error-messages-area" style="display:none;">
+      <ul id="error-messages-lists"></ul>
+    </div>
     <%# /エラー情報を表示 %>
 
     <div class="input-field">
       <%= f.label :name, "完成品名/部品名：" %>
-      <%= f.text_field :name, placeholder: "完成品名or部品名" %><br>
+      <%= f.text_field :name, placeholder: "完成品名or部品名", id: "input-name" %><br>
     </div>
 
     <div class="input-field">
       <%= f.label :stock, "在庫数：" %>
-      <%= f.text_field :stock, class: "stock-input" %>
+      <%= f.text_field :stock, class: "stock-input", id: "input-stock" %>
     </div>
 
     <div class="input-field">
-      <%= f.check_box :finished %>
+      <%= f.check_box :finished, id: "input-checkbox" %>
       <%= f.label :finished, "完成品の場合はチェックを入れてください" %>
     </div>
 
@@ -41,7 +43,7 @@
         <th>登録日時</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="parts-history-data">
       <% @parts.each do |part| %>
         <tr>
           <td><%= part.name %></td>
