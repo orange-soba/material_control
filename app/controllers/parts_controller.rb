@@ -13,6 +13,7 @@ class PartsController < ApplicationController
       @part.save
       redirect_to root_path # 本当はマイページ(or Javascriptで遷移しない)
     else
+      @part.stock ||= 0 # 在庫数を消してしまった時に自動で「0」を入力
       render :new, status: :unprocessable_entity
     end
   end

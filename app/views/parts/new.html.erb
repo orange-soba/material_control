@@ -6,6 +6,7 @@
 <div class="register-area">
   <%= form_with model: @part, url: parts_path, local: true do |f| %>
     <%# エラー情報を表示 %>
+    <%= render 'shared/error_messages', model: f.object %>
     <%# /エラー情報を表示 %>
 
     <div class="input-field">
