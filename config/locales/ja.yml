@@ -1,0 +1,9 @@
+ja:
+  time:
+    formats:
+      default: '%Y/%m/%d %H:%M:%S'
+  activerecord:
+    attributes:
+      part:
+        name: '完成品名/部品名'
+        stock: '在庫数'

@@ -1,0 +1,11 @@
+.error-alert {
+  width: 300px;
+  padding: 5px;
+  margin: 10px 0;
+  border: 1px solid skyblue;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: red;
+}
