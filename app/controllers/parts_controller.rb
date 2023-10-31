@@ -1,9 +1,9 @@
 class PartsController < ApplicationController
   before_action :redirect_to_root
+  before_action :set_parts
 
   def new
     @part = Part.new
-    @parts = Part.where(user_id: current_user.id).order('created_at DESC')
   end
 
   def create
@@ -17,6 +17,10 @@ class PartsController < ApplicationController
   end
   
   private
+
+  def set_parts
+    @parts = Part.where(user_id: current_user.id).order('created_at DESC')
+  end
 
   def part_params
     params.require(:part).permit(:name, :stock, :finished).merge(user_id: current_user.id)
