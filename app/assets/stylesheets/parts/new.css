@@ -23,7 +23,8 @@
   margin: 20px;
   padding-top: 20px;
   border-top: 1px solid #dedede;
-  overflow: scroll;
+  max-height: 450px;
+  overflow-y: scroll;
 }
 
 .parts-history th {
