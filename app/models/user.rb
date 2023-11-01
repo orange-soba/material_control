@@ -8,4 +8,5 @@ class User < ApplicationRecord
   validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i, message: 'は半角英数字（6文字以上）での入力が必須です' }
 
   has_many :parts
+  has_many :materials
 end

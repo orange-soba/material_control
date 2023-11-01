@@ -1,9 +1,8 @@
-class Part < ApplicationRecord
+class Material < ApplicationRecord
   belongs_to :user
   
   with_options presence: true do
-    validates :name
+    validates :material_type, :category, :thickness, :length, :material_id
     validates :stock, numericality: { only_integer: true, allow_nil: true, message: 'は半角の数値で入力してください' }
   end
-  validates :finished, inclusion: { in: [true, false] }
 end

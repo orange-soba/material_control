@@ -1,27 +1,29 @@
 <div class="header">
   <div class="title">完成品/部品/材料管理アプリ</div>
   <div class="links">
-    <ul class="register_links">
-      <% if current_page?(controller: "parts", action: "new") %>
-        <li>完成品/部品登録</li>
-      <% else %>
-        <li><%= link_to "完成品/部品登録", new_parts_path %></li>
-      <% end %>
-      <li><%= link_to "材料登録", "#" %></li>
-    </ul>
-    <ul class="user_links">
-      <%# ユーザーがサインしているかどうかで分岐(devise導入後実装、まずは未ログイン時のみ) %>
-      <% if user_signed_in? %>
+    <% if user_signed_in? %>
+      <ul class="links__signed-in">
+        <% unless current_page?(controller: "parts", action: "new") %>
+          <li><%= link_to "完成品/部品登録", new_parts_path %></li>
+        <% end %>
+        <% unless current_page?(controller: "materials", action: "new") %>
+          <li><%= link_to "材料登録", new_material_path %></li>
+        <% end %>
+      
+
         <% unless current_page?(controller: "static_pages", action: "home") %>
           <li><%= link_to "使い方", root_path %>
-        <% else %>
+        <% end %>
+        <% unless current_page?(controller: 'users', action: 'show', id: current_user.id) %>
           <li><%= link_to "マイページ", user_path(current_user.id) %></li>
         <% end %>
         <li><%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
-      <% else %>
+      </ul>
+    <% else %>
+      <ul class="links__guest">
         <li><%= link_to "新規登録", new_user_registration_path %></li>
         <li><%= link_to "ログイン", new_user_session_path %></li>
-      <% end %>
-    </ul>
+      </ul>
+    <% end %>
   </div>
 </div>

@@ -1,9 +1,14 @@
-.parts-register__title {
+/****************
+       共用       
+*****************/
+.function-title {
   font-size: xx-large;
   margin-left: 20px;
 }
 
-/* 登録エリア */
+/****************
+    登録エリア     
+*****************/
 .register-area {
   margin: 10px 0 0 20px;
 }
@@ -12,14 +17,15 @@
   margin-bottom: 5px;
 }
 
-.stock-input {
-  width: 100px;
+.input-nums {
   text-align: right;
   padding-right: 5px;
 }
 
-/* 履歴 */
-.parts-history {
+/****************
+       履歴       
+*****************/
+.history-area {
   margin: 20px;
   padding-top: 20px;
   border-top: 1px solid #dedede;
@@ -27,17 +33,17 @@
   overflow-y: scroll;
 }
 
-.parts-history th {
+.history-area th {
   border: 1px solid black;
   background-color: rgb(146, 176, 228);
   padding: 5px;
 }
 
-.parts-history td {
+.history-area td {
   border: 1px solid black;
   padding: 5px;
 }
 
-.parts-history-stock {
+.history-stock {
   text-align: center;
 }

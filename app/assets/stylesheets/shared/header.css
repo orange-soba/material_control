@@ -14,12 +14,16 @@
 .links {
   width: 60vw;
   margin: auto;
+}
+
+.links__signed-in {
   display: flex;
   justify-content: space-between;
 }
 
-.links ul {
+.links__guest {
   display: flex;
+  justify-content: flex-end;
 }
 
 .links li {
