@@ -1,5 +1,5 @@
 class PartsController < ApplicationController
-  before_action :redirect_to_root
+  before_action :authenticate_user!
   before_action :set_parts
 
   def new
@@ -26,11 +26,5 @@ class PartsController < ApplicationController
 
   def part_params
     params.require(:part).permit(:name, :stock, :finished).merge(user_id: current_user.id)
-  end
-
-  def redirect_to_root
-    return if user_signed_in?
-
-    redirect_to root_path
   end
 end
