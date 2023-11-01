@@ -1,10 +1,14 @@
-/* 共用 */
+/****************
+       共用       
+*****************/
 .function-title {
   font-size: xx-large;
   margin-left: 20px;
 }
 
-/* 登録エリア */
+/****************
+    登録エリア     
+*****************/
 .register-area {
   margin: 10px 0 0 20px;
 }
@@ -13,13 +17,15 @@
   margin-bottom: 5px;
 }
 
-.stock-input {
+.input-nums {
   width: 100px;
   text-align: right;
   padding-right: 5px;
 }
 
-/* 履歴 */
+/****************
+       履歴       
+*****************/
 .parts-history {
   margin: 20px;
   padding-top: 20px;
