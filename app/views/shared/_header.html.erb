@@ -7,7 +7,7 @@
       <% else %>
         <li><%= link_to "完成品/部品登録", new_parts_path %></li>
       <% end %>
-      <li><%= link_to "材料登録", "#" %></li>
+      <li><%= link_to "材料登録", new_material_path %></li>
     </ul>
     <ul class="user_links">
       <%# ユーザーがサインしているかどうかで分岐(devise導入後実装、まずは未ログイン時のみ) %>
