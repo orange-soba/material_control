@@ -32,7 +32,7 @@
 <%# /完成品/部品登録 %>
 
 <%# 登録履歴の表示 %>
-<div class="parts-history">
+<div class="history-area">
   <div class="history-title">登録履歴</div>
   <table>
     <thead>
@@ -47,7 +47,7 @@
       <% @parts.each do |part| %>
         <tr>
           <td><%= part.name %></td>
-          <td class="parts-history-stock"><%= part.stock %></td>
+          <td class="history-stock"><%= part.stock %></td>
           <% if part.finished? %>
             <td>完成品</td>
           <% else %>

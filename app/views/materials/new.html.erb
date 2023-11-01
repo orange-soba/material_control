@@ -6,9 +6,10 @@
 <div class="register-area">
   <%= form_with model: @material, url: materials_path, local: true do |f| %>
     <%# エラー情報を表示 %>
-    <div class="error-alert" id="error-messages-area" style="display:none;">
-      <ul id="error-messages-lists"></ul>
-    </div>
+    <%# <div class="error-alert" id="error-messages-area" style="display:none;"> %>
+      <%# <ul id="error-messages-lists"></ul> %>
+      <%= render 'shared/error_messages', model: f.object %>
+    <%# </div> %>
     <%# /エラー情報を表示 %>
 
     <div class="input-field">
@@ -50,3 +51,32 @@
   <% end %>
 </div>
 <%# /材料登録 %>
+
+<%# 登録履歴の表示 %>
+<div class="history-area">
+  <div class="history-title">登録履歴</div>
+  <table>
+    <thead>
+      <tr>
+        <th>材料</th>
+        <th>在庫数</th>
+        <th>登録日時</th>
+      </tr>
+    </thead>
+    <tbody id="parts-history-data">
+      <% @materials.each do |material| %>
+        <tr>
+          <td>
+            <%= material.material_type %>/<%= material.category %>/<%= material/thickness %>/
+            <%= material.width ||= "*" %>/
+            <%= material.option ||= "*" %>/
+            <%= material.length %>
+          </td>
+          <td class="parts-history-stock"><%= material.stock %></td>
+          <td><%= l material.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%# /登録履歴の表示 %>
