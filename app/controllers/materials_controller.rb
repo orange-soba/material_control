@@ -12,9 +12,9 @@ class MaterialsController < ApplicationController
     binding.pry
     if @material.valid?
       @material.save
-      current_user.registered_material_nums += 1
+      current_user.update(registered_material_nums: current_user.registered_material_nums + 1)
       
-      redirect_to root_path
+      redirect_to new_material_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,6 +29,6 @@ class MaterialsController < ApplicationController
   end
 
   def set_data
-    @materials = Material.where(user_id: current_user.id)
+    @materials = Material.where(user_id: current_user.id).order('created_at DESC')
   end
 end

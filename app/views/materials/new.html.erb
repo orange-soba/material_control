@@ -45,6 +45,7 @@
     <div class="input-field">
       <%= f.label :stock, "在庫数：" %>
       <%= f.text_field :stock, placeholder: "在庫数", id: "part_name" %><br>
+      ＊ 材料が半分だけ残っている時は「0.5」と入力することも可能です
     </div>
 
     <%= f.submit "送信" %>
@@ -67,12 +68,20 @@
       <% @materials.each do |material| %>
         <tr>
           <td>
-            <%= material.material_type %>/<%= material.category %>/<%= material/thickness %>/
-            <%= material.width ||= "*" %>/
-            <%= material.option ||= "*" %>/
+            <%= material.material_type %>/<%= material.category %>/<%= material.thickness %>/
+            <% if !material.width.nil? %>
+              <%= material.width %>
+            <% else %>
+              ---
+            <% end %>/
+            <% if material.option != "" %>
+              <%= material.option %>
+            <% else %>
+              ---
+            <% end %>/
             <%= material.length %>
           </td>
-          <td class="parts-history-stock"><%= material.stock %></td>
+          <td class="history-stock"><%= material.stock %></td>
           <td><%= l material.created_at %></td>
         </tr>
       <% end %>
