@@ -26,9 +26,9 @@ function parts_register() {
 function handle_data(data) {
   const part = data.part;
   if (data.success) {
-    const inputName = document.getElementById('input-name');
-    const inputStock = document.getElementById('input-stock');
-    const checkBox = document.getElementById('input-checkbox');
+    const inputName = document.getElementById('part_name');
+    const inputStock = document.getElementById('part_stock');
+    const checkBox = document.getElementById('part_finished');
     inputName.value = "";
     inputStock.value = 0;
     checkBox.value = false;
