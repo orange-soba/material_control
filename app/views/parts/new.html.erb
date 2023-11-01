@@ -2,7 +2,7 @@
 
 <h1 class="function-title">完成品/部品登録</h1>
 
-<%#= 完成品/部品登録 %>
+<%# 完成品/部品登録 %>
 <div class="register-area">
   <%= form_with model: @part, url: parts_path, id: "parts_register_form", local: true do |f| %>
     <%# エラー情報を表示 %>
@@ -29,9 +29,9 @@
     <%= f.submit "登録" %>
   <% end %>
 </div>
-<%#= /完成品/部品登録 %>
+<%# /完成品/部品登録 %>
 
-<%#= 登録履歴の表示 %>
+<%# 登録履歴の表示 %>
 <div class="parts-history">
   <div class="history-title">登録履歴</div>
   <table>
@@ -59,4 +59,4 @@
     </tbody>
   </table>
 </div>
-<%#= /登録履歴の表示 %>
+<%# /登録履歴の表示 %>
