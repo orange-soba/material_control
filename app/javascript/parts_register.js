@@ -42,7 +42,7 @@ function handle_data(data) {
 
 function create_html(part) {
   let html = `<tr><td>${part.name}</td>
-                <td class="parts-history-stock">${part.stock}</td>`;
+                <td class="history-stock">${part.stock}</td>`;
   if (part.finished) {
     html += '<td>完成品</td>';
   } else {

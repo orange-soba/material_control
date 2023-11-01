@@ -4,18 +4,18 @@ class MaterialsController < ApplicationController
 
   def new
     @material = Material.new
-    @material.stock = 0
+    @material.stock = 0.0
   end
 
   def create
-    @material = Material.new(material_params)
-    if @material.valid?
-      @material.save
+    material = Material.new(material_params)
+    if material.valid?
+      material.save
       current_user.update(registered_material_nums: current_user.registered_material_nums + 1)
       
-      redirect_to new_material_path
+      render json: { success: true, material: material }
     else
-      render :new, status: :unprocessable_entity
+      render json: { success: false, material: material, errors: material.errors.full_messages }
     end
   end
 
