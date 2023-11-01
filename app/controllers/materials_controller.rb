@@ -9,7 +9,6 @@ class MaterialsController < ApplicationController
 
   def create
     @material = Material.new(material_params)
-    binding.pry
     if @material.valid?
       @material.save
       current_user.update(registered_material_nums: current_user.registered_material_nums + 1)
