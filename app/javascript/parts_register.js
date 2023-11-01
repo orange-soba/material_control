@@ -29,12 +29,19 @@ function handle_data(data) {
     const inputName = document.getElementById('part_name');
     const inputStock = document.getElementById('part_stock');
     const checkBox = document.getElementById('part_finished');
+
     inputName.value = "";
     inputStock.value = 0;
     checkBox.value = false;
+    
     const historyData = document.getElementById('parts-history-data');
     const html = create_html(part);
     historyData.insertAdjacentHTML('afterbegin', html);
+
+    const area = document.getElementById('error-messages-area');
+    area.setAttribute('style', 'display:none;');
+    const lists = document.getElementById('error-messages-lists');
+    remove_children(lists);
   } else {
     show_error_messages(data.errors);
   }
