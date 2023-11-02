@@ -4,7 +4,7 @@
     <% if user_signed_in? %>
       <ul class="links__signed-in">
         <% unless current_page?(controller: "parts", action: "new") %>
-          <li><%= link_to "完成品/部品登録", new_parts_path %></li>
+          <li><%= link_to "完成品/部品登録", new_part_path %></li>
         <% end %>
         <% unless current_page?(controller: "materials", action: "new") %>
           <li><%= link_to "材料登録", new_material_path %></li>
