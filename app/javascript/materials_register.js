@@ -115,4 +115,4 @@ window.addEventListener('turbo:load', materials_register);
 
 // 二重登録が起きたり起きなかったりという問題が以下のコメントアウトで解決。
 // もしまた同じ問題や別の問題が起きた時のために念の為コメントアウトの状態にしておく
-// window.addEventListener('turbo: render', materials_register);
+window.addEventListener('turbo: render', materials_register);
