@@ -68,18 +68,18 @@
       <% @materials.each do |material| %>
         <tr>
           <td>
-            <%= material.material_type %> / <%= material.category %> / <%= material.thickness %> / 
+            <%= "#{material.material_type} / #{material.category} / #{material.thickness} / " %>
             <% if !material.width.nil? %>
-              <%= material.width %>
+              <%= "#{material.width} / " %>
             <% else %>
-              ---
-            <% end %>/
+              <%= " --- / " %>
+            <% end %>
             <% if material.option != "" %>
-              <%= material.option %>
+              <%= "#{material.option} / " %>
             <% else %>
-              ---
-            <% end %>/
-            <%= material.length %>
+              <%= " --- / " %>
+            <% end %>
+            <%= "#{material.length}" %>
           </td>
           <td class="history-stock"><%= material.stock %></td>
           <td><%= l material.created_at %></td>

@@ -74,7 +74,7 @@ function create_html(material) {
   } else {
     html += ' --- /';
   }
-  html += `${material.length}</td><td class="history-stock">${material.stock}</td>`;
+  html += ` ${material.length}</td><td class="history-stock">${material.stock}</td>`;
   const date = new Date(material.created_at);
   html += `<td>${formatDate(date)}</td></tr>`;
 
