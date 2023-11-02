@@ -106,7 +106,4 @@ function remove_children(lists) {
 
 
 window.addEventListener('turbo:load', parts_register);
-
-// 二重登録が起きたり起きなかったりという問題が以下のコメントアウトで解決。
-// もしまた同じ問題や別の問題が起きた時のために念の為コメントアウトの状態にしておく
 window.addEventListener('turbo:render', parts_register);
