@@ -1,1 +1,57 @@
-TEST
+<%= render 'shared/header' %>
+
+<h1 class="function-title"><%= current_user.name %>さんのマイページ</h1>
+
+<div class="details-area">
+  <%# 完成品の一覧 %>
+  <details class="products-details">
+    <summary class="title-h2">完成品</summary>
+    <div class="history-area-details">
+      <table>
+        <thead>
+          <tr>
+            <th>完成品名</th>
+            <th>在庫数</th>
+            <th>登録日時</th>
+          </tr>
+        </thead>
+        <tbody id="parts-history-data">
+          <% @products.each do |product| %>
+            <tr>
+              <td><%= link_to product.name, '#' %></td>
+              <td class="history-stock"><%= product.stock %></td>
+              <td><%= l product.created_at %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </details>
+  <%# /完成品の一覧 %>
+
+  <%# 部品の一覧 %>
+  <details class="parts-details">
+    <summary class="title-h2">部品</summary>
+    <div class="history-area-details">
+      <table>
+        <thead>
+          <tr>
+            <th>部品名</th>
+            <th>在庫数</th>
+            <th>登録日時</th>
+          </tr>
+        </thead>
+        <tbody id="parts-history-data">
+          <% @parts.each do |part| %>
+            <tr>
+              <td><%= link_to part.name, '#' %></td>
+              <td class="history-stock"><%= part.stock %></td>
+              <td><%= l part.created_at %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </details>
+  <%# /部品の一覧 %>
+</div>
