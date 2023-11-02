@@ -11,6 +11,7 @@ function parts_register() {
       method: 'post',
       body: formData
     };
+    
     fetch(url, post_options).then(response => {
       if (response.ok) {
         return response.json();
@@ -50,7 +51,7 @@ function reset_input() {
   const checkBox = document.getElementById('part_finished');
   inputName.value = "";
   inputStock.value = 0;
-  checkBox.value = false;
+  checkBox.checked = false;
 };
 
 function create_html(part) {
