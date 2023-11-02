@@ -44,7 +44,7 @@
         <tbody id="parts-history-data">
           <% @parts.each do |part| %>
             <tr>
-              <td><%= link_to part.name, '#' %></td>
+              <td><%= link_to part.name, part_path(part) %></td>
               <td class="history-stock"><%= part.stock %></td>
               <td><%= l part.created_at %></td>
             </tr>
