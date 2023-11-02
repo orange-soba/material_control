@@ -11,7 +11,7 @@ class MaterialsController < ApplicationController
     material = Material.new(material_params)
     if material.valid?
       material.save
-      current_user.update(registered_material_nums: current_user.registered_material_nums + 1)
+      current_user.increment!(:registered_material_nums)
       
       render json: { success: true, material: material }
     else
