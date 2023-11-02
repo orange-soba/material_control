@@ -63,20 +63,20 @@ function reset_input() {
 };
 
 function create_html(material) {
-  let html = `<tr><td>${material.material_type}/${material.category}/${material.thickness}`;
+  let html = `<tr><td>${material.material_type} / ${material.category} / ${material.thickness} /`;
   if (material.width) {
-    html += `${material.width}/`;
+    html += ` ${material.width} /`;
   } else {
     html += ' --- /';
   }
   if (material.option) {
-    html += `${material.option}/`;
+    html += ` ${material.option} /`;
   } else {
     html += ' --- /';
   }
   html += `${material.length}</td><td class="history-stock">${material.stock}</td>`;
   const date = new Date(material.created_at);
-  html += `<td>${formatDate(date)}</td></td>`;
+  html += `<td>${formatDate(date)}</td></tr>`;
 
   return html;
 };

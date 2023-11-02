@@ -68,7 +68,7 @@
       <% @materials.each do |material| %>
         <tr>
           <td>
-            <%= material.material_type %>/<%= material.category %>/<%= material.thickness %>/
+            <%= material.material_type %> / <%= material.category %> / <%= material.thickness %> / 
             <% if !material.width.nil? %>
               <%= material.width %>
             <% else %>
