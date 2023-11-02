@@ -2,7 +2,7 @@ function parts_register() {
   const form = document.getElementById('parts_register_form');
   if (!form) return null;
 
-  form.addEventListener('turbo:submit-start', (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // 送信ボタンを無効化
