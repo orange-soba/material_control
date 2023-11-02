@@ -7,4 +7,3 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "parts_register", to: "parts_register.js"
 pin "materials_register", to: "materials_register.js"
-pin "export_function", to: "export_function.js"
