@@ -1,1 +1,31 @@
-TESTrelationNew
+<%= render "shared/header" %>
+
+<h1 class="function-title">必要部品登録</h1>
+
+<div class="part-information">
+  <table class="history-area-details">
+    <tr>
+      <% if @part.finished? %>
+        <th>完成品名</th>
+      <% else %>
+        <th>部品名</th>
+      <% end %>
+      <td class="history-area__data"><%= @part.name %></td>
+    </tr>
+    <tr>
+      <th>在庫数</th>
+      <td class="history-area__data"><%= @part.stock %></td>
+    </tr>
+    <tr>
+      <th>登録日時</th>
+      <td class="history-area__data"><%= l @part.created_at %></td>
+    </tr>
+  </table>
+</div>
+
+<div class="register-need-parts-area">
+  <div>上記完成品/部品作成に必要な部品を登録してください</div>
+  <div class="register-need-parts">
+    [(部品名)] [(必要個数)]ケ [送信]
+  </div>
+</div>
