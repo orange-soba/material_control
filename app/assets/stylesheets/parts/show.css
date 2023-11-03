@@ -1,0 +1,28 @@
+.show-detail-area {
+  margin: 10px 0 0 20px;
+}
+
+.history-area__data {
+  text-align: center;
+}
+
+.button-link {
+  width: 70px;
+  margin: 0 0 30px 20px;
+  background-color: #dedede;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+}
+
+.button-link a {
+  text-decoration: none;
+  color: black;
+}
+
+.need-area {
+  border-top: 1px solid #dedede;
+  margin: 10px 20px 0 0;
+  padding-top: 10px;
+}

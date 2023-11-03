@@ -17,6 +17,10 @@ class PartsController < ApplicationController
       render json: { success: false, part: part, errors: part.errors.full_messages }
     end
   end
+
+  def show
+    @part = Part.find(params[:id])
+  end
   
   private
 

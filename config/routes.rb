@@ -5,6 +5,6 @@ Rails.application.routes.draw do
   }
   root "static_pages#home"
   resources :users, only: :show
-  resource :parts, only: [:new, :create]
+  resources :parts, only: [:new, :create, :show]
   resources :materials, only: [:new, :create]
 end
