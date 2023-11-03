@@ -1,0 +1,2 @@
+class PartsRelation < ApplicationRecord
+end

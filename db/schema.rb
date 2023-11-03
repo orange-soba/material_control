@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_01_055507) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_03_063155) do
   create_table "materials", charset: "utf8", force: :cascade do |t|
     t.string "material_type", null: false
     t.string "category", null: false
@@ -34,6 +34,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_01_055507) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_parts_on_user_id"
+  end
+
+  create_table "parts_relations", charset: "utf8", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.bigint "child_id"
+    t.integer "necessary_nums"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_id"], name: "index_parts_relations_on_child_id"
+    t.index ["parent_id"], name: "index_parts_relations_on_parent_id"
   end
 
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
