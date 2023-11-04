@@ -28,8 +28,8 @@
   <div class="register-need-parts">
     <%= form_with model: @parts_relation, url: part_parts_relations_path(@part), local: true do |f| %>
       <div class="input-field">
-        <%= f.label :child, "作成に必要な部品：" %>
-        <%= f.collection_select(:child, @parts, :id, :name, { include_blank: "---" }, class: "parts-relation__input") %><br>
+        <%= f.label :child_id, "作成に必要な部品：" %>
+        <%= f.collection_select(:child_id, @parts, :id, :name, { include_blank: "---" }, class: "parts-relation__input") %><br>
       </div>
 
       <div class="input-field">
