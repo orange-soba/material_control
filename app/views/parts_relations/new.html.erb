@@ -26,6 +26,18 @@
 <div class="register-need-parts-area">
   <div>上記完成品/部品作成に必要な部品を登録してください</div>
   <div class="register-need-parts">
-    [(部品名)] [(必要個数)]ケ [送信]
+    <%= form_with model: @parts_relation, url: part_parts_relations_path(@part), local: true do |f| %>
+      <div class="input-field">
+        <%= f.label :child, "作成に必要な部品：" %>
+        <%= f.collection_select(:child, @parts, :id, :name, { include_blank: "---" }, class: "parts-relation__input") %><br>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :necessary_nums, "　　　　　必要数：" %>
+        <%= f.text_field :necessary_nums, class: "parts-relation__input" %><br>
+      </div>
+
+      <%= f.submit "登録", class: "parts-relation__submit" %>
+    <% end %>
   </div>
 </div>

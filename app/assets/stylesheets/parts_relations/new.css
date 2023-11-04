@@ -1,3 +1,12 @@
 .register-need-parts-area {
   margin-left: 20px;
 }
+
+.parts-relation__input {
+  width: 200px;
+  height: 30px;
+}
+
+.parts-relation__submit {
+  margin-left: 150px;
+}
