@@ -5,10 +5,6 @@ function parts_register() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // 送信ボタンを無効化
-    const submitButton = form.querySelector('input[type="submit"]');
-    submitButton.disabled = true;
-
     const formData = new FormData(form);
     const url = '/parts';
     const post_options = {
@@ -24,10 +20,7 @@ function parts_register() {
       }
     }).then(data => {
       handle_data(data);
-    }).catch(err => console.log(err)).finally(() => {
-      // 送信ボタンを有効化
-      submitButton.disabled = false;
-    });
+    }).catch(err => console.log(err));
   });
 };
 
@@ -106,4 +99,4 @@ function remove_children(lists) {
 
 
 window.addEventListener('turbo:load', parts_register);
-window.addEventListener('turbo:render', parts_register);
+// window.addEventListener('turbo:render', parts_register);

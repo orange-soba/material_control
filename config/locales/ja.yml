@@ -13,3 +13,6 @@ ja:
         thickness: '厚さ'
         length: '長さ'
         stock: '在庫数'
+      parts_relation:
+        child: '選択された部品'
+        necessary_nums: '必要数'

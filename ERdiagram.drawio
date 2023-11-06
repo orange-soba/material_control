@@ -22,11 +22,11 @@
                 <mxCell id="8" value="- composition&#10;- type&#10;- thickness&#10;- width&#10;- option&#10;- length&#10;- stock&#10;- material_id&#10;- user_id" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="7" vertex="1">
                     <mxGeometry y="30" width="160" height="150" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" value="part_relations" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
-                    <mxGeometry x="120" y="440" width="160" height="90" as="geometry"/>
+                <mxCell id="9" value="parts_relations" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="440" width="160" height="100" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="- parent&#10;- child&#10;- necessary_nums&#10;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="9" vertex="1">
-                    <mxGeometry y="30" width="160" height="60" as="geometry"/>
+                <mxCell id="10" value="- parent&#10;- child&#10;- necessary_nums&#10;- user_id" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="9" vertex="1">
+                    <mxGeometry y="30" width="160" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="11" value="use_materials" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
                     <mxGeometry x="440" y="320" width="160" height="120" as="geometry"/>
