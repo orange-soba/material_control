@@ -33,7 +33,7 @@
       <%# エラー情報の表示 %>
       <%= render 'shared/error_messages', model: f.object %>
       <%# /エラー情報の表示 %>
-      
+
       <div class="input-field">
         <%= f.label :child_id, "作成に必要な部品：" %>
         <%= f.collection_select(:child_id, @parts, :id, :name, { include_blank: "---" }, class: "parts-relation__input") %><br>
@@ -49,3 +49,31 @@
   </div>
 </div>
 <%# /登録エリア %>
+
+<%# 登録履歴の表示 %>
+<div class="history-area">
+  <div class="history-title">登録履歴</div>
+  <table>
+    <thead>
+      <tr>
+        <th>完成品名/部品名</th>
+        <th>登録した必要な部品</th>
+        <th>必要数</th>
+        <th>登録日時</th>
+      </tr>
+    </thead>
+    <tbody id="parts-history-data">
+      <% @parts_relations.each do |parts_relation| %>
+        <% part_p = Part.find(parts_relation.parent_id) %>
+        <% part_c = Part.find(parts_relation.child_id) %>
+        <tr>
+          <td><%= part_p.name %></td>
+          <td><%= part_c.name %></td>
+          <td><%= parts_relation.necessary_nums %></td>
+          <td><%= l parts_relation.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%# /登録履歴の表示 %>

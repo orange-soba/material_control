@@ -1,8 +1,9 @@
 class PartsRelation < ApplicationRecord
   belongs_to :parent, class_name: "Part"
   belongs_to :child, class_name: "Part"
+  belongs_to :user
 
-  validates :necessary_nums, numericality: { only_integer: true, messge: 'は半角の数値で入力してください' }
+  validates :necessary_nums, presence: true, numericality: { only_integer: true, allow_nil: true, messge: 'は半角の数値で入力してください' }
   validate :cannot_treat_as_parts
   validate :disallow_roop
 
@@ -16,7 +17,7 @@ class PartsRelation < ApplicationRecord
   def disallow_roop
     return if roop_check
 
-    errors.add(:child, "はこの完成品/部品の作成に必要な部品になることができません")
+    errors.add(:child, "はこの完成品/部品の作成に必要な部品にすることができません")
   end
 
   def roop_check
