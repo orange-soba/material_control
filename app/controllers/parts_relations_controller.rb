@@ -26,9 +26,4 @@ class PartsRelationsController < ApplicationController
   def relation_params
     params.require(:parts_relation).permit(:child_id, :necessary_nums).merge(parent_id: @part.id)
   end
-  # def relation_params
-  #   child = Part.find(params[:parts_relation][:child])
-  #   params.require(:parts_relation).permit(:child, :necessary_nums).merge(parent_id: @part.id, child: child)
-  # end
-  
 end

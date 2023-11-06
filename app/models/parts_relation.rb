@@ -14,22 +14,41 @@ class PartsRelation < ApplicationRecord
   end
 
   def disallow_roop
-    return unless trace_ancestors(parent_id, child_id)
+    return if roop_check
 
     errors.add(:child, "はこの完成品/部品の作成に必要な部品になることができません")
   end
 
-  def trace_ancestors(parent_id, child_id)
-    parent = Part.find(parent_id)
-    return false if parent.nil?
+  def roop_check
+    descendants = []
+    trace_descendants_arr(child_id, descendants)
+    ancestors = []
+    trace_ancestors_arr(parent_id, ancestors)
 
-    return true if parent_id == child_id
-
-    parent.parents.each do |grand_parent|
-      return true if trace_ancestors(grand_parent.id, child_id)
+    descendants.each do |descendant|
+      ancestors.each do |ancestor|
+        return if descendant == ancestor
+      end
     end
 
-    false
+    true
   end
-  
+
+  def trace_descendants_arr(child_id, descendants = [])
+    child = Part.find(child_id)
+    descendants << child
+
+    child.children.each do |grand_child|
+      trace_descendants_arr(grand_child.id, descendants)
+    end
+  end
+
+  def trace_ancestors_arr(parent_id, ancestors = [])
+    parent = Part.find(parent_id)
+    ancestors << parent
+
+    parent.parents.each do |grand_parent|
+      trace_ancestors_arr(grand_parent.id, ancestors)
+    end
+  end
 end

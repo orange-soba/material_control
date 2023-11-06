@@ -2,7 +2,7 @@ function materials_register() {
   const form = document.getElementById('materials-register-form');
   if (!form) return null;
 
-  form.addEventListener('submit',(e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const formData = new FormData(form);
@@ -112,4 +112,4 @@ function remove_children(lists) {
 
 
 window.addEventListener('turbo:load', materials_register);
-window.addEventListener('turbo: render', materials_register);
+// window.addEventListener('turbo:render', materials_register);
