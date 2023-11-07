@@ -1,5 +1,6 @@
 class Part < ApplicationRecord
   belongs_to :user
+  has_many :need_materials
 
   has_many :parent_relations, class_name: "PartsRelation", foreign_key: :parent_id
   has_many :children, through: :parent_relations, source: :child

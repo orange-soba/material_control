@@ -10,4 +10,5 @@ class User < ApplicationRecord
   has_many :parts
   has_many :materials
   has_many :parts_relations
+  has_many :need_materials
 end
