@@ -5,3 +5,38 @@
 <%# 部品情報 %>
 <%= render 'shared/part_information', part: @part %>
 <%# /部品情報 %>
+
+<%# 登録エリア %>
+<div class="register-need-parts-area">
+  <div>上記完成品/部品作成に必要な部品を登録してください</div>
+  <div class="register-need-parts">
+    <%= form_with model: @need_material, url: part_need_materials_path(@part), local: true do |f| %>
+      <%# エラー情報の表示 %>
+      <%= render 'shared/error_messages', model: f.object %>
+      <%# /エラー情報の表示 %>
+
+      <div class="input-field">
+        <%= f.label :child_id, "　　作成に必要な材料：" %>
+        <%= f.collection_select(:child_id, @materials, :id, :material_type, { include_blank: "---" }, class: "parts-relation__input") %><br>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :length, "　　　　　必要な長さ：" %>
+        <%= f.text_field :length, class: "parts-relation__input" %><br>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :length_option, "必要な長さ(オプション):" %>
+        <%= f.text_field :length_option, class: "parts-relation__input" %><br>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :necessary_nums, "　　　　　　　必要数：" %>
+        <%= f.text_field :necessary_nums, class: "parts-relation__input" %><br>
+      </div>
+
+      <%= f.submit "登録", class: "parts-relation__submit" %>
+    <% end %>
+  </div>
+</div>
+<%# /登録エリア %>
