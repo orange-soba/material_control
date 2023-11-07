@@ -1,0 +1,2 @@
+class NeedMaterial < ApplicationRecord
+end

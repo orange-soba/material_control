@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_03_063155) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_07_082943) do
   create_table "materials", charset: "utf8", force: :cascade do |t|
     t.string "material_type", null: false
     t.string "category", null: false
@@ -24,6 +24,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_063155) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_materials_on_user_id"
+  end
+
+  create_table "need_materials", charset: "utf8", force: :cascade do |t|
+    t.bigint "part_id", null: false
+    t.integer "material_id", null: false
+    t.float "length", null: false
+    t.float "length_option"
+    t.integer "necessary_nums", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["part_id"], name: "index_need_materials_on_part_id"
+    t.index ["user_id"], name: "index_need_materials_on_user_id"
   end
 
   create_table "parts", charset: "utf8mb4", force: :cascade do |t|
@@ -63,6 +76,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_03_063155) do
   end
 
   add_foreign_key "materials", "users"
+  add_foreign_key "need_materials", "parts"
+  add_foreign_key "need_materials", "users"
   add_foreign_key "parts", "users"
   add_foreign_key "parts_relations", "users"
 end
