@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :users, only: :show
   resources :parts, only: [:new, :create, :show] do
     resource :parts_relations, only: [:new, :create]
+    resource :need_materials, only: [:new, :create]
   end
   resources :materials, only: [:new, :create]
 end
