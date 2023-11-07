@@ -3,26 +3,7 @@
 <h1 class="function-title">必要部品登録</h1>
 
 <%# 部品情報 %>
-<div class="part-information">
-  <table class="history-area-details">
-    <tr>
-      <% if @part.finished? %>
-        <th>完成品名</th>
-      <% else %>
-        <th>部品名</th>
-      <% end %>
-      <td class="history-area__data"><%= @part.name %></td>
-    </tr>
-    <tr>
-      <th>在庫数</th>
-      <td class="history-area__data"><%= @part.stock %></td>
-    </tr>
-    <tr>
-      <th>登録日時</th>
-      <td class="history-area__data"><%= l @part.created_at %></td>
-    </tr>
-  </table>
-</div>
+<%= render 'shared/part_information', part: @part %>
 <%# /部品情報 %>
 
 <%# 登録エリア %>
