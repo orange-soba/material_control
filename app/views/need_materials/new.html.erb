@@ -1,0 +1,77 @@
+<%= render 'shared/header' %>
+
+<h1 class="function-title">必要材料登録</h1>
+
+<%# 部品情報 %>
+<%= render 'shared/part_information', part: @part %>
+<%# /部品情報 %>
+
+<%# 登録エリア %>
+<div class="register-need-parts-area">
+  <div>上記完成品/部品作成に必要な部品を登録してください</div>
+  <div class="register-need-parts">
+    <%= form_with model: @need_material, url: part_need_materials_path(@part), local: true do |f| %>
+      <%# エラー情報の表示 %>
+      <%= render 'shared/error_messages', model: f.object %>
+      <%# /エラー情報の表示 %>
+
+      <div class="input-field">
+        <%= f.label :material_id, "　　　　登録する材料：" %>
+        <%= f.collection_select(:material_id, @materials, :material_id, :display_combine, { include_blank: "---" }, class: "parts-relation__input") %><br>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :length, "　　　　　必要な長さ：" %>
+        <%= f.text_field :length, class: "parts-relation__input" %><br>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :length_option, "必要な長さ(オプション):" %>
+        <%= f.text_field :length_option, class: "parts-relation__input" %><br>
+      </div>
+
+      <div class="input-field">
+        <%= f.label :necessary_nums, "　　　　　　　必要数：" %>
+        <%= f.text_field :necessary_nums, class: "parts-relation__input" %><br>
+      </div>
+
+      <%= f.submit "登録", class: "parts-relation__submit" %>
+    <% end %>
+  </div>
+</div>
+<%# /登録エリア %>
+
+<%# 登録履歴の表示 %>
+<div class="history-area">
+  <div class="history-title">登録履歴</div>
+  <table>
+    <thead>
+      <tr>
+        <th>完成品名/部品名</th>
+        <th>登録した必要な材料</th>
+        <th>必要な長さ</th>
+        <th>必要数</th>
+        <th>登録日時</th>
+      </tr>
+    </thead>
+    <tbody id="parts-history-data">
+      <% @need_materials.each do |need_material| %>
+        <% part = Part.find(need_material.part_id) %>
+        <% material = Material.find_by(material_id: need_material.material_id, user_id: current_user.id) %>
+        <tr>
+          <td><%= part.name %></td>
+          <td><%= material.display_combine %></td>
+          <td>
+            <%= need_material.length %>
+            <% if need_material.length_option %>
+              <%= " / #{need_material.length_option}" %>
+            <% end %>
+          </td>
+          <td><%= need_material.necessary_nums %></td>
+          <td><%= l need_material.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%# /登録履歴の表示 %>
