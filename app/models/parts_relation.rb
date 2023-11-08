@@ -26,9 +26,9 @@ class PartsRelation < ApplicationRecord
     return true unless child_id
     
     descendants = []
-    trace_descendants_arr(child_id, descendants)
+    PartsTracer.trace_descendants_arr(child_id, descendants)
     ancestors = []
-    trace_ancestors_arr(parent_id, ancestors)
+    PartsTracer.trace_ancestors_arr(parent_id, ancestors)
 
     descendants.each do |descendant|
       ancestors.each do |ancestor|
@@ -37,23 +37,5 @@ class PartsRelation < ApplicationRecord
     end
 
     true
-  end
-
-  def trace_descendants_arr(child_id, descendants = [])
-    child = Part.find(child_id)
-    descendants << child
-
-    child.children.each do |grand_child|
-      trace_descendants_arr(grand_child.id, descendants)
-    end
-  end
-
-  def trace_ancestors_arr(parent_id, ancestors = [])
-    parent = Part.find(parent_id)
-    ancestors << parent
-
-    parent.parents.each do |grand_parent|
-      trace_ancestors_arr(grand_parent.id, ancestors)
-    end
   end
 end
