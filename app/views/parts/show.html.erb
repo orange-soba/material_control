@@ -3,7 +3,7 @@
 <h1 class="function-title">完成品/部品詳細画面</h2>
 
 <%# 完成品/部品詳細の表示 %>
-<div class="show-detail-area">
+<div>
   <table class="history-area-details">
     <tr>
       <% if @part.finished? %>
@@ -32,18 +32,73 @@
 <%# /完成品/部品詳細の表示 %>
 
 <%# 完成品/部品作成に必要な部品及び材料の表示 %>
-<div class="show-detail-area">
+<div>
   <%# 必要な部品の表示 %>
-  <div class="need-area">
-    必要な部品の表示
-    <%= link_to '部品登録', new_part_parts_relations_path(@part) %>
+  <div>
+    <div class="history-area">
+      <div class="history-head">
+        <div>必要な部品一覧</div>
+        <div class="button-link">
+          <%= link_to '部品登録', new_part_parts_relations_path(@part) %>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>完成品名/部品名</th>
+            <th>必要数</th>
+          </tr>
+        </thead>
+        <tbody id="parts-history-data">
+          <% @part.children.each do |child| %>
+            <tr>
+              <td><%= child.name %></td>
+              <td class="history-stock"><%= PartsRelation.find_by(parent_id: @part.id, child_id: child.id).necessary_nums %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
   <%# /必要な部品の表示 %>
 
   <%# 必要な材料の表示 %>
-  <div class="need-area">
-    必要な材料の表示
-    <%= link_to '材料登録', new_part_need_materials_path(@part) %>
+    <div class="history-area">
+      <div class="history-head">
+        <div>必要な材料一覧</div>
+        <div class="button-link">
+          <%= link_to '材料登録', new_part_need_materials_path(@part) %>
+        </div>
+      </div>
+      <% if @part.need_materials.exists? %>
+        <table>
+          <thead>
+            <tr>
+              <th>完成品名/部品名</th>
+              <th>必要な長さ</th>
+              <th>必要数</th>
+            </tr>
+          </thead>
+          <tbody id="parts-history-data">
+            <% @part.need_materials.each do |need_material| %>
+              <% material = Material.find_by(material_id: need_material.material_id, user_id: current_user.id) %>
+              <tr>
+                <td><%= material.display_combine %></td>
+                <td>
+                  <%= need_material.length %>
+                  <% if need_material.length_option %>
+                    <%= " / #{need_material.length_option}" %>
+                  <% end %>
+                </td>
+                <td class="history-stock"><%= need_material.necessary_nums %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        必要な材料は登録されていません
+      <% end %>
+    </div>
   </div>
   <%# /必要な材料の表示 %>
 </div>
