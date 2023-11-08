@@ -3,11 +3,13 @@ class PartsRelation < ApplicationRecord
   belongs_to :child, class_name: "Part"
   belongs_to :user
 
-  validates :necessary_nums, presence: true, numericality: { only_integer: true, allow_nil: true, messge: 'は半角の数値で入力してください' }
   validate :cannot_treat_as_parts
   validate :disallow_roop
+  validates :necessary_nums, presence: true, numericality: { only_integer: true, allow_nil: true, messge: 'は半角の数値で入力してください' }
 
   def cannot_treat_as_parts
+    return unless child_id
+
     part = Part.find(child_id)
     return unless part.finished
 
@@ -21,6 +23,8 @@ class PartsRelation < ApplicationRecord
   end
 
   def roop_check
+    return true unless child_id
+    
     descendants = []
     trace_descendants_arr(child_id, descendants)
     ancestors = []

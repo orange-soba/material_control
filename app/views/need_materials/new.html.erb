@@ -16,7 +16,7 @@
       <%# /エラー情報の表示 %>
 
       <div class="input-field">
-        <%= f.label :material_id, "　　作成に必要な材料：" %>
+        <%= f.label :material_id, "　　　　登録する材料：" %>
         <%= f.collection_select(:material_id, @materials, :material_id, :display_combine, { include_blank: "---" }, class: "parts-relation__input") %><br>
       </div>
 
