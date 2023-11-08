@@ -8,11 +8,13 @@ class Material < ApplicationRecord
 
   def display_combine
     ret = "#{material_type}/#{category}/#{thickness}"
-    if width
+    if width != ""
       ret += "*#{width}"
     end
-    if option
+    if option != ""
       ret += "/#{option}"
     end
+
+    ret
   end
 end

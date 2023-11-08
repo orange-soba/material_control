@@ -40,3 +40,38 @@
   </div>
 </div>
 <%# /登録エリア %>
+
+<%# 登録履歴の表示 %>
+<div class="history-area">
+  <div class="history-title">登録履歴</div>
+  <table>
+    <thead>
+      <tr>
+        <th>完成品名/部品名</th>
+        <th>登録した必要な材料</th>
+        <th>必要な長さ</th>
+        <th>必要数</th>
+        <th>登録日時</th>
+      </tr>
+    </thead>
+    <tbody id="parts-history-data">
+      <% @need_materials.each do |need_material| %>
+        <% part = Part.find(need_material.part_id) %>
+        <% material = Material.find_by(material_id: need_material.material_id, user_id: current_user.id) %>
+        <tr>
+          <td><%= part.name %></td>
+          <td><%= material.display_combine %></td>
+          <td>
+            <%= need_material.length %>
+            <% if need_material.length_option %>
+              <%= " / #{need_material.length_option}" %>
+            <% end %>
+          </td>
+          <td><%= need_material.necessary_nums %></td>
+          <td><%= l need_material.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%# /登録履歴の表示 %>
