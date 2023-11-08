@@ -21,18 +21,18 @@
       </div>
 
       <div class="input-field">
-        <%= f.label :length, "　　　　　必要な長さ：" %>
-        <%= f.text_field :length, class: "parts-relation__input" %><br>
+        <%= f.label :length, " 　　必要な長さ(mm)：" %>
+        <%= f.text_field :length, placeholder: "例) 150", class: "parts-relation__input" %><br>
       </div>
 
       <div class="input-field">
         <%= f.label :length_option, "必要な長さ(オプション):" %>
-        <%= f.text_field :length_option, class: "parts-relation__input" %><br>
+        <%= f.text_field :length_option, placeholder: "例)100etc.", class: "parts-relation__input" %><br>
       </div>
 
       <div class="input-field">
-        <%= f.label :necessary_nums, "　　　　　　　必要数：" %>
-        <%= f.text_field :necessary_nums, class: "parts-relation__input" %><br>
+        <%= f.label :necessary_nums, "　　　　　必要数(個)：" %>
+        <%= f.text_field :necessary_nums, placeholder: "例) 3", class: "parts-relation__input" %><br>
       </div>
 
       <%= f.submit "登録", class: "parts-relation__submit" %>
