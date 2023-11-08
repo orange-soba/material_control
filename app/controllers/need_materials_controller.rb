@@ -4,4 +4,8 @@ class NeedMaterialsController < ApplicationController
     @need_material = NeedMaterial.new
     @materials = Material.where(user_id: current_user.id)
   end
+
+  def create
+    binding.pry
+  end
 end
