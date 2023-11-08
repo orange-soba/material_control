@@ -16,3 +16,7 @@ ja:
       parts_relation:
         child: '選択された部品'
         necessary_nums: '必要数'
+      need_material:
+        material_id: '作成に必要な材料'
+        length: '必要な長さ'
+        necessary_nums: '必要数'
