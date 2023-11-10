@@ -40,7 +40,8 @@ class PartsTracer
 
     part.children.each do |child|
       if child.children.empty? && child.need_materials.empty?
-        part_info[:parts] << child
+        parts_relation = PartsRelation.find_by(parent_id: part.id, child_id: child.id)
+        part_info[:parts] << [child, parts_relation.necessary_nums]
         next
       end
 
@@ -64,10 +65,10 @@ class PartsTracer
 end
 
 # 例)
-# part_info - parts = []
+# part_info - parts = [[part, nums]]
 #           - materials = { material_id: { length: nums }
 #                           }
-# part_info - parts = [モーター、減速機]
+# part_info - parts = [[モーター, 2]、[減速機, 1]]
 #           - materials = { 1: { 130: 3 , 100: 2},
 #                           3: { 200: 1}
 #                          }

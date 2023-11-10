@@ -1,0 +1,87 @@
+<%= render "shared/header" %>
+
+<h1 class="function-title">計算結果</h2>
+
+<div class="need-parts-materials">
+  <%# 必要な部品の表示 %>
+  <div class="need-table-area">
+    <div class="need-table-title">「<%= link_to @part.name, part_path(@part) %>」の作成に必要な<span>部品</span>一覧</div>
+    <div class="need-table">
+      <table>
+        <thead>
+          <tr>
+            <th>部品名</th>
+            <th>必要数</th>
+            <th>在庫数</th>
+            <th>在庫状況</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @parts.each do |part| %>
+            <tr>
+              <td><%= part[0].name %></td>
+              <td class="need-table_nums"><%= part[1] %></td>
+              <td class="need-table_nums"><%= part[0].stock %></td>
+              <% if part[1] > part[0].stock %>
+                <td class="need-table_nums">❌</td>
+              <% else %>
+                <td class="need-table_nums">⭕️</td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <%# /必要な部品の表示 %>
+
+  <%# 必要な材料の表示 %>
+  <div class="need-table-area">
+    <div class="need-table-title">「<%= link_to @part.name, part_path(@part) %>」の作成に必要な<span>材料</span>一覧</div>
+    <div class="need-table">
+      <table>
+        <thead>
+          <tr>
+            <th>材料</th>
+            <th>必要な長さ</th>
+            <th>必要数</th>
+            <th>必要な長さ ✖️ 必要数</th>
+            <th>在庫</th>
+            <th>在庫状況</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @materials.each do |material_id, material_hash| %>
+            <% material = Material.find_by(material_id: material_id, user_id: current_user.id) %>
+            <% sum = 0 %>
+            <% material_hash.each_with_index do |arr, index| %>
+              <tr>
+                <% if index == 0 %>
+                  <td><%= material.display_combine %></td>
+                <% else %>
+                  <td></td>
+                <% end %>
+                <td class="need-table_nums"><%= arr[0] %></td>
+                <td class="need-table_nums"><%= arr[1] %></td>
+                <% sum += arr[0] * arr[1] %>
+                <% if index = material_hash.length - 1 %>
+                  <td class="need-table_nums"><%= sum %></td>
+                  <td class="need-table_nums"><%= material.stock * material.length %></td>
+                <% else %>
+                  <td></td>
+                  <td></td>
+                <% end %>
+                <% if sum > material.stock * material.length %>
+                  <td class="need-table_nums">❌</td>
+                <% else %>
+                  <td class="need-table_nums">⭕️</td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <%# /必要な材料の表示 %>
+<div/>
