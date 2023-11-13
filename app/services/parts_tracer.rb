@@ -67,12 +67,12 @@ class PartsTracer
   private
 
   def self.get_parts_materials(part, part_info = {parts: [], materials: {}}, user)
-    if !part.need_materials.empty?
+    if part.need_materials.exists?
       get_materials(part, part_info, user)
     end
 
     part.children.each do |child|
-      if child.children.empty? && child.need_materials.empty?
+      if !child.children.exists? && !child.need_materials.exists?
         parts_relation = PartsRelation.find_by(parent_id: part.id, child_id: child.id)
         part_info[:parts] << [child, parts_relation.necessary_nums]
         next
