@@ -2,6 +2,10 @@
   margin: 10px 0 0 20px;
 }
 
+.details-area p {
+  font-weight: bold;
+}
+
 .title-h2 {
   font-size: x-large;
 }

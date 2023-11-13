@@ -6,52 +6,60 @@
   <%# 完成品の一覧 %>
   <details class="products-details">
     <summary class="title-h2">完成品</summary>
-    <div class="history-area-details">
-      <table>
-        <thead>
-          <tr>
-            <th>完成品名</th>
-            <th>在庫数</th>
-            <th>登録日時</th>
-          </tr>
-        </thead>
-        <tbody id="parts-history-data">
-          <% @products.each do |product| %>
+    <% if @products == [] %>
+      <p>完成品が登録されていません</p>
+    <% else %>
+      <div class="history-area-details">
+        <table>
+          <thead>
             <tr>
-              <td><%= link_to product.name, part_path(product) %></td>
-              <td class="history-stock"><%= product.stock %></td>
-              <td><%= l product.created_at %></td>
+              <th>完成品名</th>
+              <th>在庫数</th>
+              <th>登録日時</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody id="parts-history-data">
+            <% @products.each do |product| %>
+              <tr>
+                <td><%= link_to product.name, part_path(product) %></td>
+                <td class="history-stock"><%= product.stock %></td>
+                <td><%= l product.created_at %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
   </details>
   <%# /完成品の一覧 %>
 
   <%# 部品の一覧 %>
   <details class="parts-details">
     <summary class="title-h2">部品</summary>
-    <div class="history-area-details">
-      <table>
-        <thead>
-          <tr>
-            <th>部品名</th>
-            <th>在庫数</th>
-            <th>登録日時</th>
-          </tr>
-        </thead>
-        <tbody id="parts-history-data">
-          <% @parts.each do |part| %>
+    <% if @parts == [] %>
+      <p>部品が登録されていません</p>
+    <% else %>
+      <div class="history-area-details">
+        <table>
+          <thead>
             <tr>
-              <td><%= link_to part.name, part_path(part) %></td>
-              <td class="history-stock"><%= part.stock %></td>
-              <td><%= l part.created_at %></td>
+              <th>部品名</th>
+              <th>在庫数</th>
+              <th>登録日時</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody id="parts-history-data">
+            <% @parts.each do |part| %>
+              <tr>
+                <td><%= link_to part.name, part_path(part) %></td>
+                <td class="history-stock"><%= part.stock %></td>
+                <td><%= l part.created_at %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
   </details>
   <%# /部品の一覧 %>
 </div>

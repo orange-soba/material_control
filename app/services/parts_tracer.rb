@@ -78,9 +78,7 @@ class PartsTracer
         next
       end
 
-      child.children.each do |grand_child|
-        get_parts_materials(child, part_info, user)
-      end
+      get_parts_materials(child, part_info, user)
     end
   end
 
