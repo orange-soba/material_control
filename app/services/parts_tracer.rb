@@ -13,6 +13,39 @@ class PartsTracer
     @part_info
   end
 
+  def create_order_list
+    order_parts = []
+    @part_info[:parts].each do |part, necessary_nums|
+      if part.stock < necessary_nums
+        order_parts << [part, necessary_nums]
+      end
+    end
+  
+    order_materials = []
+    # cutting_allow = @user.cutting_allow # 切り代(usersデータベースにカラム追加及び編集機能実装後実装)
+    @part_info[:materials].each do |material_id, material_hash|
+      material =  Material.find_by(material_id: material_id, user_id: @user.id)
+      stock_length = material.stock * material.length
+  
+      length_sum = 0
+      material_hash.each do |length, nums|
+        length_sum += (length + 5) * nums 
+        # length_sum += (length * cutting_allow) * nums
+      end
+  
+      if stock_length < length_sum
+        order_nums = ((length_sum - stock_length) / material.length).ceil
+        order_materials << [material.display_combine, order_nums]
+      end
+    end
+  
+    order_list = {}
+    order_list[:parts] = order_parts
+    order_list[:materials] = order_materials
+  
+    order_list
+  end
+
   def self.trace_descendants_arr(child_id, descendants = [])
     child = Part.find(child_id)
     descendants << child
