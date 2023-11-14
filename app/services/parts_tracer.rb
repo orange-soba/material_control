@@ -3,7 +3,7 @@ class PartsTracer
 
   def initialize(part, user)
     @part = part
-    @part_info = {parts: [], materials: {}}
+    @part_info = {parts: {}, materials: {}}
     @user = user
   end
 
@@ -15,9 +15,10 @@ class PartsTracer
 
   def create_order_list
     order_parts = []
-    @part_info[:parts].each do |part, necessary_nums|
+    @part_info[:parts].each do |part_id, necessary_nums|
+      part = Part.find(part_id)
       if part.stock < necessary_nums
-        order_parts << [part, necessary_nums]
+        order_parts << [part.name, necessary_nums - part.stock]
       end
     end
   
@@ -66,7 +67,7 @@ class PartsTracer
 
   private
 
-  def self.get_parts_materials(part, part_info = {parts: [], materials: {}}, user)
+  def self.get_parts_materials(part, part_info = {parts: {}, materials: {}}, user)
     if part.need_materials.exists?
       get_materials(part, part_info, user)
     end
@@ -74,7 +75,9 @@ class PartsTracer
     part.children.each do |child|
       if !child.children.exists? && !child.need_materials.exists?
         parts_relation = PartsRelation.find_by(parent_id: part.id, child_id: child.id)
-        part_info[:parts] << [child, parts_relation.necessary_nums]
+        part_info[:parts][child.id] ||= 0
+        part_info[:parts][child.id] += parts_relation.necessary_nums
+        # part_info[:parts] << [child, parts_relation.necessary_nums]
         next
       end
 
@@ -82,7 +85,7 @@ class PartsTracer
     end
   end
 
-  def self.get_materials(part, part_info = {parts: [], materials: {}}, user)
+  def self.get_materials(part, part_info = {parts: {}, materials: {}}, user)
     part.need_materials.each do |need_material|
       material = Material.find_by(material_id: need_material[:material_id], user_id: user.id)
       length = need_material.length
@@ -96,7 +99,7 @@ class PartsTracer
 end
 
 # 例)
-# part_info - parts = [[part, nums]]
+# part_info - parts = { part: nums }
 #           - materials = { material_id: { length: nums }
 #                           }
 # part_info - parts = [[モーター, 2]、[減速機, 1]]

@@ -5,7 +5,7 @@
 <div class="need-parts-materials">
   <%# 必要な部品の表示 %>
   <div class="need-table-area">
-    <% if @parts == [] %>
+    <% if @parts == {} %>
       <p>「<%= link_to @part.name, part_path(@part) %>」に必要な部品はありません</p>
     <% else %>
       <div class="need-table-title">「<%= link_to @part.name, part_path(@part) %>」の作成に必要な<span>部品</span>一覧</div>
@@ -20,12 +20,13 @@
             </tr>
           </thead>
           <tbody>
-            <% @parts.each do |part| %>
+            <% @parts.each do |part_id, necessary_nums| %>
+              <% part = Part.find(part_id) %>
               <tr>
-                <td><%= part[0].name %></td>
-                <td class="need-table_nums"><%= part[1] %></td>
-                <td class="need-table_nums"><%= part[0].stock %></td>
-                <% if part[1] > part[0].stock %>
+                <td><%= part.name %></td>
+                <td class="need-table_nums"><%= necessary_nums %></td>
+                <td class="need-table_nums"><%= part.stock %></td>
+                <% if necessary_nums > part.stock %>
                   <td class="need-table_nums">❌</td>
                 <% else %>
                   <td class="need-table_nums">⭕️</td>
@@ -107,14 +108,7 @@
               <th>発注数</th>
             </tr>
           </thead>
-          <tbody>
-            <% @parts_order.each do |part_order| %>
-              <tr>
-                <td><%= part_order[0].name %></td>
-                <td class="need-table_nums"><%= part_order[1] %></td>
-              </tr>
-            <% end %>
-          </tbody>
+          <%= render 'calculate_tbody', orders: @parts_order %>
         </table>
       </div>
     <% end %>
@@ -135,14 +129,7 @@
               <th>発注数</th>
             </tr>
           </thead>
-          <tbody>
-            <% @materials_order.each do |material_order| %>
-              <tr>
-                <td><%= material_order[0] %></td>
-                <td class="need-table_nums"><%= material_order[1] %></td>
-              </tr>
-            <% end %>
-          </tbody>
+          <%= render 'calculate_tbody', orders: @materials_order %>
         </table>
       </div>
     <% end %>
