@@ -47,3 +47,7 @@
 .history-stock {
   text-align: center;
 }
+
+.history-area p {
+  font-weight: bold;
+}

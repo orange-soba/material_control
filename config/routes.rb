@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   resources :parts, only: [:new, :create, :show] do
     resource :parts_relations, only: [:new, :create]
     resource :need_materials, only: [:new, :create]
+    member do
+      get 'calculate'
+    end
   end
   resources :materials, only: [:new, :create]
 end

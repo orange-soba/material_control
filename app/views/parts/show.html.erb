@@ -25,7 +25,7 @@
 
   <%# 完成品/部品作成に必要な材料の計算結果を表示するリンク %>
   <div class="button-link">
-    <%= link_to "材料計算", "#" %>
+    <%= link_to "材料計算", calculate_part_path(@part) %>
   </div>
   <%# /完成品/部品作成に必要な材料の計算結果を表示するリンク %>
 </div>
@@ -42,22 +42,26 @@
           <%= link_to '部品登録', new_part_parts_relations_path(@part) %>
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>完成品名/部品名</th>
-            <th>必要数</th>
-          </tr>
-        </thead>
-        <tbody id="parts-history-data">
-          <% @part.children.each do |child| %>
+      <% if @part.children.exists? %>
+        <table>
+          <thead>
             <tr>
-              <td><%= child.name %></td>
-              <td class="history-stock"><%= PartsRelation.find_by(parent_id: @part.id, child_id: child.id).necessary_nums %></td>
+              <th>完成品名/部品名</th>
+              <th>必要数</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody id="parts-history-data">
+            <% @part.children.each do |child| %>
+              <tr>
+                <td><%= child.name %></td>
+                <td class="history-stock"><%= PartsRelation.find_by(parent_id: @part.id, child_id: child.id).necessary_nums %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>必要な部品は登録されていません</p>
+      <% end %>
     </div>
   </div>
   <%# /必要な部品の表示 %>
@@ -96,7 +100,7 @@
           </tbody>
         </table>
       <% else %>
-        必要な材料は登録されていません
+        <p>必要な材料は登録されていません</p>
       <% end %>
     </div>
   </div>

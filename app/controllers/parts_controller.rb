@@ -1,6 +1,6 @@
 class PartsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_parts
+  before_action :set_parts, except: :calculate
 
   def new
     @part = Part.new
@@ -20,6 +20,19 @@ class PartsController < ApplicationController
 
   def show
     @part = Part.find(params[:id])
+  end
+
+  def calculate
+    @part = Part.find(params[:id])
+    parts_tracer = PartsTracer.new(@part, current_user)
+
+    part_info = parts_tracer.get_part_info
+    @parts = part_info[:parts]
+    @materials = part_info[:materials]
+
+    order_list = parts_tracer.create_order_list
+    @parts_order = order_list[:parts]
+    @materials_order = order_list[:materials]
   end
   
   private

@@ -22,7 +22,7 @@ class NeedMaterialsController < ApplicationController
   def set_data
     @part = Part.find(params[:part_id])
     @materials = Material.where(user_id: current_user.id)
-    @need_materials = NeedMaterial.where(user_id: current_user.id)
+    @need_materials = NeedMaterial.where(user_id: current_user.id).order('created_at DESC')
   end
   
   def need_material_params

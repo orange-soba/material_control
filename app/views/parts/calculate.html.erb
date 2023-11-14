@@ -1,0 +1,138 @@
+<%= render "shared/header" %>
+
+<h1 class="function-title">計算結果</h2>
+
+<div class="need-parts-materials">
+  <%# 必要な部品の表示 %>
+  <div class="need-table-area">
+    <% if @parts == {} %>
+      <p>「<%= link_to @part.name, part_path(@part) %>」に必要な部品はありません</p>
+    <% else %>
+      <div class="need-table-title">「<%= link_to @part.name, part_path(@part) %>」の作成に必要な<span>部品</span>一覧</div>
+      <div class="need-table">
+        <table>
+          <thead>
+            <tr>
+              <th>部品名</th>
+              <th>必要数</th>
+              <th>在庫数</th>
+              <th>在庫状況</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @parts.each do |part_id, necessary_nums| %>
+              <% part = Part.find(part_id) %>
+              <tr>
+                <td><%= part.name %></td>
+                <td class="need-table_nums"><%= necessary_nums %></td>
+                <td class="need-table_nums"><%= part.stock %></td>
+                <% if necessary_nums > part.stock %>
+                  <td class="need-table_nums">❌</td>
+                <% else %>
+                  <td class="need-table_nums">⭕️</td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+  <%# /必要な部品の表示 %>
+
+  <%# 必要な材料の表示 %>
+  <div class="need-table-area">
+    <% if @materials == {} %>
+      <p>「<%= link_to @part.name, part_path(@part) %>」に必要な材料はありません</p>
+    <% else %>
+      <div class="need-table-title">「<%= link_to @part.name, part_path(@part) %>」の作成に必要な<span>材料</span>一覧</div>
+      <div class="need-table">
+        <table>
+          <thead>
+            <tr>
+              <th>材料</th>
+              <th>必要な長さ</th>
+              <th>必要数</th>
+              <th>必要な長さ ✖️ 必要数</th>
+              <th>在庫</th>
+              <th>在庫状況</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @materials.each do |material_id, material_hash| %>
+              <% material = Material.find_by(material_id: material_id, user_id: current_user.id) %>
+              <% sum = 0 %>
+              <% material_hash.each_with_index do |arr, index| %>
+                <tr>
+                  <% if index == 0 %>
+                    <td><%= material.display_combine %></td>
+                  <% else %>
+                    <td></td>
+                  <% end %>
+                  <td class="need-table_nums"><%= arr[0] %></td>
+                  <td class="need-table_nums"><%= arr[1] %></td>
+                  <% sum += arr[0] * arr[1] %>
+                  <% if index = material_hash.length - 1 %>
+                    <td class="need-table_nums"><%= sum %></td>
+                    <td class="need-table_nums"><%= material.stock * material.length %></td>
+                  <% else %>
+                    <td></td>
+                    <td></td>
+                  <% end %>
+                  <% if sum > material.stock * material.length %>
+                    <td class="need-table_nums">❌</td>
+                  <% else %>
+                    <td class="need-table_nums">⭕️</td>
+                  <% end %>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+  <%# /必要な材料の表示 %>
+
+  <%# 発注が必要な部品の表示 %>
+  <div class="need-table-area">
+    <% if @parts_order == [] %>
+      <p>部品の発注は必要ありません</p>
+    <% else %>
+      <div class="need-table-title">発注の必要な<span>部品</span>一覧</div>
+      <div class="need-table">
+        <table>
+          <thead>
+            <tr>
+              <th>部品名</th>
+              <th>発注数</th>
+            </tr>
+          </thead>
+          <%= render 'calculate_tbody', orders: @parts_order %>
+        </table>
+      </div>
+    <% end %>
+  </div>
+  <%# /発注が必要な部品の表示 %>
+
+  <%# 発注が必要な材料の表示 %>
+  <div class="need-table-area">
+    <% if @materials_order == [] %>
+      <p>材料の発注は必要ありません</p>
+    <% else %>
+      <div class="need-table-title">発注の必要な<span>部品</span>一覧</div>
+      <div class="need-table">
+        <table>
+          <thead>
+            <tr>
+              <th>材料名</th>
+              <th>発注数</th>
+            </tr>
+          </thead>
+          <%= render 'calculate_tbody', orders: @materials_order %>
+        </table>
+      </div>
+    <% end %>
+  </div>
+  <%# /発注が必要な材料の表示 %>
+<div/>
