@@ -1,0 +1,26 @@
+.no-border-top {
+  border-top: none !important;
+}
+
+.button-link__history-area {
+  height: 30px;
+  display: flex;
+}
+
+.button-link__history-area span {
+  padding: 0 5px;
+}
+
+.button-link__history {
+  width: 50px;
+  height: 25px;
+  background-color: #dedede;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.button-link__history a {
+  text-decoration: none;
+  color: black;
+}

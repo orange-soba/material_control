@@ -2,6 +2,9 @@ class MaterialsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_data
 
+  def index
+  end
+
   def new
     @material = Material.new
     @material.stock = 0.0
