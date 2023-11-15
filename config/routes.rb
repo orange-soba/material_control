@@ -12,5 +12,5 @@ Rails.application.routes.draw do
       get 'calculate'
     end
   end
-  resources :materials, only: [:new, :create]
+  resources :materials, only: [:index, :new, :create]
 end
