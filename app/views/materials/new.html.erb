@@ -55,13 +55,18 @@
 
 <%# 登録履歴の表示 %>
 <div class="history-area">
-  <div class="history-title">登録履歴</div>
+  <div class="history-title">
+    <div>登録履歴</div>
+    <div class="button-link">
+      <%= link_to "材料一覧", materials_path %>
+    </div>
+  </div>
   <table>
     <thead>
       <tr>
         <th>材料</th>
         <th>在庫数</th>
-        <th>登録日時</th>
+        <th>最終更新日時</th>
       </tr>
     </thead>
     <tbody id="materials-history-data">
@@ -82,7 +87,7 @@
             <%= "#{material.length}" %>
           </td>
           <td class="history-stock"><%= material.stock %></td>
-          <td><%= l material.created_at %></td>
+          <td><%= l material.updated_at %></td>
         </tr>
       <% end %>
     </tbody>
