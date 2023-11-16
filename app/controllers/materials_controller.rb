@@ -22,12 +22,25 @@ class MaterialsController < ApplicationController
     end
   end
 
+  def stock_update
+    material = Material.find(params[:id])
+    if material.update(stock_params)
+      redirect_to materials_path
+    else
+      render :index, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def material_params
     len = current_user.registered_material_nums
     permit_array = [:material_type, :category, :thickness, :width, :option, :length, :stock]
     params.require(:material).permit(permit_array).merge(material_id: len + 1, user_id: current_user.id)
+  end
+
+  def stock_params
+    params.require(:material).permit(:stock)
   end
 
   def set_data

@@ -12,5 +12,9 @@ Rails.application.routes.draw do
       get 'calculate'
     end
   end
-  resources :materials, only: [:index, :new, :create]
+  resources :materials, only: [:index, :new, :create] do
+    member do
+      patch 'stock_update'
+    end
+  end
 end
