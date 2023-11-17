@@ -17,17 +17,7 @@
       <% @materials.each do |material| %>
         <tr>
           <td>
-            <%= "#{material.material_type} / #{material.category} / #{material.thickness} / " %>
-            <% if !material.width.nil? %>
-              <%= "#{material.width} / " %>
-            <% else %>
-              <%= " --- / " %>
-            <% end %>
-            <% if material.option != "" %>
-              <%= "#{material.option} /" %>
-            <% else %>
-              <%= " --- /" %>
-            <% end %>
+            <%= material.display_combine %>
           </td>
           <td class="history-stock"><%= "#{material.length}" %></td>
           <td><%= l material.updated_at %></td>
@@ -41,7 +31,7 @@
           <td>
             <div class="button-link__history-area">
               <div class="button-link__history">
-                <%= link_to "編集", "#" %>
+                <%= link_to "編集", edit_material_path(material) %>
               </div>
               <span>/</span>
               <div class="button-link__history">

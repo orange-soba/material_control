@@ -65,6 +65,7 @@
     <thead>
       <tr>
         <th>材料</th>
+        <th>長さ</th>
         <th>在庫数</th>
         <th>最終更新日時</th>
       </tr>
@@ -73,17 +74,9 @@
       <% @materials.each do |material| %>
         <tr>
           <td>
-            <%= "#{material.material_type} / #{material.category} / #{material.thickness} / " %>
-            <% if !material.width.nil? %>
-              <%= "#{material.width} / " %>
-            <% else %>
-              <%= " --- / " %>
-            <% end %>
-            <% if material.option != "" %>
-              <%= "#{material.option} / " %>
-            <% else %>
-              <%= " --- / " %>
-            <% end %>
+            <%= material.display_combine %>
+          </td>
+          <td>
             <%= "#{material.length}" %>
           </td>
           <td class="history-stock"><%= material.stock %></td>
