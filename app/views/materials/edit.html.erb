@@ -1,1 +1,53 @@
-editMaterial
+<%= render 'shared/header' %>
+
+<h1 class="function-title">登録済み材料の編集</h1>
+
+<%# 材料登録 %>
+<div class="register-area">
+  <%= form_with model: @material, url: material_path(@material), local: true do |f| %>
+    <%# エラー情報を表示 %>
+    <div class="error-alert" id="error-messages-area" style="display:none;">
+      <%= render 'shared/error_messages', model: f.object %>
+    </div>
+    <%# /エラー情報を表示 %>
+
+    <div class="input-field">
+      <%= f.label :material_type, "　　　材質：" %>
+      <%= f.text_field :material_type, placeholder: "例) sus304", id: "material_material_type" %><br>
+    </div>
+
+    <div class="input-field">
+      <%= f.label :category, "　　　種類：" %>
+      <%= f.text_field :category, placeholder: "例) FB-C", id: "material_category" %><br>
+    </div>
+
+    <div class="input-field">
+      <%= f.label :thickness, " 厚さ(mm)：" %>
+      <%= f.text_field :thickness, placeholder: "例) 6", id: "material_thickness" %><br>
+    </div>
+
+    <div class="input-field">
+      <%= f.label :width, "　 幅(mm)：" %>
+      <%= f.text_field :width, placeholder: "例) 30", id: "material_width" %><br>
+    </div>
+
+    <div class="input-field">
+      <%= f.label :option, "　　その他：" %>
+      <%= f.text_field :option, placeholder: "例) 切断済み", id: "material_option" %><br>
+    </div>
+
+    <div class="input-field">
+      <%= f.label :length, " 長さ(mm)：" %>
+      <%= f.text_field :length, placeholder: "例) 5000", id: "material_length" %><br>
+    </div>
+
+    <div class="input-field">
+      <%= f.label :stock, "在庫数(個)：" %>
+      <%= f.text_field :stock, placeholder: "在庫数", id: "material_stock" %><br>
+      ＊ 材料が半分だけ残っている時は「0.5」と入力することも可能です
+    </div>
+
+    <%= f.submit "送信" %>
+  <% end %>
+</div>
+<%# /材料登録 %>
