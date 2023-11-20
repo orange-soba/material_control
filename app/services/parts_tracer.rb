@@ -91,9 +91,9 @@ class PartsTracer
       length = need_material.length
       nums = need_material.necessary_nums
       
-      @part_info[:materials][material.id] ||= {}
-      @part_info[:materials][material.id][length] ||= 0
-      @part_info[:materials][material.id][length] += nums
+      @part_info[:materials][material.material_id] ||= {}
+      @part_info[:materials][material.material_id][length] ||= 0
+      @part_info[:materials][material.material_id][length] += nums
     end
   end
 end
