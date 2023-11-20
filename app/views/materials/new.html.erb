@@ -81,6 +81,12 @@
           </td>
           <td class="history-stock"><%= material.stock %></td>
           <td><%= l material.updated_at %></td>
+          <td class="no-border">
+            <div class="button-link__history">
+              <%= link_to "削除", material_path(material, now: "new"),
+                data: { turbo_method: :delete, turbo_confirm: "「#{material.display_combine}」を削除してもよろしいですか？" } %>
+            </div>
+          </td>
         </tr>
       <% end %>
     </tbody>

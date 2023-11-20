@@ -35,7 +35,8 @@
               </div>
               <span>/</span>
               <div class="button-link__history">
-                <%= link_to "削除", "#" %>
+                <%= link_to "削除", material_path(material),
+                    data: { turbo_method: :delete, turbo_confirm: "「#{material.display_combine}」を削除してもよろしいですか？" } %>
               </div>
             </div>
           </td>

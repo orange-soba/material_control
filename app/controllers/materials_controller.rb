@@ -35,6 +35,17 @@ class MaterialsController < ApplicationController
     end
   end
 
+  def destroy
+    material = Material.find(params[:id])
+    material.destroy
+
+    if params[:now] == "new"
+      redirect_to new_material_path
+    else
+      redirect_to materials_path
+    end
+  end
+
   def stock_update
     material = Material.find(params[:id])
     if material.update(stock_params)
