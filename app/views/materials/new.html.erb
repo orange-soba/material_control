@@ -8,8 +8,8 @@
     <%# エラー情報を表示 %>
     <div class="error-alert" id="error-messages-area" style="display:none;">
       <ul id="error-messages-lists"></ul>
-      <%#= render 'shared/error_messages', model: f.object %>
     </div>
+    <%#= render 'shared/error_messages', model: f.object %>
     <%# /エラー情報を表示 %>
 
     <div class="input-field">
@@ -61,6 +61,15 @@
       <%= link_to "材料一覧", materials_path %>
     </div>
   </div>
+  <% if @errors&.any? %>
+    <div class="error-alert">
+      <ul>
+        <% @errors.each do |error| %>
+          <li class='error-message'>!<%= error %>!</li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
   <table>
     <thead>
       <tr>

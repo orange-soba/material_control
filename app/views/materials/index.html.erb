@@ -2,7 +2,16 @@
 
 <h1 class="function-title">材料一覧ページ</h1>
 
-<div class="history-area no-border-top">
+<div class="history-area no-border-top no-scroll">
+  <% if @errors&.any? %>
+    <div class="error-alert">
+      <ul>
+        <% @errors.each do |error| %>
+          <li class='error-message'>!<%= error %>!</li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
   <table>
     <thead>
       <tr>

@@ -37,12 +37,21 @@ class MaterialsController < ApplicationController
 
   def destroy
     material = Material.find(params[:id])
-    material.destroy
-
-    if params[:now] == "new"
-      redirect_to new_material_path
+    if material.destroy
+      if params[:now] == "new"
+        redirect_to new_material_path
+      else
+        redirect_to materials_path
+      end
     else
-      redirect_to materials_path
+      @errors = material.errors.full_messages
+      if params[:now] == "new"
+        @material = Material.new
+        @material.stock = 0.0
+        render :new, status: :unprocessable_entity
+      else
+        render :index, status: :unprocessable_entity
+      end
     end
   end
 
@@ -51,6 +60,7 @@ class MaterialsController < ApplicationController
     if material.update(stock_params)
       redirect_to materials_path
     else
+      @errors = material.errors.full_messages
       render :index, status: :unprocessable_entity
     end
   end
