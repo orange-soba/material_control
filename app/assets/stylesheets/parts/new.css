@@ -48,6 +48,10 @@
   padding: 5px;
 }
 
+.no-border {
+  border: none !important;
+}
+
 .history-stock {
   text-align: center;
 }

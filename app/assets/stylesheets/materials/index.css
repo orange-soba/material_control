@@ -2,6 +2,10 @@
   border-top: none !important;
 }
 
+.no-scroll {
+  overflow-y: visible !important;
+}
+
 .button-link__history-area {
   height: 30px;
   display: flex;

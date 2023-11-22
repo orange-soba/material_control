@@ -1,15 +1,14 @@
 <%= render 'shared/header' %>
 
-<h1 class="function-title">材料登録</h1>
+<h1 class="function-title">登録済み材料の編集</h1>
 
 <%# 材料登録 %>
 <div class="register-area">
-  <%= form_with model: @material, url: materials_path, id: "materials-register-form", local: true do |f| %>
+  <%= form_with model: @material, url: material_path(@material), local: true do |f| %>
     <%# エラー情報を表示 %>
     <div class="error-alert" id="error-messages-area" style="display:none;">
-      <ul id="error-messages-lists"></ul>
+      <%= render 'shared/error_messages', model: f.object %>
     </div>
-    <%#= render 'shared/error_messages', model: f.object %>
     <%# /エラー情報を表示 %>
 
     <div class="input-field">
@@ -52,53 +51,3 @@
   <% end %>
 </div>
 <%# /材料登録 %>
-
-<%# 登録履歴の表示 %>
-<div class="history-area">
-  <div class="history-title">
-    <div>登録履歴</div>
-    <div class="button-link">
-      <%= link_to "材料一覧", materials_path %>
-    </div>
-  </div>
-  <% if @errors&.any? %>
-    <div class="error-alert">
-      <ul>
-        <% @errors.each do |error| %>
-          <li class='error-message'>!<%= error %>!</li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <table>
-    <thead>
-      <tr>
-        <th>材料</th>
-        <th>長さ</th>
-        <th>在庫数</th>
-        <th>最終更新日時</th>
-      </tr>
-    </thead>
-    <tbody id="materials-history-data">
-      <% @materials.each do |material| %>
-        <tr>
-          <td>
-            <%= material.display_combine %>
-          </td>
-          <td>
-            <%= "#{material.length}" %>
-          </td>
-          <td class="history-stock"><%= material.stock %></td>
-          <td><%= l material.updated_at %></td>
-          <td class="no-border">
-            <div class="button-link__history">
-              <%= link_to "削除", material_path(material, now: "new"),
-                data: { turbo_method: :delete, turbo_confirm: "「#{material.display_combine}」を削除してもよろしいですか？" } %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<%# /登録履歴の表示 %>

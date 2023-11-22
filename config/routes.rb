@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       get 'calculate'
     end
   end
-  resources :materials, only: [:index, :new, :create] do
+  resources :materials, except: :show do
     member do
       patch 'stock_update'
     end
