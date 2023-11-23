@@ -38,4 +38,15 @@ class PartsRelation < ApplicationRecord
 
     true
   end
+
+  # def destroy # エラーを意図的に発生
+  #   ActiveRecord::Base.transaction do
+  #     super
+  #     raise ActiveRecord::RecordNotDestroyed.new("削除に失敗しました:Test") # エラーの確認用
+  #   rescue => e
+  #     Rails.logger.debug e.message
+  #     errors.add(:base, "エラーが発生しました: #{e.message}")
+  #     return false
+  #   end
+  # end
 end
