@@ -1,6 +1,6 @@
 class PartsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_parts, except: :calculate
+  before_action :set_parts, except: [:show, :calculate]
 
   def new
     @part = Part.new
