@@ -3,6 +3,15 @@
 <h1 class="function-title">完成品/部品詳細画面</h2>
 
 <%# 完成品/部品詳細の表示 %>
+<% if @errors&.any? %>
+  <div class="error-alert">
+    <ul>
+      <% @errors.each do |error| %>
+        <li class='error-message'>!<%= error %>!</li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 <div>
   <table class="history-area-details">
     <tr>
@@ -16,7 +25,11 @@
     <tr>
       <th>在庫数</th>
       <td class="history-area__data">
-        <%= @part.stock %>
+        <%= form_with model: @part, url: stock_update_part_path(@part), local: true do |f| %>
+          <%= f.text_field :stock, class: "input_style__stock" %>
+          <%= f.submit "更新" %>
+        <% end %>
+        <%#= @part.stock %>
       </td>
     </tr>
     <tr>
