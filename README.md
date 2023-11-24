@@ -4,9 +4,9 @@ MaterialControl
 ## アプケーション概要
 
 ## URL
-https://material-control.onrender.com/
+https://material-control.onrender.com/  
 
-## 　テスト用アカウント
+## テスト用アカウント
 ・メールアドレス: test1@test.com  
 ・パスワード: password1
 
