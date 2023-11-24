@@ -1,6 +1,6 @@
 class PartsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_parts, except: [:show, :calculate]
+  before_action :set_parts, only: [:new, :create]
 
   def new
     @part = Part.new
@@ -20,6 +20,19 @@ class PartsController < ApplicationController
 
   def show
     @part = Part.find(params[:id])
+  end
+
+  def edit
+    @part = Part.find(params[:id])
+  end
+
+  def update
+    @part = Part.find(params[:id])
+    if @part.update(part_params)
+      redirect_to part_path(@part)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def calculate
