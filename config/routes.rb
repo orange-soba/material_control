@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resource :need_materials, only: [:new, :create, :destroy]
     member do
       get 'calculate'
+      patch 'stock_update'
     end
   end
   resources :materials, except: :show do
