@@ -42,6 +42,15 @@
           <%= link_to '部品登録', new_part_parts_relations_path(@part) %>
         </div>
       </div>
+      <% if flash[:errors_parts] %>
+        <div class="error-alert">
+          <ul>
+            <% flash[:errors_parts].each do |error| %>
+              <li class='error-message'>!<%= error %>!</li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
       <% if @part.children.exists? %>
         <table>
           <thead>
@@ -55,6 +64,12 @@
               <tr>
                 <td><%= child.name %></td>
                 <td class="history-stock"><%= PartsRelation.find_by(parent_id: @part.id, child_id: child.id).necessary_nums %></td>
+                <td class="no-border">
+                  <div class="button-link__history">
+                    <%= link_to "削除", part_parts_relations_path(@part, child_id: child.id),
+                      data: { turbo_method: :delete, turbo_confirm: "「#{child.name}」を除外してもよろしいですか？" } %>
+                  </div>
+                </td>
               </tr>
             <% end %>
           </tbody>
@@ -74,6 +89,15 @@
           <%= link_to '材料登録', new_part_need_materials_path(@part) %>
         </div>
       </div>
+      <% if flash[:errors_materials] %>
+        <div class="error-alert">
+          <ul>
+            <% flash[:errors_materials].each do |error| %>
+              <li class='error-message'>!<%= error %>!</li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
       <% if @part.need_materials.exists? %>
         <table>
           <thead>
@@ -95,6 +119,12 @@
                   <% end %>
                 </td>
                 <td class="history-stock"><%= need_material.necessary_nums %></td>
+                <td class="no-border">
+                  <div class="button-link__history">
+                    <%= link_to "削除", part_need_materials_path(@part, material_id: material.material_id),
+                      data: { turbo_method: :delete, turbo_confirm: "「#{material.display_combine}」を除外してもよろしいですか？" } %>
+                  </div>
+                </td>
               </tr>
             <% end %>
           </tbody>

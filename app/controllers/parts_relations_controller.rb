@@ -1,6 +1,6 @@
 class PartsRelationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_data
+  before_action :set_data, except: :destroy
 
   def new
     @parts_relation = PartsRelation.new();
@@ -13,6 +13,17 @@ class PartsRelationsController < ApplicationController
       redirect_to new_part_parts_relations_path(@part.id)
     else
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    parts_relation = PartsRelation.find_by(parent_id: params[:part_id], child_id: params[:child_id])
+    if parts_relation.destroy
+      redirect_to part_path(params[:part_id])
+    else
+      flash[:errors_parts] = parts_relation.errors.full_messages
+
+      redirect_to part_path(params[:part_id])
     end
   end
 
