@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   }
   root "static_pages#home"
   resources :users, only: :show
-  resources :parts, only: [:new, :create, :show] do
+  resources :parts, only: [:new, :create, :show, :edit, :update] do
     resource :parts_relations, only: [:new, :create, :destroy]
     resource :need_materials, only: [:new, :create, :destroy]
     member do
