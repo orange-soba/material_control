@@ -1,24 +1,40 @@
-# README
+## アプリケーション名
+MaterialControl
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## アプケーション概要
 
-Things you may want to cover:
+## URL
+https://material-control.onrender.com/
 
-* Ruby version
+## 　テスト用アカウント
+・メールアドレス: test1@test.com  
+・パスワード: password1
 
-* System dependencies
+## 利用方法
 
-* Configuration
+## アプリケーションを作成した背景
+前職(機械製造業)において材料の発注を一部任されていたが、その時に教わった材料の頼み方が「多分これが足りない」といった勘を元にしたものだった。材料を無駄なく頼もうと思ったら図面を全て読み、材料を計算しなければならず、1日がかりの作業になっていた。そこで完成品/部品作成に必要な部品や材料さえ登録すれば一瞬で全ての必要な部品や材料を出力出来るアプリがあればそういった悩みを持つ人の助けになると思い、当アプリの作成に至った。
 
-* Database creation
+## 洗い出した要件
+https://docs.google.com/spreadsheets/d/14od779DNNRGVvLihJdvwEjNPWHneZ3416S1uPEk7S64/edit#gid=982722306
 
-* Database initialization
+## 実装した機能についての画像やGIFおよびその説明
 
-* How to run the test suite
+## 実装予定の機能
 
-* Services (job queues, cache servers, search engines, etc.)
+## データベース設計
 
-* Deployment instructions
+## 画面遷移図
 
-* ...
+## 開発環境
+Ruby/Ruby on Rails/JavaScript/MySQL/Github/render/Visual Studio Code
+
+## ローカルでの動作方法
+以下のコマンドを順に実行  
+
+
+## 工夫したポイント
+
+## 改善点
+
+## 制作時間
