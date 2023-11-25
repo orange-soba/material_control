@@ -8,7 +8,7 @@ class PartsTracer
   end
 
   def get_part_info
-    get_parts_materials(@part, @user)
+    get_parts_materials(@part)
 
     @part_info
   end
@@ -67,33 +67,35 @@ class PartsTracer
 
   private
 
-  def get_parts_materials(part, user)
+  def get_parts_materials(part, coefficient = 1)
     if part.need_materials.exists?
-      get_materials(part, user)
+      get_materials(part, coefficient)
     end
 
     part.children.each do |child|
+      parts_relation = PartsRelation.find_by(parent_id: part.id, child_id: child.id)
+      necessary_nums = parts_relation.necessary_nums * coefficient
+
       if !child.children.exists? && !child.need_materials.exists?
-        parts_relation = PartsRelation.find_by(parent_id: part.id, child_id: child.id)
         @part_info[:parts][child.id] ||= 0
-        @part_info[:parts][child.id] += parts_relation.necessary_nums
+        @part_info[:parts][child.id] += necessary_nums
         
         next
       end
 
-      get_parts_materials(child, user)
+      get_parts_materials(child, necessary_nums)
     end
   end
 
-  def get_materials(part, user)
+  def get_materials(part, coefficient = 1)
     part.need_materials.each do |need_material|
-      material = Material.find_by(material_id: need_material[:material_id], user_id: user.id)
+      material = Material.find_by(material_id: need_material[:material_id], user_id: @user.id)
       length = need_material.length
       nums = need_material.necessary_nums
       
       @part_info[:materials][material.material_id] ||= {}
       @part_info[:materials][material.material_id][length] ||= 0
-      @part_info[:materials][material.material_id][length] += nums
+      @part_info[:materials][material.material_id][length] += nums * coefficient
     end
   end
 end
