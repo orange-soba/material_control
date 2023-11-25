@@ -32,10 +32,9 @@
           <td><%= l material.updated_at %></td>
           <td class="history-stock">
             <%= form_with model: material, url: stock_update_material_path(material), local: true do |f| %>
-                <%= f.text_field :stock %>
-                <%= f.submit "更新" %>
-              <% end %>
-            <%#= material.stock %>
+              <%= f.text_field :stock %>
+              <%= f.submit "更新" %>
+            <% end %>
           </td>
           <td>
             <div class="button-link__history-area">

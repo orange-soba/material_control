@@ -1,6 +1,7 @@
 class PartsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_parts, except: [:show, :calculate]
+  before_action :set_parts, only: [:new, :create]
+  before_action :set_part, except: [:new, :create]
 
   def new
     @part = Part.new
@@ -19,11 +20,20 @@ class PartsController < ApplicationController
   end
 
   def show
-    @part = Part.find(params[:id])
+  end
+
+  def edit
+  end
+
+  def update
+    if @part.update(part_params)
+      redirect_to part_path(@part)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def calculate
-    @part = Part.find(params[:id])
     parts_tracer = PartsTracer.new(@part, current_user)
 
     part_info = parts_tracer.get_part_info
@@ -34,14 +44,31 @@ class PartsController < ApplicationController
     @parts_order = order_list[:parts]
     @materials_order = order_list[:materials]
   end
+
+  def stock_update
+    if @part.update(stock_params)
+      redirect_to part_path(@part)
+    else
+      @errors = @part.errors.full_messages
+      render :show, status: :unprocessable_entity
+    end
+  end
   
   private
 
+  def set_part
+    @part = Part.find(params[:id])
+  end
+
   def set_parts
-    @parts = Part.where(user_id: current_user.id).order('created_at DESC')
+    @parts = current_user.parts.order('created_at DESC')
   end
 
   def part_params
     params.require(:part).permit(:name, :stock, :finished).merge(user_id: current_user.id)
+  end
+
+  def stock_params
+    params.require(:part).permit(:stock)
   end
 end
