@@ -8,7 +8,7 @@ class NeedMaterial < ApplicationRecord
     validates :necessary_nums, numericality: { only_integer: true, allow_nil: true, message: 'は半角の数値で入力してください' }
   end
 
-  # def destroy # エラーを意図的に発生
+  # def destroy # エラーを意図的に発生(確認用)
   #   ActiveRecord::Base.transaction do
   #     super
   #     raise ActiveRecord::RecordNotDestroyed.new("削除に失敗しました:Test") # エラーの確認用

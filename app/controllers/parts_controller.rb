@@ -53,6 +53,16 @@ class PartsController < ApplicationController
       render :show, status: :unprocessable_entity
     end
   end
+
+  def destroy
+    part = Part.find(params[:id])
+    if part.destroy
+      redirect_to user_path(current_user)
+    else
+      @errors = part.errors.full_messages
+      render :show, status: :unprocessable_entity
+    end
+  end
   
   private
 
