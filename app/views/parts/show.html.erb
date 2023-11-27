@@ -43,7 +43,7 @@
       <%= link_to "編集", edit_part_path(@part) %>
     </div>
     <div class="button-link">
-      <%= link_to "削除", part_path(@part), data: { turbo_method: :delete, turbo_confirm: "削除してもよろしいですか？" } %>
+      <%= link_to "削除", part_path(@part), data: { turbo_method: :delete, turbo_confirm: "「#{@part.name}」を削除してもよろしいですか？" } %>
     </div>
     <%# 完成品/部品作成に必要な材料の計算結果を表示するリンク %>
     <div class="button-link calculate-button">

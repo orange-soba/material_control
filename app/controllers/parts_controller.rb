@@ -1,6 +1,6 @@
 class PartsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_parts, only: [:new, :create]
+  before_action :set_parts, only: [:new, :create, :destroy]
   before_action :set_part, except: [:new, :create]
 
   def new
@@ -55,12 +55,21 @@ class PartsController < ApplicationController
   end
 
   def destroy
-    part = Part.find(params[:id])
-    if part.destroy
-      redirect_to user_path(current_user)
+    if @part.destroy
+      if params[:now] == 'new'
+        redirect_to new_part_path
+      else
+        redirect_to user_path(current_user)
+      end
     else
-      @errors = part.errors.full_messages
-      render :show, status: :unprocessable_entity
+      @errors = @part.errors.full_messages
+      if params[:now] == 'new'
+        @part = Part.new
+        @part.stock = 0
+        render :new, status: :unprocessable_entity
+      else
+        render :show, status: :unprocessable_entity
+      end
     end
   end
   

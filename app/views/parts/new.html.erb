@@ -33,6 +33,15 @@
 
 <%# 登録履歴の表示 %>
 <div class="history-area">
+  <% if @errors&.any? %>
+    <div class="error-alert">
+      <ul>
+        <% @errors.each do |error| %>
+          <li class='error-message'>!<%= error %>!</li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
   <div class="history-title">登録履歴</div>
   <table>
     <thead>
@@ -54,6 +63,13 @@
             <td>部品</td>
           <% end %>
           <td><%= l part.updated_at %></td>
+          <td class="no-border">
+            <div class="button-link__history">
+              <%= link_to "削除", part_path(part, now: "new"),
+                data: { turbo_method: :delete,
+                        turbo_confirm: "「#{part.name}」を削除してもよろしいですか？\n※履歴からの削除ではありません!!" } %>
+            </div>
+          </td>
         </tr>
       <% end %>
     </tbody>

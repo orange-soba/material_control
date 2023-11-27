@@ -93,7 +93,8 @@
           <td class="no-border">
             <div class="button-link__history">
               <%= link_to "削除", material_path(material, now: "new"),
-                data: { turbo_method: :delete, turbo_confirm: "「#{material.display_combine}」を削除してもよろしいですか？" } %>
+                data: { turbo_method: :delete,
+                        turbo_confirm: "「#{material.display_combine}」を削除してもよろしいですか？\n※履歴からの削除ではありません!!" } %>
             </div>
           </td>
         </tr>
