@@ -5,13 +5,13 @@ Rails.application.routes.draw do
   }
   root "static_pages#home"
   resources :users, only: :show
-  resources :parts, only: [:new, :create, :show, :edit, :update] do
-    resource :parts_relations, only: [:new, :create, :destroy]
-    resource :need_materials, only: [:new, :create, :destroy]
+  resources :parts, only: [:new, :create, :show, :edit, :update, :destroy] do
     member do
       get 'calculate'
       patch 'stock_update'
     end
+    resource :parts_relations, only: [:new, :create, :destroy]
+    resource :need_materials, only: [:new, :create, :destroy]
   end
   resources :materials, except: :show do
     member do
