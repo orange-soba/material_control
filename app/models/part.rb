@@ -1,11 +1,11 @@
 class Part < ApplicationRecord
   belongs_to :user
-  has_many :need_materials
+  has_many :need_materials, dependent: :destroy
 
-  has_many :parent_relations, class_name: "PartsRelation", foreign_key: :parent_id
+  has_many :parent_relations, class_name: "PartsRelation", foreign_key: :parent_id, dependent: :destroy
   has_many :children, through: :parent_relations, source: :child
 
-  has_many :child_relations, class_name: "PartsRelation", foreign_key: :child_id
+  has_many :child_relations, class_name: "PartsRelation", foreign_key: :child_id, dependent: :destroy
   has_many :parents, through: :child_relations, source: :parent
   
   with_options presence: true do
