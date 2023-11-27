@@ -1,6 +1,12 @@
 <%= render 'shared/header' %>
 
-<h1 class="function-title"><%= current_user.name %>さんのマイページ</h1>
+<div class="title-area__user-show">
+  <h1 class="function-title margin-right__title"><%= current_user.name %>さんのマイページ</h1>
+  <%= link_to edit_user_registration_path, class: "edit-btn" do %>
+    <%= image_tag "kkrn_icon_henshuu_6.png", width: "15", height: "15" %>
+  <% end %>
+  <div class="hidden-text", style="display: none;">ユーザーの編集</div>
+</div>
 
 <div class="details-area">
   <%# 完成品の一覧 %>
