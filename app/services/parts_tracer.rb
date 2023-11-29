@@ -31,7 +31,7 @@ class PartsTracer
       length_sum = 0
       material_hash.each do |length, nums|
         length_sum += (length + 5) * nums 
-        # length_sum += (length * cutting_allow) * nums
+        # length_sum += (length + cutting_allow) * nums
       end
   
       if stock_length < length_sum
