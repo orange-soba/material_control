@@ -1,3 +1,19 @@
+.margin-right__title {
+  margin-right: 10px;
+}
+
+.title-area__user-show {
+  display: flex;
+  align-items: flex-end;
+}
+
+.hidden-text {
+  width: 90px;
+  font-weight: normal;
+  font-size: 12px;
+  background-color: #dedede;
+}
+
 .details-area {
   margin: 10px 0 0 20px;
 }
