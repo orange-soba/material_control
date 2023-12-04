@@ -86,7 +86,9 @@
           <tbody id="parts-history-data">
             <% @part.children.each do |child| %>
               <tr>
-                <td><%= child.name %></td>
+                <td>
+                  <%= link_to "#{child.name}", part_path(child) %>
+                </td>
                 <td class="history-stock"><%= PartsRelation.find_by(parent_id: @part.id, child_id: child.id).necessary_nums %></td>
                 <td class="no-border">
                   <div class="button-link__history">

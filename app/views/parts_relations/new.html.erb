@@ -48,8 +48,21 @@
         <% part_p = Part.find(parts_relation.parent_id) %>
         <% part_c = Part.find(parts_relation.child_id) %>
         <tr>
-          <td><%= part_p.name %></td>
-          <td><%= part_c.name %></td>
+          <%# @partと同じものはリンク化しない %>
+          <td>
+            <% if part_p == @part %>
+              <%= part_p.name %>
+            <% else %>
+              <%= link_to "#{part_p.name}", part_path(part_p) %>
+            <% end %>
+          </td>
+          <td>
+            <% if part_c == @part %>
+              <%= part_c.name %>
+            <% else %>
+              <%= link_to "#{part_c.name}", part_path(part_c) %>
+            <% end %>
+          </td>
           <td><%= parts_relation.necessary_nums %></td>
           <td><%= l parts_relation.created_at %></td>
         </tr>

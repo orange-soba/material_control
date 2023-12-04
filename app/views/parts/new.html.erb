@@ -55,7 +55,9 @@
     <tbody id="parts-history-data">
       <% @parts.each do |part| %>
         <tr>
-          <td><%= part.name %></td>
+          <td>
+            <%= link_to "#{part.name}", part_path(part) %>
+          </td>
           <td class="history-stock"><%= part.stock %></td>
           <% if part.finished? %>
             <td>完成品</td>

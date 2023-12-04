@@ -6,7 +6,7 @@
   <%# 必要な部品の表示 %>
   <div class="need-table-area">
     <% if @parts == {} %>
-      <p>「<%= link_to @part.name, part_path(@part) %>」に必要な部品はありません</p>
+      <p>「<%= link_to @part.name, part_path(@part) %>」に外注部品はありません</p>
     <% else %>
       <div class="need-table-title">「<%= link_to @part.name, part_path(@part) %>」の作成に必要な<span>部品</span>一覧</div>
       <div class="need-table">
