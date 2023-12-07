@@ -16,6 +16,7 @@ ja:
         category: '種類'
         thickness: '厚さ'
         length: '長さ'
+        width: '幅'
         stock: '在庫数'
       parts_relation:
         child: '登録部品'
