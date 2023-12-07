@@ -9,6 +9,8 @@ ja:
       part:
         name: '完成品名/部品名'
         stock: '在庫数'
+        finished: '完成品か否か'
+        user: 'ユーザー'
       material:
         material_type: '材質'
         category: '種類'
