@@ -4,8 +4,8 @@ class NeedMaterial < ApplicationRecord
   
   with_options presence: true do
     validates :material_id
-    validates :length,         numericality: { allow_nil: true, message: 'は半角の数値で入力してください' }
-    validates :necessary_nums, numericality: { only_integer: true, allow_nil: true, message: 'は半角の数値で入力してください' }
+    validates :length,         numericality: { allow_nil: true, greater_than: 0 }
+    validates :necessary_nums, numericality: { only_integer: true, allow_nil: true, greater_than: 0 }
   end
 
   # def destroy # エラーを意図的に発生(確認用)
