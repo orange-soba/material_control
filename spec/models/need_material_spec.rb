@@ -2,10 +2,17 @@ require 'rails_helper'
 
 RSpec.describe NeedMaterial, type: :model do
   describe '必要材料の新規登録' do
+    before do
+      material = FactoryBot.create(:material)
+      @need_material = FactoryBot.build(:need_material, material_id: material.material_id, user_id: material.user_id)
+    end
     context '新規登録できる場合' do
       it '必要な情報が揃っていれば登録できる' do
+        expect(@need_material).to be_valid
       end
       it 'length_optionが空白でも登録できる' do
+        @need_material.length_option = ''
+        expect(@need_material).to be_valid
       end
     end
     context '新規登録できない場合' do
