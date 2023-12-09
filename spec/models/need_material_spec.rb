@@ -18,7 +18,7 @@ RSpec.describe NeedMaterial, type: :model do
     context '新規登録できない場合' do
       it 'partが空だと登録できない' do
         @need_material.part = nil
-        valid_check(@need_material, 'Partを入力してください', true)
+        valid_check(@need_material, '完成品/部品を入力してください', true)
       end
       it 'material_idが空白だと登録できない' do
         @need_material.material_id = ''
@@ -50,7 +50,7 @@ RSpec.describe NeedMaterial, type: :model do
       end
       it 'userが空だと登録出来ない' do
         @need_material.user = nil
-        valid_check(@need_material, 'Userを入力してください', true)
+        valid_check(@need_material, 'ユーザーを入力してください', true)
       end
     end
   end
