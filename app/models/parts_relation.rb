@@ -5,7 +5,7 @@ class PartsRelation < ApplicationRecord
 
   validate :cannot_treat_as_parts
   validate :disallow_roop
-  validates :necessary_nums, presence: true, numericality: { only_integer: true, allow_nil: true, messge: 'は半角の数値で入力してください' }
+  validates :necessary_nums, numericality: { only_integer: true, greater_than: 0 }
 
   def cannot_treat_as_parts
     return unless child_id

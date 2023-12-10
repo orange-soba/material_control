@@ -9,11 +9,14 @@ ja:
       part:
         name: '完成品名/部品名'
         stock: '在庫数'
+        finished: '完成品か否か'
+        user: 'ユーザー'
       material:
         material_type: '材質'
         category: '種類'
         thickness: '厚さ'
         length: '長さ'
+        width: '幅'
         stock: '在庫数'
       parts_relation:
         child: '登録部品'
@@ -22,3 +25,5 @@ ja:
         material_id: '作成に必要な材料'
         length: '必要な長さ'
         necessary_nums: '必要数'
+        part: '完成品/部品'
+        user: 'ユーザー'

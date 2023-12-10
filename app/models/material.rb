@@ -2,9 +2,12 @@ class Material < ApplicationRecord
   belongs_to :user
   
   with_options presence: true do
-    validates :material_type, :category, :thickness, :length, :material_id
-    validates :stock, numericality: { allow_nil: true, message: 'は半角の数値で入力してください' }
+    validates :material_type, :category, :material_id
+    validates :stock, numericality: { allow_nil: true, greater_than_or_equal_to: 0.0 }
+    validates :thickness, :length, numericality: { allow_nil: true, only_integer: true, greater_than: 0 }
   end
+
+  validates :width, numericality: { allow_nil: true, only_integer: true, greater_than: 0 }
 
   def display_combine
     ret = "#{material_type} / #{category} / #{thickness}"
