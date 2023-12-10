@@ -31,7 +31,11 @@ Ruby/Ruby on Rails/JavaScript/MySQL/Github/render/Visual Studio Code
 
 ## ローカルでの動作方法
 以下のコマンドを順に実行  
-
+git clone https://github.com/orange-soba/material_control.git
+cd material_control
+bundle install
+rails db:create
+rails db:migrate
 
 ## 工夫したポイント
 
