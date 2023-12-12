@@ -24,8 +24,10 @@ https://material-control.onrender.com/
 5.詳細ページ内の部品登録より必要な部品の登録をする  
 6.詳細ページ内の材料登録より必要な材料を登録する  
 7.2~5の作業を必要な分行う  
-8.詳細ページの材料計算ボタンをクリックし、材料計算ページへ遷移する  
+8.詳細ページの材料計算ボタンをクリックし、材料計算ページへ遷移する(必要な部品や材料が登録されていない部品を既製品として扱い必要な部品として計算する、下記イメージで言うとPartA11やPartA2が該当)  
 9.計算結果及び発注が必要なものが表示される  
+
+[![Image from Gyazo](https://i.gyazo.com/bba7f4e1c014151c92844f3a40155ad6.png)](https://gyazo.com/bba7f4e1c014151c92844f3a40155ad6)
 
 ## アプリケーションを作成した背景
 前職(機械製造業)において材料の発注を一部任されていたが、その時に教わった材料の頼み方が「多分これが足りない」といった勘を元にしたものだった。材料を無駄なく頼もうと思ったら図面を全て読み、材料を計算しなければならず、1日がかりの作業になっていた。そこで完成品/部品作成に必要な部品や材料さえ登録すれば一瞬で全ての必要な部品や材料を出力出来るアプリがあればそういった悩みを持つ人の助けになると思い、当アプリの作成に至った。
@@ -34,7 +36,18 @@ https://material-control.onrender.com/
 https://docs.google.com/spreadsheets/d/14od779DNNRGVvLihJdvwEjNPWHneZ3416S1uPEk7S64/edit#gid=982722306
 
 ## 実装した機能についての画像やGIFおよびその説明
+・ユーザーの新規登録、ログイン、完成品/部品登録、材料登録、使い方(TOPページ)、マイページ、ログアウトへのリンクはヘッダーに表示されている
+[![Image from Gyazo](https://i.gyazo.com/70a388cef0b6bdfdc6d1a2ca65e62228.png)](https://gyazo.com/70a388cef0b6bdfdc6d1a2ca65e62228)
+[![Image from Gyazo](https://i.gyazo.com/b95dd53a5bb861e2df393e26d4451636.png)](https://gyazo.com/b95dd53a5bb861e2df393e26d4451636)
+[![Image from Gyazo](https://i.gyazo.com/e342f334ee0fbebcb05b37bb1dd3460a.png)](https://gyazo.com/e342f334ee0fbebcb05b37bb1dd3460a)
 
+・部品の詳細ページへはマイページ => 完成品もしくは部品をクリックし折りたたみを開く => 完成品名/部品名をクリックで遷移できる
+
+[![Image from Gyazo](https://i.gyazo.com/ac28f79f0d33f7435ea45a1e1244e674.gif)](https://gyazo.com/ac28f79f0d33f7435ea45a1e1244e674)
+
+・必要な部品登録、必要な材料登録、材料計算は部品詳細画面にリンクがある
+
+[![Image from Gyazo](https://i.gyazo.com/f79ee6840c56f7022008bdd69c4f40e5.png)](https://gyazo.com/f79ee6840c56f7022008bdd69c4f40e5)
 
 ## 実装予定の機能
 ・部品や材料の検索機能(部品名,材料名による検索や材料から材料を使用している部品の検索)  
@@ -43,22 +56,31 @@ https://docs.google.com/spreadsheets/d/14od779DNNRGVvLihJdvwEjNPWHneZ3416S1uPEk7
 ・発注書をpdfで自動作成する機能  
 
 ## データベース設計
+[![Image from Gyazo](https://i.gyazo.com/aa510e840d1d9e084648a1c3b68106e4.png)](https://gyazo.com/aa510e840d1d9e084648a1c3b68106e4)
 
 ## 画面遷移図
+[![Image from Gyazo](https://i.gyazo.com/8d9cecaefc17a63dbb28de1bc6138b9b.png)](https://gyazo.com/8d9cecaefc17a63dbb28de1bc6138b9b)
 
 ## 開発環境
 Ruby/Ruby on Rails/JavaScript/MySQL/Github/render/Visual Studio Code
 
 ## ローカルでの動作方法
 以下のコマンドを順に実行  
-git clone https://github.com/orange-soba/material_control.git
-cd material_control
-bundle install
-rails db:create
-rails db:migrate
+git clone https://github.com/orange-soba/material_control.git  
+cd material_control  
+bundle install  
+rails db:create  
+rails db:migrate  
 
 ## 工夫したポイント
+部品作成に必要な部品や材料を登録済みのものに限らずさらに深掘りして計算する機能を実装した。  
+下記イメージ図を元にすると完成品AにはPartA11等も作成に必要だが、完成品AとPartA11に親子関係の登録はしなくても、「完成品A => PartA => PArtA1 => PartA11」と自動で計算をする。完成品Aだけではなくそれぞれの部品でも材料計算は可能(下記イメージのPartBで材料計算をすると材料Bだけが必要なものとして表示される)。そのために再帰関数を用いて機能を実装した。(最低限の親子関係の登録は必要)
+
+[![Image from Gyazo](https://i.gyazo.com/bba7f4e1c014151c92844f3a40155ad6.png)](https://gyazo.com/bba7f4e1c014151c92844f3a40155ad6)
 
 ## 改善点
+・部品の登録などの作業を簡略化する機能を模索中  
+・アプリの設計で不備があり不必要なカラムを使用してしまった。またそのカラムを削除するには相当な手間がかかり、またミスを誘発しかねないため現状放置している。
 
 ## 制作時間
+150時間
