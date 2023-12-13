@@ -57,27 +57,42 @@ RSpec.describe "ユーザー新規登録", type: :system do
   end
 end
 
-Rspec.describe 'ログイン', type: :system do
+RSpec.describe 'ログイン', type: :system do
   before do
     @user = FactoryBot.create(:user)
   end
 
-  context '正しい情報を入力すればログインできて、マイページへ遷移する場合' do
-    # BASIC認証を通過しトップページへ遷移
-    # 「ログイン」ボタンの確認
-    # ログインページへ遷移
-    # 正しいユーザー情報の入力
-    # 「ログイン」ボタンを押す
-    # マイページへ遷移する
-    # ヘッダーに「ログアウト」ボタンがあるのを確認
-    # 「新規登録」、「ログイン」ボタンがないのを確認
+  context 'ログインできる場合' do
+    it '正しい情報を入力すればログインできて、マイページへ遷移する場合' do
+      # BASIC認証を通過しトップページへ遷移
+      sign_in_basic(root_path)
+      # 「ログイン」ボタンの確認
+      expect(page).to have_content('ログイン')
+      # ログインページへ遷移
+      visit new_user_session_path
+      # 正しいユーザー情報の入力
+      fill_in 'Eメール', with: @user.email
+      fill_in 'パスワード', with: @user.password
+      # 「ログイン」ボタンを押す
+      find('input[name="commit"]').click
+      sleep 1
+      # マイページへ遷移することを確認
+      expect(current_path).to eq user_path(@user)
+      # ヘッダーに「ログアウト」ボタンがあるのを確認
+      expect(page).to have_content('ログアウト')
+      # 「新規登録」、「ログイン」ボタンがないのを確認
+      expect(page).to have_no_content('新規登録')
+      expect(page).to have_no_content('ログイン')
+    end
   end
-  context '誤った情報を入力するとログインできず、ログインページへ戻る場合' do
-    # BASIC認証を通過しトップページへ遷移
-    # 「ログイン」ボタンの確認
-    # ログインページへ遷移
-    # 誤ったユーザー情報の入力
-    # 「ログイン」ボタンを押す
-    # ログインページへ戻ることを確認
+  context 'ログインできない場合' do
+    it '誤った情報を入力するとログインできず、ログインページへ戻る場合' do
+      # BASIC認証を通過しトップページへ遷移
+      # 「ログイン」ボタンの確認
+      # ログインページへ遷移
+      # 誤ったユーザー情報の入力
+      # 「ログイン」ボタンを押す
+      # ログインページへ戻ることを確認
+    end
   end
 end
