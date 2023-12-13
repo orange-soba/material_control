@@ -8,6 +8,7 @@ RSpec.describe "ユーザー新規登録", type: :system do
   context 'ユーザーの新規登録ができる時' do
     it '正しい情報を入力すれば新規登録ができて、マイページへ遷移する' do
       # BASIC認証を通過しトップページへ遷移
+      sign_in_basic(root_path)
       # 「新規登録」ボタンの確認
       # 新規登録ページへ遷移
       # ユーザー情報の入力
