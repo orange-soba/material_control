@@ -88,11 +88,18 @@ RSpec.describe 'ログイン', type: :system do
   context 'ログインできない場合' do
     it '誤った情報を入力するとログインできず、ログインページへ戻る場合' do
       # BASIC認証を通過しトップページへ遷移
+      sign_in_basic(root_path)
       # 「ログイン」ボタンの確認
+      expect(page).to have_content('ログイン')
       # ログインページへ遷移
+      visit new_user_session_path
       # 誤ったユーザー情報の入力
+      fill_in 'Eメール', with: ''
+      fill_in 'パスワード', with: ''
       # 「ログイン」ボタンを押す
+      find('input[name="commit"]').click
       # ログインページへ戻ることを確認
+      expect(current_path).to eq new_user_session_path
     end
   end
 end
