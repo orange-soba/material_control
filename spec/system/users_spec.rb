@@ -36,11 +36,23 @@ RSpec.describe "ユーザー新規登録", type: :system do
   context 'ユーザーの新規登録ができない時' do
     it '誤った情報では新規登録できず、新規登録ページへ戻る' do
       # BASIC認証を通過しトップページへ遷移
+      sign_in_basic(root_path)
       # 「新規登録」ボタンの確認
+      expect(page).to have_content('新規登録')
       # 新規登録ページへ遷移
+      visit new_user_registration_path
       # 誤ったユーザー情報の入力
+      fill_in '名前', with: ''
+      fill_in 'Eメール', with: ''
+      fill_in 'パスワード', with: ''
+      fill_in 'パスワード（確認用）', with: ''
       # 「登録」ボタンを押すとユーザーモデルのカウントが変化していないのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { User.count }.by(0)
       # 新規登録ページへ戻っていることを確認
+      expect(current_path).to eq new_user_registration_path
     end
   end
 end
