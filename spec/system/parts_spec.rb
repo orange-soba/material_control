@@ -58,12 +58,23 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
   context '完成品/部品の新規登録ができない場合' do
     it '誤った情報を入力すると新規登録が出来ず、新規登録ページへ戻ってくるのを確認' do
       # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
       # ログイン
+      sign_in(@user)
       # 「完成品/部品登録」ボタンを確認
+      expect(page).to have_content('完成品/部品登録')
       # 登録ページへ遷移
+      visit new_part_path
       # 誤った必要情報を入力
+      fill_in '完成品名/部品名：', with: ''
+      fill_in '在庫数：', with: ''
       # 登録ボタンをクリックしてもpartモデルのカウントが変化しないのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { Part.count }.by(0)
       # 新規登録ページへ戻るのを確認
+      expect(current_path).to eq new_part_path
     end
   end
 end
