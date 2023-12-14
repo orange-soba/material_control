@@ -1,9 +1,31 @@
 require 'rails_helper'
 
-RSpec.describe "Parts", type: :system do
+RSpec.describe "完成品/部品の新規登録", type: :system do
   before do
-    driven_by(:rack_test)
+    @user = FactoryBot.create(:user)
+    @part = FactoryBot.build(:part)
   end
 
-  pending "add some scenarios (or delete) #{__FILE__}"
+  context '完成品/部品の新規登録ができる場合' do
+    it '正しい情報を入力すれば新規登録ができて、登録履歴に入力した情報が入力した情報が表示される' do
+      # BASIC認証を通過してトップページへ遷移
+      # ログイン
+      # 「完成品/部品登録」ボタンを確認
+      # 登録ページへ遷移
+      # 正しい情報を入力
+      # 登録ボタンをクリックするとpartモデルのカウントが1上がるのを確認
+      # 登録履歴に先ほど登録した完成品/部品が表示されているのを確認
+    end
+  end
+  context '完成品/部品の新規登録ができない場合' do
+    it '誤った情報を入力すると新規登録が出来ず、新規登録ページへ戻ってくるのを確認' do
+      # BASIC認証を通過してトップページへ遷移
+      # ログイン
+      # 「完成品/部品登録」ボタンを確認
+      # 登録ページへ遷移
+      # 誤った必要情報を入力
+      # 登録ボタンをクリックしてもpartモデルのカウントが変化しないのを確認
+      # 新規登録ページへ戻るのを確認
+    end
+  end
 end
