@@ -7,14 +7,52 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
   end
 
   context '完成品/部品の新規登録ができる場合' do
-    it '正しい情報を入力すれば新規登録ができて、登録履歴に入力した情報が入力した情報が表示される' do
+    it '正しい情報を入力すれば新規登録ができて、登録履歴に入力した情報が入力した情報が表示される(完成品)' do
       # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
       # ログイン
+      sign_in(@user)
       # 「完成品/部品登録」ボタンを確認
+      expect(page).to have_content('完成品/部品登録')
       # 登録ページへ遷移
+      visit new_part_path
       # 正しい情報を入力
+      fill_in '完成品名/部品名：', with: @part.name
+      fill_in '在庫数：', with: @part.stock
+      find('input[name="part[finished]"]').click
       # 登録ボタンをクリックするとpartモデルのカウントが1上がるのを確認
-      # 登録履歴に先ほど登録した完成品/部品が表示されているのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { Part.count }.by(1)
+      sleep 1
+      # 登録履歴に先ほど登録した情報が完成品として表示されているのを確認
+      expect(page).to have_content(@part.name)
+      expect(page).to have_content(@part.stock)
+      expect(page).to have_content('完成品')
+    end
+    it '正しい情報を入力すれば新規登録ができて、登録履歴に入力した情報が入力した情報が表示される(部品)' do
+      # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
+      # ログイン
+      sign_in(@user)
+      # 「完成品/部品登録」ボタンを確認
+      expect(page).to have_content('完成品/部品登録')
+      # 登録ページへ遷移
+      visit new_part_path
+      # 正しい情報を入力
+      fill_in '完成品名/部品名：', with: @part.name
+      fill_in '在庫数：', with: @part.stock
+      # 登録ボタンをクリックするとpartモデルのカウントが1上がるのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { Part.count }.by(1)
+      sleep 1
+      # 登録履歴に先ほど登録した情報が完成品として表示されているのを確認
+      expect(page).to have_content(@part.name)
+      expect(page).to have_content(@part.stock)
+      expect(page).to have_content('部品')
     end
   end
   context '完成品/部品の新規登録ができない場合' do
