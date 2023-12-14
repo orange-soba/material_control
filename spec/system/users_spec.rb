@@ -57,7 +57,7 @@ RSpec.describe "ユーザー新規登録", type: :system do
   end
 end
 
-RSpec.describe 'ログイン', type: :system do
+RSpec.describe 'ログイン、ログアウト', type: :system do
   before do
     @user = FactoryBot.create(:user)
   end
@@ -100,6 +100,26 @@ RSpec.describe 'ログイン', type: :system do
       find('input[name="commit"]').click
       # ログインページへ戻ることを確認
       expect(current_path).to eq new_user_session_path
+    end
+  end
+  context 'ログアウトできる場合' do
+    it 'ログインした状態でログアウトボタンを押せばログアウトできる' do
+      # BASIC認証を通過しトップページへ遷移
+      sign_in_basic(root_path)
+      # ログイン
+      sign_in(@user)
+      # 「ログアウト」ボタンの確認
+      expect(page).to have_content('ログアウト')
+      # 「ログアウト」ボタンを押す
+      find_link('ログアウト').click
+      sleep 1
+      # トップページへ遷移するのを確認
+      expect(current_path).to eq root_path
+      # 「新規登録」、「ログイン」ボタンがあるのを確認
+      expect(page).to have_content('新規登録')
+      expect(page).to have_content('ログイン')
+      # 「ログアウトボタンがないのを確認」
+      expect(page).to have_no_content('ログアウト')
     end
   end
 end
