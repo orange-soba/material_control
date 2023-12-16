@@ -162,17 +162,48 @@ RSpec.describe '編集', type: :system, js: true do
     end
     it '自分のユーザー情報が編集できる(Eメール)' do
       # ログイン
+      sign_in(@user)
       # 編集リンクを確認
+      expect(page).to have_selector "a.edit-btn"
       # 編集リンクへカーソルを合わせると「ユーザーの編集」と表示されるのを確認
+      find('.edit-btn').hover
+      expect(page).to have_content('ユーザーの編集')
       # 編集リンクをクリック
+      find('a.edit-btn').click
+      sleep 1
       # 編集ページへ遷移するのを確認
+      expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
-      # ユーザー情報(名前)を編集し、現在のパスワードを入力
+      expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_field 'Eメール', with: @user.email
+      # ユーザー情報(Eメール)を編集し、現在のパスワードを入力
+      fill_in 'Eメール', with: 'new_' + @user.email
+      fill_in '現在のパスワード', with: @user.password
       # 編集してもユーザーモデルのカウントは変化しないのを確認
+      expect{
+        click_on '更新'
+        sleep 1
+      }.to change { User.count }.by(0)
       # マイページへ遷移しているのを確認
-      # ログアウト
+      expect(current_path).to eq user_path(@user)
+      # ログアウト後、ログインページへ遷移
+      find_link('ログアウト').click
+      sleep 1
+      visit new_user_session_path
       # ログインする際に以前のEメールでへログインできず、ログインページに戻るのを確認
+      fill_in 'Eメール', with: @user.email
+      fill_in 'パスワード', with: @user.password
+
+      click_on 'ログイン'
+      sleep 1
+      expect(current_path).to eq new_user_session_path
       # 編集後のEメールを入力するとログインできるのを確認
+      fill_in 'Eメール', with: 'new_' + @user.email
+      fill_in 'パスワード', with: @user.password
+
+      click_on 'ログイン'
+      sleep 1
+      expect(current_path).to eq user_path(@user)
     end
   end
   context 'ユーザー情報の編集ができない場合' do
