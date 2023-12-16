@@ -8,8 +8,6 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
 
   context '完成品/部品の新規登録ができる場合' do
     it '正しい情報を入力すれば新規登録ができて、登録履歴に入力した情報が入力した情報が表示される(完成品)' do
-      # BASIC認証を通過してトップページへ遷移
-      sign_in_basic(root_path)
       # ログイン
       sign_in(@user)
       # 「完成品/部品登録」ボタンを確認
@@ -32,8 +30,6 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
       expect(page).to have_content('完成品')
     end
     it '正しい情報を入力すれば新規登録ができて、登録履歴に入力した情報が入力した情報が表示される(部品)' do
-      # BASIC認証を通過してトップページへ遷移
-      sign_in_basic(root_path)
       # ログイン
       sign_in(@user)
       # 「完成品/部品登録」ボタンを確認
@@ -56,9 +52,9 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
     end
   end
   context '完成品/部品の新規登録ができない場合' do
+    it 'ログインしていないと新規登録ページへ遷移できない' do
+    end
     it '誤った情報を入力すると新規登録が出来ず、新規登録ページへ戻ってくるのを確認' do
-      # BASIC認証を通過してトップページへ遷移
-      sign_in_basic(root_path)
       # ログイン
       sign_in(@user)
       # 「完成品/部品登録」ボタンを確認
@@ -75,6 +71,24 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
       }.to change { Part.count }.by(0)
       # 新規登録ページへ戻るのを確認
       expect(current_path).to eq new_part_path
+    end
+  end
+end
+
+RSpec.describe '完成品/部品の編集', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @part = FactoryBot.create(:part, user_id: @user.id)
+  end
+
+  context '編集ができる場合' do
+    it '部品詳細ページで在庫の編集ができる' do
+    end
+    it '部品詳細ページから編集ページに遷移して情報の編集ができる' do
+    end
+  end
+  context '編集ができない場合' do
+    it 'ログインしていないと編集ページに遷移できない' do
     end
   end
 end
