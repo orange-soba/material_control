@@ -84,11 +84,21 @@ end
 RSpec.describe '完成品/部品の編集', type: :system do
   before do
     @user = FactoryBot.create(:user)
-    @part = FactoryBot.create(:part, user_id: @user.id)
+    @part = FactoryBot.create(:part, user_id: @user.id, stock: 0)
   end
 
   context '編集ができる場合' do
-    it '部品詳細ページで在庫の編集ができる' do
+    it '部品詳細ページで在庫数の編集ができる' do
+      # ログイン
+      # マイページへ遷移しているのを確認
+      # 「部品」をクリックして折りたたみ要素を開く
+      # 登録済みの部品の名前があるのを確認
+      # 部品名をクリック
+      # 部品詳細ページへ遷移しているのを確認
+      # 在庫欄に現在の在庫数が入力されているのを確認
+      # 在庫の数値を変更する
+      # 「更新」ボタンをクリック
+      # 入力済みの在庫数が変更されているのを確認
     end
     it '部品詳細ページから編集ページに遷移して情報の編集ができる' do
     end
