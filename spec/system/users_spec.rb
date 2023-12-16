@@ -226,15 +226,20 @@ RSpec.describe '編集', type: :system, js: true do
       click_on '更新'
       # マイページへ遷移しておらず、編集ページへ戻るのを確認
       expect(current_path).not_to eq user_path(@user)
-
       expect(current_path).to eq edit_user_registration_path
     end
     it '現在のパスワードが空白だと編集できない' do
       # ログイン
+      sign_in(@user)
       # 編集ページへ遷移
+      visit edit_user_registration_path
       # パスワードが空白なのを確認
+      expect(page).to have_field '現在のパスワード', with: ''
       # 更新ボタンをクリック
+      click_on '更新'
       # マイページへ遷移しておらず、編集ページへ戻るのを確認
+      expect(current_path).not_to eq user_path(@user)
+      expect(current_path).to eq edit_user_registration_path
     end
     it '新しいパスワードと確認用パスワードが違うと編集できない' do
       # ログイン
