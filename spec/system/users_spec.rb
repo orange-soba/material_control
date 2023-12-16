@@ -237,16 +237,26 @@ RSpec.describe '編集', type: :system, js: true do
       expect(page).to have_field '現在のパスワード', with: ''
       # 更新ボタンをクリック
       click_on '更新'
+      sleep 1
       # マイページへ遷移しておらず、編集ページへ戻るのを確認
       expect(current_path).not_to eq user_path(@user)
       expect(current_path).to eq edit_user_registration_path
     end
     it '新しいパスワードと確認用パスワードが違うと編集できない' do
       # ログイン
+      sign_in(@user)
       # 編集ページへ遷移
+      visit edit_user_registration_path
       # 新しいパスワードと確認用パスワードを違うものを入力し、他には正しい情報を入力
+      fill_in 'パスワード', with: 'password2'
+      fill_in 'パスワード（確認用）', with: 'password3'
+      fill_in '現在のパスワード', with: @user.password
       # 更新ボタンをクリック
+      click_on '更新'
+      sleep 1
       # マイページへ遷移しておらず、編集ページへ戻るのを確認
+      expect(current_path).not_to eq user_path(@user)
+      expect(current_path).to eq edit_user_registration_path
     end
   end
 end
