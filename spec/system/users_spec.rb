@@ -158,7 +158,6 @@ RSpec.describe '編集', type: :system, js: true do
       expect(page).to have_content @user.name + '編集さんのマイページ'
       # 以前の名前が表示されていないのを確認
       expect(page).to have_no_content @user.name + 'さんのマイページ'
-      
     end
     it '自分のユーザー情報が編集できる(Eメール)' do
       # ログイン
@@ -200,6 +199,53 @@ RSpec.describe '編集', type: :system, js: true do
       # 編集後のEメールを入力するとログインできるのを確認
       fill_in 'Eメール', with: 'new_' + @user.email
       fill_in 'パスワード', with: @user.password
+
+      click_on 'ログイン'
+      sleep 1
+      expect(current_path).to eq user_path(@user)
+    end
+    it '自分のユーザー情報が編集できる(パスワード)' do
+      # ログイン
+      sign_in(@user)
+      # 編集リンクを確認
+      expect(page).to have_selector "a.edit-btn"
+      # 編集リンクへカーソルを合わせると「ユーザーの編集」と表示されるのを確認
+      find('.edit-btn').hover
+      expect(page).to have_content('ユーザーの編集')
+      # 編集リンクをクリック
+      find('a.edit-btn').click
+      sleep 1
+      # 編集ページへ遷移するのを確認
+      expect(current_path).to eq edit_user_registration_path
+      # ユーザー情報がすでに入力済みなのを確認
+      expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_field 'Eメール', with: @user.email
+      # 新しいパスワードと確認用のパスワードを入力し、現在のパスワードを入力
+      new_password = 'password1'
+      fill_in 'パスワード', with: new_password
+      fill_in 'パスワード（確認用）', with: new_password
+      fill_in '現在のパスワード', with: @user.password
+      # 編集してもユーザーモデルのカウントは変化しないのを確認
+      expect{
+        click_on '更新'
+        sleep 1
+      }.to change { User.count }.by(0)
+      # マイページへ遷移しているのを確認
+      expect(current_path).to eq user_path(@user)
+      # ログアウト後ログインページへ遷移
+      find_link('ログアウト').click
+      sleep 1
+      visit new_user_session_path
+      # 以前のパスワードではログインできないのを確認
+      fill_in 'Eメール', with: @user.email
+      fill_in 'パスワード', with: @user.password
+
+      click_on 'ログイン'
+      sleep 1
+      expect(current_path).to eq new_user_session_path
+      # 新しいパスワードでログインできるのを確認
+      fill_in 'Eメール', with: @user.email
+      fill_in 'パスワード', with: new_password
 
       click_on 'ログイン'
       sleep 1
