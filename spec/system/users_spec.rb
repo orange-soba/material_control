@@ -209,14 +209,25 @@ RSpec.describe '編集', type: :system, js: true do
   context 'ユーザー情報の編集ができない場合' do
     it 'ログインしていないユーザーは編集ページに遷移できずに、ログインページへ遷移する' do
       # 編集ページへ遷移する
+      sign_in_basic(root_path)
+      visit edit_user_registration_path
       # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
     it '名前やEメールが空白だと編集できずに、編集ページに戻る' do
       # ログイン
+      sign_in(@user)
       # 編集ページへ遷移
+      visit edit_user_registration_path
       # 名前とEメールを空白にし、他には正しい情報を入力する
+      fill_in '名前', with: ''
+      fill_in 'Eメール', with: ''
       # 更新ボタンをクリック
+      click_on '更新'
       # マイページへ遷移しておらず、編集ページへ戻るのを確認
+      expect(current_path).not_to eq user_path(@user)
+
+      expect(current_path).to eq edit_user_registration_path
     end
     it '現在のパスワードが空白だと編集できない' do
       # ログイン
