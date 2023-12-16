@@ -122,7 +122,7 @@ RSpec.describe 'ログイン、ログアウト', type: :system do
   end
 end
 
-RSpec.describe '編集', type: :system do
+RSpec.describe '編集', type: :system, js: true do
   before do
     @user = FactoryBot.create(:user)
   end
@@ -130,16 +130,35 @@ RSpec.describe '編集', type: :system do
   context 'ユーザー情報の編集ができる場合' do
     it '自分のユーザー情報の編集ができる(名前)' do
       # ログイン
+      sign_in(@user)
       # 編集リンクを確認
+      expect(page).to have_selector "a.edit-btn"
       # 編集リンクへカーソルを合わせると「ユーザーの編集」と表示されるのを確認
+      find('.edit-btn').hover
+      expect(page).to have_content('ユーザーの編集')
       # 編集リンクをクリック
+      find('a.edit-btn').click
+      sleep 1
       # 編集ページへ遷移するのを確認
+      expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
+      expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_field 'Eメール', with: @user.email
       # ユーザー情報(名前)を編集し、現在のパスワードを入力
+      fill_in '名前', with: @user.name + '編集'
+      fill_in '現在のパスワード', with: @user.password
       # 編集してもユーザーモデルのカウントは変化しないのを確認
+      expect{
+        click_on '更新'
+        sleep 1
+      }.to change { User.count }.by(0)
       # マイページへ遷移しているのを確認
+      expect(current_path).to eq user_path(@user)
       # 表示されている名前が編集した名前になっているのを確認
+      expect(page).to have_content @user.name + '編集さんのマイページ'
       # 以前の名前が表示されていないのを確認
+      expect(page).to have_no_content @user.name + 'さんのマイページ'
+      
     end
     it '自分のユーザー情報が編集できる(Eメール)' do
       # ログイン
