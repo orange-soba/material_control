@@ -53,6 +53,12 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
   end
   context '完成品/部品の新規登録ができない場合' do
     it 'ログインしていないと新規登録ページへ遷移できない' do
+      # BSIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
+      # 新規登録ページへ遷移
+      visit new_part_path
+      # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
     it '誤った情報を入力すると新規登録が出来ず、新規登録ページへ戻ってくるのを確認' do
       # ログイン
