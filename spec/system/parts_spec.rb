@@ -100,10 +100,10 @@ RSpec.describe '完成品/部品の編集', type: :system do
       sleep 1
       # 登録済みの部品の名前があるのを確認
       expect(page).to have_content @part.name
-      # 部品名をクリック
+      # 部品名をクリックし、部品詳細ページへ遷移しているのを確認
       find_link(@part.name).click
       sleep 1
-      # 部品詳細ページへ遷移しているのを確認
+
       expect(current_path).to eq part_path(@part)
       # 在庫欄に現在の在庫数が入力されているのを確認
       expect(page).to have_field('part_stock', with: @part.stock)
@@ -118,16 +118,42 @@ RSpec.describe '完成品/部品の編集', type: :system do
     end
     it '部品詳細ページから編集ページに遷移して情報の編集ができる' do
       # ログイン
+      sign_in(@user)
       # マイページへ遷移しているのを確認
+      expect(current_path).to eq user_path(@user)
+      # 登録済みの部品の名前がまだないのを確認
+      expect(page).to have_no_content @part.name
       # 「部品」をクリックして折りたたみ要素を開く
-      # 登録済みの部品名があるのを確認
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの部品の名前があるのを確認
+      expect(page).to have_content @part.name
       # 部品名をクリックし、部品詳細ページへ遷移しているのを確認
+      find_link(@part.name).click
+      sleep 1
+      
+      expect(current_path).to eq part_path(@part)
       # 編集ボタンを確認
+      expect(page).to have_content('編集')
       # 編集ボタンをクリックして、編集ページへ遷移するのを確認
+      click_on '編集'
+      sleep 1
+
+      expect(current_path).to eq edit_part_path(@part)
       # 部品情報がすでに入力済みなのを確認
+      expect(page).to have_field '完成品名/部品名：', with: @part.name
+      expect(page).to have_field '在庫数：', with: @part.stock
       # 名前を編集(確認用)
+      new_name = @part.name.reverse
+      fill_in '完成品名/部品名：', with: new_name
       # 更新ボタンをクリックし、部品詳細ページへ遷移するのを確認
+      click_on '更新'
+      sleep 1
+
+      expect(current_path).to eq part_path(@part)
       # 以前の部品名がなく、編集後の部品名があるのを確認
+      expect(page).to have_no_content(@part.name)
+      expect(page).to have_content(new_name)
     end
   end
   context '編集ができない場合' do
