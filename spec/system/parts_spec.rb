@@ -90,15 +90,31 @@ RSpec.describe '完成品/部品の編集', type: :system do
   context '編集ができる場合' do
     it '部品詳細ページで在庫数の編集ができる' do
       # ログイン
+      sign_in(@user)
       # マイページへ遷移しているのを確認
+      expect(current_path).to eq user_path(@user)
+      # 登録済みの部品の名前がまだないのを確認
+      expect(page).to have_no_content @part.name
       # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 登録済みの部品の名前があるのを確認
+      expect(page).to have_content @part.name
       # 部品名をクリック
+      find_link(@part.name).click
+      sleep 1
       # 部品詳細ページへ遷移しているのを確認
+      expect(current_path).to eq part_path(@part)
       # 在庫欄に現在の在庫数が入力されているのを確認
+      expect(page).to have_field('part_stock', with: @part.stock)
       # 在庫の数値を変更する
+      new_stock = 1
+      fill_in 'part_stock', with: new_stock
       # 「更新」ボタンをクリック
+      click_on '更新'
+      sleep 1
       # 入力済みの在庫数が変更されているのを確認
+      expect(page).to have_field('part_stock', with: new_stock)
     end
     it '部品詳細ページから編集ページに遷移して情報の編集ができる' do
       # ログイン
