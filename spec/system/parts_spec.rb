@@ -159,8 +159,11 @@ RSpec.describe '完成品/部品の編集', type: :system do
   context '編集ができない場合' do
     it 'ログインしていないと編集ページに遷移できない' do
       # BASIC認証を通過し、トップページへ遷移
+      sign_in_basic(root_path)
       # 編集ページへ遷移
+      visit edit_part_path(@part)
       # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
   end
 end
