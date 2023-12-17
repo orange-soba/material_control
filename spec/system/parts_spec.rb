@@ -172,11 +172,31 @@ RSpec.describe '完成品/部品の削除', type: :system do
   context '削除できる時' do
     it '部品詳細ページの削除ボタンを押し、アラート表示の「OK」をクリックすれば削除できる' do
       # ログイン
+      sign_in(@user)
       # 「部品」をクリックし、折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 部品名をクリックし、部品詳細ページへ遷移
+      find_link(@part.name).click
+      sleep 1
+
+      expect(current_path).to eq part_path(@part)
       # 「削除」ボタンを確認
+      expect(page).to have_content('削除')
       # 「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Partモデルのカウントが1減るのを確認
+      expect{
+        find('div.part-show').find_link('削除').click
+        sleep 1
+        expect(page.accept_confirm).to eq '「' + @part.name + '」を削除してもよろしいですか？'
+        sleep 1
+      }.to change { Part.count }.by(-1)
       # マイページへ遷移しているのを確認
+      expect(current_path).to eq user_path(@user)
+      # 「部品」をクリックし折りたたみ要素を開き、削除した部品名がないのを確認
+      find('details.parts-details').find('summary').click
+      sleep 1
+
+      expect(page).to have_no_content(@part.name)
     end
     it '新規登録ページの履歴において削除ボタンを押し、アラート表示の「OK」をクリックすれば削除できる' do
       # ログイン
