@@ -167,3 +167,14 @@ RSpec.describe '完成品/部品の編集', type: :system do
     end
   end
 end
+
+RSpec.describe '完成品/部品の削除', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @part = FactoryBot.create(:part, user_id: @user.id)
+  end
+  context '削除できる時' do
+    it '部品詳細ページの削除ボタンを押し、アラート表示の「OK」をクリックすれば削除できる' do
+    end
+  end
+end
