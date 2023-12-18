@@ -187,7 +187,8 @@ RSpec.describe '完成品/部品の削除', type: :system do
       expect{
         find('div.part-show').find_link('削除').click
         sleep 1
-        expect(page.accept_confirm).to eq '「' + @part.name + '」を削除してもよろしいですか？'
+        message = '「' + @part.name + '」を削除してもよろしいですか？'
+        expect(page.accept_confirm).to eq message
         sleep 1
       }.to change { Part.count }.by(-1)
       # マイページへ遷移しているのを確認
@@ -200,12 +201,27 @@ RSpec.describe '完成品/部品の削除', type: :system do
     end
     it '新規登録ページの履歴において削除ボタンを押し、アラート表示の「OK」をクリックすれば削除できる' do
       # ログイン
+      sign_in(@user)
       # 部品の新規登録ページへ遷移
+      visit new_part_path
       # 履歴に部品の登録があるのを確認(名前)
+      expect(page).to have_content(@part.name)
       # 履歴に「削除」ボタンがあるのを確認
+      href = 'a[href="/parts/' + @part.id.to_s + '?now=new"]'
+      expect(page).to have_css(href)
       # 「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Partモデルのカウントが1減るのを確認
+      expect{
+        find(href).click
+        sleep 1
+        message = '「' + @part.name + "」を削除してもよろしいですか？\n※履歴からの削除ではありません!!"
+        expect(accept_confirm).to eq message
+        sleep 1
+    }.to change { Part.count }.by(-1)
+      sleep 1
       # 新規登録ページへ戻るのを確認
+      expect(current_path).to eq new_part_path
       # 履歴に削除した部品の名前がないのを確認
+      expect(page).to have_no_content(@part.name)
     end
   end
 end
