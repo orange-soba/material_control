@@ -4,6 +4,7 @@ class PartsRelation < ApplicationRecord
   belongs_to :user
 
   validate :cannot_treat_as_parts
+  validate :disallow_same
   validate :disallow_roop
   validates :necessary_nums, numericality: { only_integer: true, greater_than: 0 }
 
@@ -15,6 +16,19 @@ class PartsRelation < ApplicationRecord
 
     errors.add(:child, "は完成品です。部品には出来ません")
   end
+
+  def disallow_same
+    check_relation = PartsRelation.find_by(
+      parent_id: self.parent_id,
+      child_id: self.child_id,
+      user_id: self.user_id
+    )
+  
+    if check_relation.present?
+      errors.add(:child, "はすでに必要部品として登録済みです。")
+    end
+  end
+  
 
   def disallow_roop
     return if roop_check
