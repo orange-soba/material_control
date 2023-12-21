@@ -277,8 +277,11 @@ RSpec.describe '必要部品の登録', type: :system do
   context '登録できない場合' do
     it 'ログインしていないと必要部品の新規登録ページへ遷移できない' do
       # BASIC認証を通過しトップページへ遷移
+      sign_in_basic(root_path)
       # 必要部品登録ページへ遷移
+      visit new_part_parts_relations_path(@parent)
       # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
     it '完成品は必要な部品として登録できない' do
       # ログイン
