@@ -371,3 +371,17 @@ RSpec.describe '必要部品の登録', type: :system do
     end
   end
 end
+
+RSpec.describe '必要部品の削除', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @parent = FactoryBot.create(:part, user_id: @user.id, finished: true)
+    @child = FactoryBot.create(:part, user_id: @user.id)
+    @num = rand(10)
+    PartsRelation.create(parent_id: @parent.id, child_id: @child.id, necessary_nums: num, user_id: @user.id)
+  end
+  context '削除できる場合' do
+    it '部品詳細画面の削除ボタンを押すことで必要部品の削除ができる' do
+    end
+  end
+end
