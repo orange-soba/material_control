@@ -296,6 +296,8 @@ RSpec.describe '必要部品の登録', type: :system do
       href = 'a[href="/parts/' + @child.id.to_s + '/parts_relations/new"]'
       find(href).click
       sleep 1
+
+      expect(current_path).to eq new_part_parts_relations_path(@child)
       # セレクトボックスから@parentの名前を選択し、必要数を入力する
       option = 'option[value="' + @parent.id.to_s + '"]'
       num = rand(10)
@@ -309,13 +311,35 @@ RSpec.describe '必要部品の登録', type: :system do
     end
     it 'A=>B=>Cという親子親子関係ができている時、新たにC=>Aという登録はできない' do
       # @parentのfinishedをfalseにupdateし、また部品Cを作成し、A=>B=>Cという親子関係を作成する
+      @parent.update(finished: false)
+      @c_part = FactoryBot.create(:part, user_id: @user.id)
+      PartsRelation.create(parent_id: @parent.id, child_id: @child.id, necessary_nums: rand(10), user_id: @user.id)
+      PartsRelation.create(parent_id: @child.id, child_id: @c_part.id, necessary_nums: rand(10), user_id: @user.id)
       # A: @parent, B: @child, C: @c_partとして扱う
       # ログイン
+      sign_in(@user)
       # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 登録済みの部品Cの名前をクリックして詳細ページへ遷移する
+      find_link(@c_part.name).click
+      sleep 1
       # 「部品登録」ボタンをクリックし、必要部品登録ページへ遷移するのを確認
+      href = 'a[href="/parts/' + @c_part.id.to_s + '/parts_relations/new"]'
+      find(href).click
+      sleep 1
+
+      expect(current_path).to eq new_part_parts_relations_path(@c_part)
       # セレクトボックスから部品Aの名前を選択し、必要数を入力する
+      option = 'option[value="' + @parent.id.to_s + '"]'
+      num = rand(10)
+      find('select.parts-relation__input').find(option).select_option
+      fill_in '　　　必要数：', with: num
       # 「登録」ボタンをクリックしても、Parts_relationモデルのカウントが変化しないのを確認
+      expect{
+        click_on '登録'
+        sleep 1
+      }.to change { PartsRelation.count }.by(0)
     end
     it 'A=>Bという登録があるときにまたA=>Bという登録はできない' do
       # @parentに@childを必要部品として登録する
