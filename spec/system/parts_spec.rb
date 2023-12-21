@@ -235,14 +235,43 @@ RSpec.describe '必要部品の登録', type: :system do
   context '登録できる場合' do
     it '部品を必要な部品として登録出来る' do
       # ログイン
+      sign_in(@user)
       # 「完成品」をクリックして折りたたみ要素を開く
+      find('details.products-details').find('summary').click
+      sleep 1
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
+      find_link(@parent.name).click
+      sleep 1
+
+      expect(current_path).to eq part_path(@parent)
       # 「部品登録」ボタンを確認
+      href = 'a[href="/parts/' + @parent.id.to_s + '/parts_relations/new"]'
+      expect(page).to have_css(href)
       # 「部品登録」ボタンをクリックし、必要部品登録ページへ遷移するのを確認
+      find(href).click
+      sleep 1
+
+      expect(current_path).to eq new_part_parts_relations_path(@parent)
       # セレクトボックスから@childの名前を選択し、必要数を入力する
+      option = 'option[value="' + @child.id.to_s + '"]'
+      num = rand(10)
+      find('select.parts-relation__input').find(option).select_option
+      fill_in '　　　必要数：', with: num
       # 「登録」ボタンをクリックし、Parts_relationモデルのカウントが1上がるのを確認
+      expect{
+        click_on '登録'
+        sleep 1
+      }.to change { PartsRelation.count }.by(1)
       # 登録履歴に登録した情報が表示されているのを確認
-      # 部品詳細ページ(@parent)に遷移し、必要登録した部品の名前が表示されているか確認
+      expect(page).to have_selector('table tr:nth-child(1)', text: @parent.name)
+      expect(page).to have_selector('table tr:nth-child(1)', text: @child.name)
+      expect(page).to have_selector('table tr:nth-child(1)', text: num)
+      # 部品詳細ページ(@parent)に遷移し、必要登録した部品の名前と必要数が表示されているか確認
+      visit part_path(@parent)
+      sleep 1
+
+      expect(page).to have_selector('div.need-parts table tr:nth-child(1)', text: @child.name)
+      expect(page).to have_selector('div.need-parts table tr:nth-child(1)', text: num)
     end
   end
   context '登録できない場合' do
