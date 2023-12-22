@@ -411,3 +411,21 @@ RSpec.describe '必要部品の削除', type: :system do
     end
   end
 end
+
+RSpec.describe '必要部品の編集', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @parent = FactoryBot.create(:part, user_id: @user.id, finished: true)
+    @child = FactoryBot.create(:part, user_id: @user.id)
+    @num = rand(10)
+    PartsRelation.create(parent_id: @parent.id, child_id: @child.id, necessary_nums: @num, user_id: @user.id)
+  end
+  context '必要数の編集ができる場合' do
+    it '部品詳細ページで正しい情報を入力すれば必要部品の必要数を編集できる' do
+    end
+  end
+  context '必要数の編集ができない場合' do
+    it '部品詳細ページで誤った情報を入力すると必要部品の必要数を編集できない' do
+    end
+  end
+end
