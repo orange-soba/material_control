@@ -378,17 +378,36 @@ RSpec.describe '必要部品の削除', type: :system do
     @parent = FactoryBot.create(:part, user_id: @user.id, finished: true)
     @child = FactoryBot.create(:part, user_id: @user.id)
     @num = rand(10)
-    PartsRelation.create(parent_id: @parent.id, child_id: @child.id, necessary_nums: num, user_id: @user.id)
+    PartsRelation.create(parent_id: @parent.id, child_id: @child.id, necessary_nums: @num, user_id: @user.id)
   end
   context '削除できる場合' do
     it '部品詳細画面の削除ボタンを押すことで必要部品の削除ができる' do
       # ログイン
+      sign_in(@user)
       # 「完成品」をクリックして折りたたみ要素を開く
+      find('details.products-details').find('summary').click
+      sleep 1
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
+      find_link(@parent.name).click
+      sleep 1
+
+      expect(current_path).to eq part_path(@parent)
       # 必要部品として@childが登録済みなのを確認
+      expect(page).to have_selector('div.need-parts table tr:nth-child(1)', text: @child.name)
+      expect(page).to have_selector('div.need-parts table tr:nth-child(1)', text: @num)
       # 必要部品の「削除」ボタンを確認
-      # 「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Parts_relationモデルのカウントが1減るのを確認
+      href = 'a[href="/parts/' + @parent.id.to_s + '/parts_relations?child_id=' + @child.id.to_s + '"]'
+      expect(page).to have_css(href)
+      # 「削除」ボタンをクリックし、アラートの「OK」をクリックすると、PartsRelationモデルのカウントが1減るのを確認
+      expect{
+        find(href).click
+        sleep 1
+        message = '「' + @child.name + "」を除外してもよろしいですか？"
+        expect(accept_confirm).to eq message
+        sleep 1
+      }.to change { PartsRelation.count }.by(-1)
       # 「必要な部品は登録されていません」と表示されているのを確認
+      expect(page).to have_content('必要な部品は登録されていません')
     end
   end
 end
