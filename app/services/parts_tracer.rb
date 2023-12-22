@@ -3,7 +3,7 @@ class PartsTracer
 
   def initialize(part, user)
     @part = part
-    @part_info = {parts: {}, materials: {}}
+    @part_info = { parts: {}, materials: {} }
     @user = user
   end
 
