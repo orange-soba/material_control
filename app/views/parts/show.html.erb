@@ -49,7 +49,6 @@
     <div class="button-link calculate-button">
       <%= link_to "材料計算", calculate_part_path(@part) %>
     </div>
-    <%# /完成品/部品作成に必要な材料の計算結果を表示するリンク %>
   </div>
 
 </div>
@@ -66,10 +65,19 @@
           <%= link_to '部品登録', new_part_parts_relations_path(@part) %>
         </div>
       </div>
-      <% if flash[:errors_parts] %>
+      <% if flash[:errors_parts_relation_destory] %>
         <div class="error-alert">
           <ul>
-            <% flash[:errors_parts].each do |error| %>
+            <% flash[:errors_parts_relation_destory].each do |error| %>
+              <li class='error-message'>!<%= error %>!</li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% if flash[:errors_parts_relation_update] %>
+        <div class="error-alert">
+          <ul>
+            <% flash[:errors_parts_relation_update].each do |error| %>
               <li class='error-message'>!<%= error %>!</li>
             <% end %>
           </ul>
@@ -89,7 +97,13 @@
                 <td>
                   <%= link_to "#{child.name}", part_path(child) %>
                 </td>
-                <td class="history-stock"><%= PartsRelation.find_by(parent_id: @part.id, child_id: child.id).necessary_nums %></td>
+                <td class="history-stock">
+                  <% parts_relation = PartsRelation.find_by(parent_id: @part.id, child_id: child.id) %>
+                  <%= form_with model: parts_relation, url: part_parts_relations_path(@part, child_id: child.id), local: true do |f| %>
+                    <%= f.text_field :necessary_nums, class: "input_style__stock" %>
+                    <%= f.submit "更新" %>
+                  <% end %>
+                </td>
                 <td class="no-border">
                   <div class="button-link__history">
                     <%= link_to "削除", part_parts_relations_path(@part, child_id: child.id),
@@ -116,10 +130,19 @@
           <%= link_to '材料登録', new_part_need_materials_path(@part) %>
         </div>
       </div>
-      <% if flash[:errors_materials] %>
+      <% if flash[:errors_need_material_destroy] %>
         <div class="error-alert">
           <ul>
-            <% flash[:errors_materials].each do |error| %>
+            <% flash[:errors_need_material_destroy].each do |error| %>
+              <li class='error-message'>!<%= error %>!</li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% if flash[:errors_need_material_update] %>
+        <div class="error-alert">
+          <ul>
+            <% flash[:errors_need_material_update].each do |error| %>
               <li class='error-message'>!<%= error %>!</li>
             <% end %>
           </ul>
@@ -129,8 +152,9 @@
         <table>
           <thead>
             <tr>
-              <th>完成品名/部品名</th>
+              <th>材料名</th>
               <th>必要な長さ</th>
+              <th>オプション</th>
               <th>必要数</th>
             </tr>
           </thead>
@@ -140,12 +164,23 @@
               <tr>
                 <td><%= material.display_combine %></td>
                 <td>
-                  <%= need_material.length %>
-                  <% if need_material.length_option %>
-                    <%= " / #{need_material.length_option}" %>
+                  <%= form_with model: need_material, url: part_need_materials_path(@part, material_id: material.material_id), local: true do |f| %>
+                    <%= f.text_field :length, class: "input_style__length" %>
+                    <%= f.submit "更新" %>
                   <% end %>
                 </td>
-                <td class="history-stock"><%= need_material.necessary_nums %></td>
+                <td>
+                  <%= form_with model: need_material, url: part_need_materials_path(@part, material_id: material.material_id), local: true do |f| %>
+                    <%= f.text_field :length_option, placeholder: '---', class: "input_style__length" %>
+                    <%= f.submit "更新" %>
+                  <% end %>
+                </td>
+                <td class="history-stock">
+                  <%= form_with model: need_material, url: part_need_materials_path(@part, material_id: material.material_id), local: true do |f| %>
+                    <%= f.text_field :necessary_nums, class: "input_style__stock" %>
+                    <%= f.submit "更新" %>
+                  <% end %>
+                </td>
                 <td class="no-border">
                   <div class="button-link__history">
                     <%= link_to "削除", part_need_materials_path(@part, material_id: material.material_id),

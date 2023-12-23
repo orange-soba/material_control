@@ -21,7 +21,18 @@ class PartsRelationsController < ApplicationController
     if parts_relation.destroy
       redirect_to part_path(params[:part_id])
     else
-      flash[:errors_parts] = parts_relation.errors.full_messages
+      flash[:errors_parts_relation_destory] = parts_relation.errors.full_messages
+
+      redirect_to part_path(params[:part_id])
+    end
+  end
+
+  def update
+    parts_relation = current_user.parts_relations.find_by(parent_id: params[:part_id], child_id: params[:child_id])
+    if parts_relation.update(relation_params)
+      redirect_to part_path(params[:part_id])
+    else
+      flash[:errors_parts_relation_update] = parts_relation.errors.full_messages
 
       redirect_to part_path(params[:part_id])
     end

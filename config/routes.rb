@@ -10,8 +10,8 @@ Rails.application.routes.draw do
       get 'calculate'
       patch 'stock_update'
     end
-    resource :parts_relations, only: [:new, :create, :destroy, :edit, :update]
-    resource :need_materials, only: [:new, :create, :destroy]
+    resource :parts_relations, only: [:new, :create, :destroy, :update]
+    resource :need_materials, only: [:new, :create, :destroy, :update]
   end
   resources :materials, except: :show do
     member do

@@ -3,9 +3,11 @@ class PartsRelation < ApplicationRecord
   belongs_to :child, class_name: "Part"
   belongs_to :user
 
-  validate :cannot_treat_as_parts
-  validate :disallow_same
-  validate :disallow_roop
+  with_options on: :create do
+    validate :cannot_treat_as_parts
+    validate :disallow_same
+    validate :disallow_roop
+  end
   validates :necessary_nums, numericality: { only_integer: true, greater_than: 0 }
 
   def cannot_treat_as_parts
