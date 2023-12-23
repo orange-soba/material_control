@@ -22,7 +22,7 @@ class NeedMaterialsController < ApplicationController
     if need_material.destroy
       redirect_to part_path(params[:part_id])
     else
-      flash[:errors_materials] = need_material.errors.full_messages
+      flash[:errors_need_material_destroy] = need_material.errors.full_messages
 
       redirect_to part_path(params[:part_id])
     end

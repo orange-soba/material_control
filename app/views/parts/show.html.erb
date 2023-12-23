@@ -130,10 +130,19 @@
           <%= link_to '材料登録', new_part_need_materials_path(@part) %>
         </div>
       </div>
-      <% if flash[:errors_materials] %>
+      <% if flash[:errors_need_material_destroy] %>
         <div class="error-alert">
           <ul>
-            <% flash[:errors_materials].each do |error| %>
+            <% flash[:errors_need_material_destroy].each do |error| %>
+              <li class='error-message'>!<%= error %>!</li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% if flash[:errors_need_material_update] %>
+        <div class="error-alert">
+          <ul>
+            <% flash[:errors_need_material_update].each do |error| %>
               <li class='error-message'>!<%= error %>!</li>
             <% end %>
           </ul>
