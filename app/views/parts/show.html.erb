@@ -74,16 +74,16 @@
           </ul>
         </div>
       <% end %>
+      <% if flash[:errors_parts_relation_update] %>
+        <div class="error-alert">
+          <ul>
+            <% flash[:errors_parts_relation_update].each do |error| %>
+              <li class='error-message'>!<%= error %>!</li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
       <% if @part.children.exists? %>
-        <% if flash[:errors_parts_relation_update] %>
-          <div class="error-alert">
-            <ul>
-              <% flash[:errors_parts_relation_update].each do |error| %>
-                <li class='error-message'>!<%= error %>!</li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
         <table>
           <thead>
             <tr>
