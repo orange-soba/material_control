@@ -8,6 +8,12 @@
   text-align: right;
 }
 
+.input_style__length {
+  width: 70px;
+  padding-right: 4px;
+  text-align: right;
+}
+
 .button-link__area {
   display: flex;
 }

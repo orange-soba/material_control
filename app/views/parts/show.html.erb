@@ -164,7 +164,11 @@
               <tr>
                 <td><%= material.display_combine %></td>
                 <td>
-                  <%= need_material.length %>
+                  <%= form_with model: need_material, url: part_need_materials_path(@part, material_id: material.material_id), local: true do |f| %>
+                    <%= f.text_field :length, class: "input_style__length" %>
+                    <%= f.submit "更新" %>
+                  <% end %>
+                  <%#= need_material.length %>
                 </td>
                 <td>
                   <% if need_material.length_option %>
