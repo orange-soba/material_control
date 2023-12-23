@@ -21,7 +21,7 @@ class PartsRelationsController < ApplicationController
     if parts_relation.destroy
       redirect_to part_path(params[:part_id])
     else
-      flash[:errors_parts] = parts_relation.errors.full_messages
+      flash[:errors_parts_relation_destory] = parts_relation.errors.full_messages
 
       redirect_to part_path(params[:part_id])
     end

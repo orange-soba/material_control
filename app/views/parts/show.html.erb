@@ -65,10 +65,10 @@
           <%= link_to '部品登録', new_part_parts_relations_path(@part) %>
         </div>
       </div>
-      <% if flash[:errors_parts] %>
+      <% if flash[:errors_parts_relation_destory] %>
         <div class="error-alert">
           <ul>
-            <% flash[:errors_parts].each do |error| %>
+            <% flash[:errors_parts_relation_destory].each do |error| %>
               <li class='error-message'>!<%= error %>!</li>
             <% end %>
           </ul>
