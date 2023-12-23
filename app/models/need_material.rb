@@ -8,6 +8,8 @@ class NeedMaterial < ApplicationRecord
     validates :necessary_nums, numericality: { only_integer: true, allow_nil: true, greater_than: 0 }
   end
 
+  validates :length_option, numericality: { allow_nil: true, greater_than: 0 }
+
   # def destroy # エラーを意図的に発生(確認用)
   #   ActiveRecord::Base.transaction do
   #     super
