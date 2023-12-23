@@ -18,11 +18,22 @@ class NeedMaterialsController < ApplicationController
   end
 
   def destroy
-    need_material = NeedMaterial.find_by(part_id: params[:part_id], material_id: params[:material_id])
+    need_material = current_user.need_materials.find_by(part_id: params[:part_id], material_id: params[:material_id])
     if need_material.destroy
       redirect_to part_path(params[:part_id])
     else
       flash[:errors_need_material_destroy] = need_material.errors.full_messages
+
+      redirect_to part_path(params[:part_id])
+    end
+  end
+
+  def update
+    need_material = current_user.need_materials.find_by(part_id: params[:part_id], material_id: params[:material_id])
+    if need_material.update(need_material_params)
+      redirect_to part_path(params[:part_id])
+    else
+      flash[:errors_need_material_update] = need_material.errors.full_messages
 
       redirect_to part_path(params[:part_id])
     end

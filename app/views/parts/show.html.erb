@@ -169,7 +169,7 @@
                   <% end %>
                 </td>
                 <td class="history-stock">
-                  <%= form_with model: need_material, url: part_need_materials_path(@part), local: true do |f| %>
+                  <%= form_with model: need_material, url: part_need_materials_path(@part, material_id: material.material_id), local: true do |f| %>
                     <%= f.text_field :necessary_nums, class: "input_style__stock" %>
                     <%= f.submit "更新" %>
                   <% end %>
