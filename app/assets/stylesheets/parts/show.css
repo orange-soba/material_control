@@ -37,3 +37,8 @@
 .history-head {
   display: flex;
 }
+
+td .table-center {
+  display: flex;
+  justify-content: center;
+}
