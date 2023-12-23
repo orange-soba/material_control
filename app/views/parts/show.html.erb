@@ -49,7 +49,6 @@
     <div class="button-link calculate-button">
       <%= link_to "材料計算", calculate_part_path(@part) %>
     </div>
-    <%# /完成品/部品作成に必要な材料の計算結果を表示するリンク %>
   </div>
 
 </div>
@@ -104,7 +103,6 @@
                     <%= f.text_field :necessary_nums, class: "input_style__stock" %>
                     <%= f.submit "更新" %>
                   <% end %>
-                  <%#= PartsRelation.find_by(parent_id: @part.id, child_id: child.id).necessary_nums %>
                 </td>
                 <td class="no-border">
                   <div class="button-link__history">
@@ -161,7 +159,13 @@
                     <%= " / #{need_material.length_option}" %>
                   <% end %>
                 </td>
-                <td class="history-stock"><%= need_material.necessary_nums %></td>
+                <td class="history-stock">
+                  <%= form_with model: need_material, url: part_need_materials_path(@part), local: true do |f| %>
+                    <%= f.text_field :necessary_nums, class: "input_style__stock" %>
+                    <%= f.submit "更新" %>
+                  <% end %>
+                  <%#= need_material.necessary_nums %>
+                </td>
                 <td class="no-border">
                   <div class="button-link__history">
                     <%= link_to "削除", part_need_materials_path(@part, material_id: material.material_id),
