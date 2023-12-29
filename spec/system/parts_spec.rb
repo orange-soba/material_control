@@ -448,12 +448,25 @@ RSpec.describe '必要部品の編集', type: :system do
   context '必要数の編集ができない場合' do
     it '部品詳細ページで誤った情報を入力すると必要部品の必要数を編集できない' do
       # ログイン
+      sign_in(@user)
       # 「完成品」をクリックして折りたたみ要素を開く
+      find('details.products-details').find('summary').click
+      sleep 1
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
+      find_link(@parent.name).click
+      sleep 1
       # 必要部品に登録済みの@childの名前と必要数が入力済みになっているのを確認
+      expect(page).to have_content(@child.name)
+      expect(page).to have_field('parts_relation_necessary_nums', with: @num)
       # 必要数に誤った値を入力
+      new_stock = 0
+      fill_in 'parts_relation_necessary_nums', with: new_stock
       # 更新をクリック
+      find('div.need-parts').find('input[name="commit"]').click
+      sleep 1
       # 必要数が変更されていないのを確認
+      expect(page).to have_no_field('parts_relation_necessary_nums', with: new_stock)
+      expect(page).to have_field('parts_relation_necessary_nums', with: @num)
     end
   end
 end
