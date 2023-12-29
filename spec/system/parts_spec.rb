@@ -417,18 +417,32 @@ RSpec.describe '必要部品の編集', type: :system do
     @user = FactoryBot.create(:user)
     @parent = FactoryBot.create(:part, user_id: @user.id, finished: true)
     @child = FactoryBot.create(:part, user_id: @user.id)
-    @num = rand(10)
+    @num = rand(1..10)
     PartsRelation.create(parent_id: @parent.id, child_id: @child.id, necessary_nums: @num, user_id: @user.id)
   end
   context '必要数の編集ができる場合' do
     it '部品詳細ページで正しい情報を入力すれば必要部品の必要数を編集できる' do
       # ログイン
+      sign_in(@user)
       # 「完成品」をクリックして折りたたみ要素を開く
+      find('details.products-details').find('summary').click
+      sleep 1
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
+      find_link(@parent.name).click
+      sleep 1
       # 必要部品に登録済みの@childの名前と必要数が入力済みになっているのを確認
+      expect(page).to have_content(@child.name)
+      expect(page).to have_field('parts_relation_necessary_nums', with: @num)
       # 必要数に新しい値を入力
+      new_stock = rand(1..10)
+      fill_in 'parts_relation_necessary_nums', with: new_stock
       # 更新をクリック
+      find('div.need-parts').find('input[name="commit"]').click
+      sleep 1
+      # 更新前の数字が入力されていないのを確認
+      expect(page).to have_no_field('parts_relation_necessary_nums', with: @num)
       # 必要数が変更されているのを確認
+      expect(page).to have_field('parts_relation_necessary_nums', with: new_stock)
     end
   end
   context '必要数の編集ができない場合' do
