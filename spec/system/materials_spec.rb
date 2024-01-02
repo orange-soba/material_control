@@ -39,9 +39,16 @@ RSpec.describe "材料の新規登録", type: :system do
   context '材料の新規登録ができない場合' do
     it 'ログインしていないと材料の新規ページへ遷移できない' do
       # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
       # ヘッダーに「材料登録」がないのを確認
+      expect(page).to have_css('div.header') do |div|
+        expect(div).to have_no_content('材料登録')
+      end
       # 材料の新規ページへ遷移
+      visit new_material_path
+      sleep 1
       # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
     it '誤った情報を入力すると新規登録ができず、新規登録ページへ戻ってくる' do
       # ログイン
