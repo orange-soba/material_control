@@ -76,3 +76,21 @@ RSpec.describe "材料の新規登録", type: :system do
     end
   end
 end
+
+
+RSpec.describe '材料の編集', type: :system do
+  context '材料の編集ができる場合' do
+    it '材料一覧ページで、正しい情報を入力すれば在庫の更新ができる' do
+    end
+    it '材料一覧ページから、編集ページに遷移し、正しい情報を入力すれば編集できる' do
+    end
+  end
+  context '材料の編集ができない場合' do
+    it 'ログインしていないと材料の編集ページへ遷移できない' do
+    end
+    it '材料一覧ページで、誤った情報を入力すると在庫の更新ができない' do
+    end
+    it '材料一覧ページから、編集ページに遷移し、誤った情報を入力すると編集できない' do
+    end
+  end
+end
