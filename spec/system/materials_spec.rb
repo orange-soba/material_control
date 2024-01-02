@@ -81,18 +81,30 @@ end
 RSpec.describe '材料の編集', type: :system do
   before do
     @user = FactoryBot.create(:user)
-    @material = FactoryBot.create(:user, user_id: @user.id)
+    @material = FactoryBot.create(:material, user_id: @user.id, stock: 1.5)
   end
 
   context '材料の編集ができる場合' do
     it '材料一覧ページで、正しい情報を入力すれば在庫の更新ができる' do
       # ログイン
+      sign_in(@user)
       # マイページに材料一覧ページへのリンクがあるのを確認
+      href = 'a[href="/materials"]'
+      expect(page).to have_css(href)
       # 「材料一覧」をクリックして材料一覧ページへ遷移する
+      find(href).click
+      sleep 1
       # 在庫数が入力済みなのを確認
+      expect(find_field('material_stock').value).to eq @material.stock.to_s
       # 正しい情報を入力
+      new_stock = 2.5
+      fill_in 'material_stock', with: new_stock
       # 「更新」をクリックする
+      find('div.history-area').find('input[name="commit"]').click
+      sleep 1
       # 以前の在庫数がなく、編集後の在庫数が入力されているのを確認
+      expect(find_field('material_stock').value).not_to eq @material.stock.to_s
+      expect(find_field('material_stock').value).to eq new_stock.to_s
     end
     it '材料一覧ページから、編集ページに遷移し、正しい情報を入力すれば編集できる' do
       # ログイン
