@@ -79,6 +79,11 @@ end
 
 
 RSpec.describe '材料の編集', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @material = FactoryBot.create(:user, user_id: @user.id)
+  end
+
   context '材料の編集ができる場合' do
     it '材料一覧ページで、正しい情報を入力すれば在庫の更新ができる' do
       # ログイン
