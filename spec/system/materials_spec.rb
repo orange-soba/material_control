@@ -52,11 +52,27 @@ RSpec.describe "材料の新規登録", type: :system do
     end
     it '誤った情報を入力すると新規登録ができず、新規登録ページへ戻ってくる' do
       # ログイン
+      sign_in(@user)
       # ヘッダーに「材料登録」があるのを確認
+      expect(page).to have_css('div.header') do |div|
+        expect(div).to have_content('材料登録')
+      end
       # 「材料登録」をクリックして新規登録ページへ遷移
+      click_on '材料登録'
+      sleep 1
       # 誤った情報を入力
+      fill_in '　　　材質：', with: ''
+      fill_in '　　　種類：', with: ''
+      fill_in '厚さ(mm)：', with: ''
+      fill_in '長さ(mm)：', with: ''
+      fill_in '在庫数(個)：', with: ''
       # 「登録」をクリックしてもMaterialモデルのカウントが変化していないのを確認
+      expect{
+        click_on '登録'
+        sleep 1
+      }.to change { Material.count }.by(0)
       # 新規登録ページへ戻っているのを確認
+      expect(current_path).to eq new_material_path
     end
   end
 end
