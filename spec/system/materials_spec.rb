@@ -108,13 +108,37 @@ RSpec.describe '材料の編集', type: :system do
     end
     it '材料一覧ページから、編集ページに遷移し、正しい情報を入力すれば編集できる' do
       # ログイン
+      sign_in(@user)
       # マイページに材料一覧ページへのリンクがあるのを確認
+      href = 'a[href="/materials"]'
+      expect(page).to have_css(href)
       # 「材料一覧」をクリックして材料一覧ページへ遷移する
+      find(href).click
+      sleep 1
       # 材料の編集ボタンをクリックして編集ページへ遷移
+      href = 'a[href="/materials/' + @material.id.to_s + '/edit"]'
+      find(href).click
+      sleep 1
       # 情報が入力済みなのを確認
+      expect(page).to have_field '　　　材質：', with: @material.material_type
+      expect(page).to have_field '　　　種類：', with: @material.category
+      expect(page).to have_field '厚さ(mm)：', with: @material.thickness
+      expect(page).to have_field '　 幅(mm)：', with: @material.width
+      expect(page).to have_field '　　その他：', with: @material.option
+      expect(page).to have_field '長さ(mm)：', with: @material.length
+      expect(page).to have_field '在庫数(個)：', with: @material.stock
       # 正しい情報を入力
+      new_material_type = 'NewMaterial'
+      fill_in '　　　材質：', with: new_material_type
       # 「更新」をクリックする
+      click_on '更新'
+      sleep 1
+
+      expect(current_path).to eq materials_path
       # 以前の情報ではなく編集後の情報が表示されているのを確認
+      new_material = Material.last
+      expect(page).not_to have_selector('table tr:nth-child(1)', text: @material.display_combine)
+      expect(page).to have_selector('table tr:nth-child(1)', text: new_material.display_combine)
     end
   end
   context '材料の編集ができない場合' do
