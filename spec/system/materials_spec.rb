@@ -262,3 +262,16 @@ RSpec.describe '材料の削除', type: :system do
     end
   end
 end
+
+RSpec.describe '必要材料の登録', type: :system do
+  context '必要材料の登録ができる場合' do
+    it '正しい情報を入力すれば必要材料の登録をできる' do
+    end
+  end
+  context '必要材料の登録ができない場合' do
+    it 'ログインしていないと必要材料の登録ページへ遷移できない' do
+    end
+    it '誤った情報を入力すると必要材料の登録ができない' do
+    end
+  end
+end
