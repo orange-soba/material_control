@@ -152,12 +152,24 @@ RSpec.describe '材料の編集', type: :system do
     end
     it '材料一覧ページで、誤った情報を入力すると在庫の更新ができない' do
       # ログイン
+      sign_in(@user)
       # マイページに材料一覧ページへのリンクがあるのを確認
+      href = 'a[href="/materials"]'
+      expect(page).to have_css(href)
       # 「材料一覧」をクリックして材料一覧ページへ遷移する
+      find(href).click
+      sleep 1
       # 在庫数が入力済みなのを確認
+      expect(find_field('material_stock').value).to eq @material.stock.to_s
       # 誤った情報を入力
+      new_stock = -1
+      fill_in 'material_stock', with: new_stock
       # 「更新」をクリックする
+      click_on '更新'
+      sleep 1
       # 在庫数が以前の情報のままで変化がないのを確認
+      expect(find_field('material_stock').value).to eq @material.stock.to_s
+      expect(find_field('material_stock').value).not_to eq new_stock.to_s
     end
     it '材料一覧ページから、編集ページに遷移し、誤った情報を入力すると編集できない' do
       # ログイン
