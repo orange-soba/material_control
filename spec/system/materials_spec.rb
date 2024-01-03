@@ -144,8 +144,11 @@ RSpec.describe '材料の編集', type: :system do
   context '材料の編集ができない場合' do
     it 'ログインしていないと材料の編集ページへ遷移できない' do
       # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
       # 材料の編集ページへ遷移
+      visit edit_material_path(@material)
       # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
     it '材料一覧ページで、誤った情報を入力すると在庫の更新ができない' do
       # ログイン
