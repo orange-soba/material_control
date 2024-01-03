@@ -203,3 +203,11 @@ RSpec.describe '材料の編集', type: :system do
     end
   end
 end
+
+RSpec.describe '材料の削除', type: :system do
+  context '材料の削除ができる場合' do
+    it '材料の一覧ページの「削除」ボタンをクリックし、アラート表示の「OK」をクリックすれば削除ができる' do
+    end
+    it '材料登録ページの登録履歴の「削除」ボタンをクリックし、アラート表示の「OK」をクリックすれば削除できる'
+  end
+end
