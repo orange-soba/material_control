@@ -205,6 +205,10 @@ RSpec.describe '材料の編集', type: :system do
 end
 
 RSpec.describe '材料の削除', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @material = FactoryBot.create(:material, user_id: @user.id)
+  end
   context '材料の削除ができる場合' do
     it '材料の一覧ページの「削除」ボタンをクリックし、アラート表示の「OK」をクリックすれば削除ができる' do
     end
