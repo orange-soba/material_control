@@ -212,12 +212,28 @@ RSpec.describe '材料の削除', type: :system do
   context '材料の削除ができる場合' do
     it '材料の一覧ページの「削除」ボタンをクリックし、アラート表示の「OK」をクリックすれば削除ができる' do
       # ログイン
+      sign_in(@user)
       # マイページに材料一覧ページへのリンクがあるのを確認
+      href = 'a[href="/materials"]'
+      expect(page).to have_css(href)
       # 「材料一覧」をクリックして材料一覧ページへ遷移する
+      find(href).click
+      sleep 1
       # 登録済みの材料が表示されているのを確認
-      # 登録済みの材料の「削除」ボタンをクリック
-      # アラートの「OK」をクリック
+      expect(page).to have_content(@material.display_combine)
+      # 登録済みの材料の削除ボタンが表示されているのを確認
+      href = 'a[href="/materials/' + @material.id.to_s + '"]'
+      expect(page).to have_css(href)
+      # 登録済みの材料の「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Partモデルのカウントが1減るのを確認
+      expect{
+        find(href).click
+        sleep 1
+        message = '「' + @material.display_combine + '」を削除してもよろしいですか？'
+        expect(accept_confirm).to eq message
+        sleep 1
+      }.to change { Material.count }.by(-1)
       # 材料一覧に削除した材料の情報が表示されていないのを確認
+      expect(page).to have_no_content(@material.display_combine)
     end
     it '材料登録ページの登録履歴の「削除」ボタンをクリックし、アラート表示の「OK」をクリックすれば削除できる' do
       # ログイン
