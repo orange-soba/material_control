@@ -272,15 +272,48 @@ RSpec.describe '必要材料の登録', type: :system do
   context '必要材料の登録ができる場合' do
     it '正しい情報を入力すれば必要材料の登録をできる' do
       # ログイン
+      sign_in(@user)
       # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
       # 「材料登録」ボタンが表示されているのを確認
+      href = 'a[href="/parts/' + @part.id.to_s + '/need_materials/new"]'
+      expect(page).to have_css(href)
       # 「材料登録」ボタンをクリックして、必要材料登録ページへ遷移しているのを確認
+      find(href).click
+      sleep 1
+
+      expect(current_path).to eq new_part_need_materials_path(@part)
       # 正しい情報を入力
+      option = 'option[value="' + @material.material_id.to_s + '"]'
+      num = rand(1..10)
+      necessary_nums = rand(1..10)
+      find('select.parts-relation__input').find(option).select_option
+      fill_in '　　必要な長さ(mm)：', with: num
+      fill_in '　　　　　必要数(個)：', with: necessary_nums
       # 登録ボタンをクリックすると、NeedMaterialモデルのカウントが1上がるのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { NeedMaterial.count }.by(1)
       # 登録履歴に登録した情報が表示されているのを確認
+      expect(page).to have_css('div.history-area') do |div|
+        expect(div).to have_content(@part.name)
+        expect(div).to have_content(@material.display_combine)
+        expect(div).to have_content(num)
+        expect(div).to have_content(necessary_nums)
+      end
       # @partの詳細ページへ遷移
+      visit part_path(@part)
       # 必要な材料の一覧に登録した情報が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        expect(div).to have_field('need_material_length', with: num * 1.0)
+        expect(div).to have_field('need_material_necessary_nums', with: necessary_nums)
+      end
     end
   end
   context '必要材料の登録ができない場合' do
