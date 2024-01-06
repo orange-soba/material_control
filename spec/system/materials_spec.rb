@@ -359,3 +359,10 @@ RSpec.describe '必要材料の登録', type: :system do
     end
   end
 end
+
+RSpec.describe '必要材料の削除', type: :system do
+  context '必要材料の削除ができる場合' do
+    it '部品詳細ページにて登録済みの必要材料の削除ができる' do
+    end
+  end
+end
