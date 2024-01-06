@@ -319,8 +319,11 @@ RSpec.describe '必要材料の登録', type: :system do
   context '必要材料の登録ができない場合' do
     it 'ログインしていないと必要材料の登録ページへ遷移できない' do
       # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
       # 必要材料の登録ページへ遷移
+      visit new_part_need_materials_path(@part)
       # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
     it '誤った情報を入力すると必要材料の登録ができない' do
       # ログイン
