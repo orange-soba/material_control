@@ -327,13 +327,35 @@ RSpec.describe '必要材料の登録', type: :system do
     end
     it '誤った情報を入力すると必要材料の登録ができない' do
       # ログイン
+      sign_in(@user)
       # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
       # 「材料登録」ボタンが表示されているのを確認
+      href = 'a[href="/parts/' + @part.id.to_s + '/need_materials/new"]'
+      expect(page).to have_css(href)
       # 「材料登録」ボタンをクリックして、必要材料登録ページへ遷移しているのを確認
+      find(href).click
+      sleep 1
+
+      expect(current_path).to eq new_part_need_materials_path(@part)
       # 誤った情報を入力
+      option = 'option[value="' + @material.material_id.to_s + '"]'
+      num = 0.0
+      necessary_nums = 0.0
+      find('select.parts-relation__input').find(option).select_option
+      fill_in '　　必要な長さ(mm)：', with: num
+      fill_in '　　　　　必要数(個)：', with: necessary_nums
       # 登録ボタンをクリックしても、NeedMaterialモデルのカウントが変化していないのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { NeedMaterial.count }.by(0)
       # 必要材料の登録ページへ戻っているのを確認
+      expect(current_path).to eq new_part_need_materials_path(@part)
     end
   end
 end
