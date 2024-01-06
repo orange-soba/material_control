@@ -365,17 +365,45 @@ RSpec.describe '必要材料の削除', type: :system do
     @user = FactoryBot.create(:user)
     @part = FactoryBot.create(:part, user_id: @user.id)
     @material = FactoryBot.create(:material, user_id: @user.id)
+    @need_material = FactoryBot.create(:need_material, part_id: @part.id, material_id: @material.material_id, user_id: @user.id)
   end
   context '必要材料の削除ができる場合' do
     it '部品詳細ページにて登録済みの必要材料の削除ができる' do
       # ログイン
+      sign_in(@user)
       # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
       # 登録済みの必要材料が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        expect(div).to have_field('need_material_length', with: @need_material.length.round(2))
+        expect(div).to have_field('need_material_length_option', with: @need_material.length_option.round(3))
+        expect(div).to have_field('need_material_necessary_nums', with: @need_material.necessary_nums)
+      end
       # 登録済みの必要材料に削除ボタンがあるのを確認
+      href = 'a[href="/parts/' + @part.id.to_s + '/need_materials?material_id=' + @material.material_id.to_s + '"]'
+      expect(page).to have_css(href)
       # 登録済みの必要材料の「削除」ボタンをクリックし、アラートの「OK」をクリックすると、NeedMaterialモデルのカウントが1減るのを確認
+      expect{
+        find(href).click
+        sleep 1
+        message = '「' + @material.display_combine + '」を除外してもよろしいですか？'
+        expect(accept_confirm).to eq message
+        sleep 1
+      }.to change { NeedMaterial.count }.by(-1)
       # 部品詳細ページへ戻っているのを確認
+      expect(current_path).to eq part_path(@part)
       # 部品詳細ページに削除した必要材料が表示されていないのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).not_to have_content(@material.display_combine)
+        expect(div).not_to have_field('need_material_length', with: @need_material.length.round(2))
+        expect(div).not_to have_field('need_material_length_option', with: @need_material.length_option.round(3))
+        expect(div).not_to have_field('need_material_necessary_nums', with: @need_material.necessary_nums)
+      end
     end
   end
 end
