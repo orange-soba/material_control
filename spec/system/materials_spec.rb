@@ -418,12 +418,35 @@ RSpec.describe '必要材料の編集', type: :system do
   context '必要材料の編集ができる場合' do
     it '部品詳細ページで正しい情報を入力すれば必要材料の編集ができる' do
       # ログイン
+      sign_in(@user)
       # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
       # 登録済みの必要材料が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        length = find_field('need_material_length').value.to_f.round(2)
+        expect(length).to eq(@need_material.length.round(2))
+        length_option = find_field('need_material_length_option').value.to_f.round(2)
+        expect(length_option).to eq(@need_material.length_option.round(2))
+        expect(div).to have_field('need_material_necessary_nums', with: @need_material.necessary_nums)
+      end
       # 正しい情報を入力
+      new_length = rand(1.0..1000.0).round(2)
+      fill_in 'need_material_length', with: new_length
       # 「更新」ボタンをクリック
+      within '.need-material__input-length' do
+        click_on '更新'
+      end
+      sleep 1
       # 以前の情報ではなく編集後の情報が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).not_to have_field('need_material_length', with: @need_material.length.round(2))
+        expect(div).to have_field('need_material_length', with: new_length)
+      end
     end
   end
   context '必要材料の編集ができない場合' do
