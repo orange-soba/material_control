@@ -4,7 +4,7 @@
 
 <div class="need-parts-materials">
   <%# 必要な部品の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__parts">
     <% if @parts == {} %>
       <p>「<%= link_to @part.name, part_path(@part) %>」に外注部品はありません</p>
     <% else %>
@@ -41,7 +41,7 @@
   <%# /必要な部品の表示 %>
 
   <%# 必要な材料の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__materials">
     <% if @materials == {} %>
       <p>「<%= link_to @part.name, part_path(@part) %>」に必要な材料はありません</p>
     <% else %>
@@ -95,7 +95,7 @@
   <%# /必要な材料の表示 %>
 
   <%# 発注が必要な部品の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__parts-order">
     <% if @parts_order == [] %>
       <p>部品の発注は必要ありません</p>
     <% else %>
@@ -116,7 +116,7 @@
   <%# /発注が必要な部品の表示 %>
 
   <%# 発注が必要な材料の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__materilas-order">
     <% if @materials_order == [] %>
       <p>材料の発注は必要ありません</p>
     <% else %>
