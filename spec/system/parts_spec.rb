@@ -494,10 +494,18 @@ RSpec.describe '材料計算機能', type: :system do
       @material.update(stock: material_stock)
       @material.reload
       # ログイン
+      sign_in(@user)
       # 「完成品」をクリックして折りたたみ要素を開く
+      find('details.products-details').find('summary').click
+      sleep 1
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
+      find_link(@parent.name).click
+      sleep 1
       # 「材料計算」ボタンを確認
+      expect(page).to have_content('材料計算')
       # 「材料計算」ボタンをクリック
+      click_on '材料計算'
+      sleep 1
       # 必要な部品が表示されているのを確認
       # 必要な部品の在庫状況が「⭕️」なのを確認
       # 必要な材料が表示されているのを確認
