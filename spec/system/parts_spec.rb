@@ -472,6 +472,14 @@ RSpec.describe '必要部品の編集', type: :system do
 end
 
 RSpec.describe '材料計算機能', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @parent = FactoryBot.create(:part, user_id: @user.id, finished: true)
+    @child = FactoryBot.create(:part, user_id: @user.id)
+    @parts_relation = PartsRelation.create(parent_id: @parent.id, child_id: @child.id, user_id: @user.id)
+    @material = FactoryBot.create(:material, user_id: @user.id)
+    @need_material = FactoryBot.create(:need_material, part_id: @parent.id, material_id: @material.material_id, user_id: @user.id)
+  end
   context '部品/材料の発注が必要ない場合' do
     it '部品/材料の在庫が必要な部品/材料より多い場合、部品/材料の発注は必要ない' do
     end
