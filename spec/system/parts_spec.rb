@@ -470,3 +470,14 @@ RSpec.describe '必要部品の編集', type: :system do
     end
   end
 end
+
+RSpec.describe '材料計算機能', type: :system do
+  context '部品/材料の発注が必要ない場合' do
+    it '部品/材料の在庫が必要な部品/材料より多い場合、部品/材料の発注は必要ない' do
+    end
+  end
+  context '部品/材料の発注が必要な場合' do
+    it '部品/材料の在庫が必要な部品/材料より少ない場合、部品/材料の発注は必要' do
+    end
+  end
+end
