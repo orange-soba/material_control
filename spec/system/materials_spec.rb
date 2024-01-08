@@ -409,6 +409,12 @@ RSpec.describe '必要材料の削除', type: :system do
 end
 
 RSpec.describe '必要材料の編集', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @part = FactoryBot.create(:part, user_id: @user.id)
+    @material = FactoryBot.create(:material, user_id: @user.id)
+    @need_material = FactoryBot.create(:need_material, part_id: @part.id, material_id: @material.material_id, user_id: @user.id)
+  end
   context '必要材料の編集ができる場合' do
     it '部品詳細ページで正しい情報を入力すれば必要材料の編集ができる' do
       # ログイン
