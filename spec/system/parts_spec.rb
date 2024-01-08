@@ -483,6 +483,16 @@ RSpec.describe '材料計算機能', type: :system do
   context '部品/材料の発注が必要ない場合' do
     it '部品/材料の在庫が必要な部品/材料より多い場合、部品/材料の発注は必要ない' do
       # 事前データの準備
+      @parts_relation.update(necessary_nums: rand(1..5))
+      @parts_relation.reload
+      child_stock = rand((@parts_relation.necessary_nums + 1)..10)
+      @child.update(stock: child_stock)
+      @child.reload
+
+      len = @need_material.length.ceil * @need_material.necessary_nums
+      material_stock = len / @material.length + 1
+      @material.update(stock: material_stock)
+      @material.reload
       # ログイン
       # 「完成品」をクリックして折りたたみ要素を開く
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
@@ -499,6 +509,18 @@ RSpec.describe '材料計算機能', type: :system do
   context '部品/材料の発注が必要な場合' do
     it '部品/材料の在庫が必要な部品/材料より少ない場合、部品/材料の発注は必要' do
       # 事前データの準備
+      @child.update(stock: rand(0..5))
+      @child.reload
+      necessary_nums_parts = rand((@child.stock + 1)..10)
+      @parts_relation.update(necessary_nums: necessary_nums_parts)
+      @parts_relation.reload
+
+      @material.update(stock: rand(0..5))
+      len = @material.length * @material.stock
+      necessary_nums_material = len / @need_material.length + 1
+      @need_material.update(necessary_nums: necessary_nums_material)
+      @material.reload
+      @need_material.reload
       # ログイン
       # 「完成品」をクリックして折りたたみ要素を開く
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
