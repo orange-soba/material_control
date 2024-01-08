@@ -224,7 +224,7 @@ RSpec.describe '材料の削除', type: :system do
       # 登録済みの材料の削除ボタンが表示されているのを確認
       href = 'a[href="/materials/' + @material.id.to_s + '"]'
       expect(page).to have_css(href)
-      # 登録済みの材料の「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Partモデルのカウントが1減るのを確認
+      # 登録済みの材料の「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Materialモデルのカウントが1減るのを確認
       expect{
         find(href).click
         sleep 1
@@ -247,7 +247,7 @@ RSpec.describe '材料の削除', type: :system do
       # 登録済みの材料の削除ボタンが表示されているのを確認
       href = 'a[href="/materials/' + @material.id.to_s + '?now=new"]'
       expect(page).to have_css(href)
-      # 登録済みの材料の「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Partモデルのカウントが1減るのを確認
+      # 登録済みの材料の「削除」ボタンをクリックし、アラートの「OK」をクリックすると、Materialモデルのカウントが1減るのを確認
       expect{
         find(href).click
         sleep 1
@@ -258,6 +258,228 @@ RSpec.describe '材料の削除', type: :system do
       # 登録履歴に削除した材料の情報が表示されていないのを確認
       expect(page).to have_css('div.history-area') do |div|
         expect(div).to have_no_content(@material.display_combine)
+      end
+    end
+  end
+end
+
+RSpec.describe '必要材料の登録', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @part = FactoryBot.create(:part, user_id: @user.id)
+    @material = FactoryBot.create(:material, user_id: @user.id)
+  end
+  context '必要材料の登録ができる場合' do
+    it '正しい情報を入力すれば必要材料の登録をできる' do
+      # ログイン
+      sign_in(@user)
+      # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
+      # 「材料登録」ボタンが表示されているのを確認
+      href = 'a[href="/parts/' + @part.id.to_s + '/need_materials/new"]'
+      expect(page).to have_css(href)
+      # 「材料登録」ボタンをクリックして、必要材料登録ページへ遷移しているのを確認
+      find(href).click
+      sleep 1
+
+      expect(current_path).to eq new_part_need_materials_path(@part)
+      # 正しい情報を入力
+      option = 'option[value="' + @material.material_id.to_s + '"]'
+      num = rand(1..10)
+      necessary_nums = rand(1..10)
+      find('select.parts-relation__input').find(option).select_option
+      fill_in '　　必要な長さ(mm)：', with: num
+      fill_in '　　　　　必要数(個)：', with: necessary_nums
+      # 登録ボタンをクリックすると、NeedMaterialモデルのカウントが1上がるのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { NeedMaterial.count }.by(1)
+      # 登録履歴に登録した情報が表示されているのを確認
+      expect(page).to have_css('div.history-area') do |div|
+        expect(div).to have_content(@part.name)
+        expect(div).to have_content(@material.display_combine)
+        expect(div).to have_content(num)
+        expect(div).to have_content(necessary_nums)
+      end
+      # @partの詳細ページへ遷移
+      visit part_path(@part)
+      # 必要な材料の一覧に登録した情報が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        expect(div).to have_field('need_material_length', with: num * 1.0)
+        expect(div).to have_field('need_material_necessary_nums', with: necessary_nums)
+      end
+    end
+  end
+  context '必要材料の登録ができない場合' do
+    it 'ログインしていないと必要材料の登録ページへ遷移できない' do
+      # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
+      # 必要材料の登録ページへ遷移
+      visit new_part_need_materials_path(@part)
+      # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
+    end
+    it '誤った情報を入力すると必要材料の登録ができない' do
+      # ログイン
+      sign_in(@user)
+      # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
+      # 「材料登録」ボタンが表示されているのを確認
+      href = 'a[href="/parts/' + @part.id.to_s + '/need_materials/new"]'
+      expect(page).to have_css(href)
+      # 「材料登録」ボタンをクリックして、必要材料登録ページへ遷移しているのを確認
+      find(href).click
+      sleep 1
+
+      expect(current_path).to eq new_part_need_materials_path(@part)
+      # 誤った情報を入力
+      option = 'option[value="' + @material.material_id.to_s + '"]'
+      num = 0.0
+      necessary_nums = 0.0
+      find('select.parts-relation__input').find(option).select_option
+      fill_in '　　必要な長さ(mm)：', with: num
+      fill_in '　　　　　必要数(個)：', with: necessary_nums
+      # 登録ボタンをクリックしても、NeedMaterialモデルのカウントが変化していないのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { NeedMaterial.count }.by(0)
+      # 必要材料の登録ページへ戻っているのを確認
+      expect(current_path).to eq new_part_need_materials_path(@part)
+    end
+  end
+end
+
+RSpec.describe '必要材料の削除', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @part = FactoryBot.create(:part, user_id: @user.id)
+    @material = FactoryBot.create(:material, user_id: @user.id)
+    @need_material = FactoryBot.create(:need_material, part_id: @part.id, material_id: @material.material_id, user_id: @user.id)
+  end
+  context '必要材料の削除ができる場合' do
+    it '部品詳細ページにて登録済みの必要材料の削除ができる' do
+      # ログイン
+      sign_in(@user)
+      # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
+      # 登録済みの必要材料が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        expect(div).to have_field('need_material_length', with: @need_material.length.round(2))
+        expect(div).to have_field('need_material_length_option', with: @need_material.length_option.round(3))
+        expect(div).to have_field('need_material_necessary_nums', with: @need_material.necessary_nums)
+      end
+      # 登録済みの必要材料に削除ボタンがあるのを確認
+      href = 'a[href="/parts/' + @part.id.to_s + '/need_materials?material_id=' + @material.material_id.to_s + '"]'
+      expect(page).to have_css(href)
+      # 登録済みの必要材料の「削除」ボタンをクリックし、アラートの「OK」をクリックすると、NeedMaterialモデルのカウントが1減るのを確認
+      expect{
+        find(href).click
+        sleep 1
+        message = '「' + @material.display_combine + '」を除外してもよろしいですか？'
+        expect(accept_confirm).to eq message
+        sleep 1
+      }.to change { NeedMaterial.count }.by(-1)
+      # 部品詳細ページへ戻っているのを確認
+      expect(current_path).to eq part_path(@part)
+      # 部品詳細ページに削除した必要材料が表示されていないのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).not_to have_content(@material.display_combine)
+        expect(div).not_to have_field('need_material_length', with: @need_material.length.round(2))
+        expect(div).not_to have_field('need_material_length_option', with: @need_material.length_option.round(3))
+        expect(div).not_to have_field('need_material_necessary_nums', with: @need_material.necessary_nums)
+      end
+    end
+  end
+end
+
+RSpec.describe '必要材料の編集', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @part = FactoryBot.create(:part, user_id: @user.id)
+    @material = FactoryBot.create(:material, user_id: @user.id)
+    @need_material = FactoryBot.create(:need_material, part_id: @part.id, material_id: @material.material_id, user_id: @user.id)
+  end
+  context '必要材料の編集ができる場合' do
+    it '部品詳細ページで正しい情報を入力すれば必要材料の編集ができる' do
+      # ログイン
+      sign_in(@user)
+      # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
+      # 登録済みの必要材料が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        length = find_field('need_material_length').value.to_f.round(2)
+        expect(length).to eq(@need_material.length.round(2))
+        length_option = find_field('need_material_length_option').value.to_f.round(2)
+        expect(length_option).to eq(@need_material.length_option.round(2))
+        expect(div).to have_field('need_material_necessary_nums', with: @need_material.necessary_nums)
+      end
+      # 正しい情報を入力
+      new_length = rand(1.0..1000.0).round(2)
+      fill_in 'need_material_length', with: new_length
+      # 「更新」ボタンをクリック
+      within '.need-material__input-length' do
+        click_on '更新'
+      end
+      sleep 1
+      # 以前の情報ではなく編集後の情報が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).not_to have_field('need_material_length', with: @need_material.length.round(2))
+        expect(div).to have_field('need_material_length', with: new_length)
+      end
+    end
+  end
+  context '必要材料の編集ができない場合' do
+    it '部品詳細ページで誤った情報を入力すると必要材料の編集ができない' do
+      # ログイン
+      sign_in(@user)
+      # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの@partの名前をクリックして詳細ページへ遷移する
+      find_link(@part.name).click
+      sleep 1
+      # 登録済みの必要材料が表示されているのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        length = find_field('need_material_length').value.to_f.round(2)
+        expect(length).to eq(@need_material.length.round(2))
+        length_option = find_field('need_material_length_option').value.to_f.round(2)
+        expect(length_option).to eq(@need_material.length_option.round(2))
+        expect(div).to have_field('need_material_necessary_nums', with: @need_material.necessary_nums)
+      end
+      # 誤った情報を入力
+      new_length = 0
+      fill_in 'need_material_length', with: new_length
+      # 「更新」ボタンをクリック
+      within '.need-material__input-length' do
+        click_on '更新'
+      end
+      sleep 1
+      # 表示されている情報が変化のないのを確認
+      expect(page).to have_css('div.need-materials') do |div|
+        expect(div).to have_field('need_material_length', with: @need_material.length.round(2))
+        expect(div).not_to have_field('need_material_length', with: new_length)
       end
     end
   end
