@@ -605,8 +605,11 @@ RSpec.describe '材料計算機能', type: :system do
   context '材料計算機能が使用できない場合' do
     it 'ログインしていないと材料計算機能が使用できない' do
       # BASIC認証を通過してトップページへ遷移
-      # 材料計算ページへ遷移
+      sign_in_basic(root_path)
+      # @parentの材料計算ページへ遷移
+      visit calculate_part_path(@parent)
       # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
     end
   end
 end
