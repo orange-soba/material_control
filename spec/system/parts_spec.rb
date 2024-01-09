@@ -585,6 +585,11 @@ RSpec.describe '材料計算機能', type: :system do
         expect(div).to have_css('td.need-table_nums', text: '❌')
       end
       # 発注が必要な部品に部品名と発注数が表示されているのを確認
+      expect(page).to have_css('div.need-table__parts-order') do |div|
+        expect(div).to have_selector('table tr:nth-child(1)', text: @child.name)
+        num = @parts_relation.necessary_nums - @child.stock
+        expect(div).to have_selector('table tr:nth-child(1)', text: num)
+      end
       # 発注が必要な材料に材料名と発注数が表示されているのを確認
     end
   end
