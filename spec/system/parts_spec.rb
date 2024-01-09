@@ -501,11 +501,13 @@ RSpec.describe '材料計算機能', type: :system do
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
       find_link(@parent.name).click
       sleep 1
+      expect(current_path).to eq part_path(@parent)
       # 「材料計算」ボタンを確認
       expect(page).to have_content('材料計算')
-      # 「材料計算」ボタンをクリック
+      # 「材料計算」ボタンをクリックし、@parentの材料計算ページへ遷移しているのを確認
       click_on '材料計算'
       sleep 1
+      expect(current_path).to eq calculate_part_path(@parent)
       # 必要な部品に関する情報が表示されており、在庫状況が「⭕️」なのを確認
       expect(page).to have_css('div.need-table__parts') do |div|
         expect(div).to have_content(@child.name)
@@ -556,11 +558,13 @@ RSpec.describe '材料計算機能', type: :system do
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
       find_link(@parent.name).click
       sleep 1
+      expect(current_path).to eq part_path(@parent)
       # 「材料計算」ボタンを確認
       expect(page).to have_content('材料計算')
-      # 「材料計算」ボタンをクリック
+      # 「材料計算」ボタンをクリックし、@parentの材料計算ページへ遷移しているのを確認
       click_on '材料計算'
       sleep 1
+      expect(current_path).to eq calculate_part_path(@parent)
       # 必要な部品に関する情報が表示されており、在庫状況が「❌」なのを確認
       expect(page).to have_css('div.need-table__parts') do |div|
         expect(div).to have_content(@child.name)
