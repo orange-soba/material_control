@@ -480,7 +480,7 @@ RSpec.describe '材料計算機能', type: :system do
     @material = FactoryBot.create(:material, user_id: @user.id)
     @need_material = FactoryBot.create(:need_material, part_id: @parent.id, material_id: @material.material_id, user_id: @user.id)
   end
-  context '部品/材料の発注が使用できる場合' do
+  context '材料計算機能が使用できる場合' do
     it '部品/材料の在庫が必要な部品/材料より多く、部品/材料の発注が必要ない場合' do
       # 事前データの準備
       @parts_relation.update(necessary_nums: rand(1..5))
