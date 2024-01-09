@@ -506,12 +506,32 @@ RSpec.describe '材料計算機能', type: :system do
       # 「材料計算」ボタンをクリック
       click_on '材料計算'
       sleep 1
-      # 必要な部品が表示されているのを確認
-      # 必要な部品の在庫状況が「⭕️」なのを確認
-      # 必要な材料が表示されているのを確認
-      # 必要な材料の在庫状況が「⭕️」なのを確認
+      # 必要な部品に関する情報が表示されており、在庫状況が「⭕️」なのを確認
+      expect(page).to have_css('div.need-table__parts') do |div|
+        expect(div).to have_content(@child.name)
+        expect(div).to have_content(@parts_relation.necessary_nums)
+        expect(div).to have_content(@child.stock)
+        expect(div).to have_css('td.need-table_nums', text: '⭕️')
+      end
+      # 必要な材料に関する情報が表示されており、在庫状況が「⭕️」なのを確認
+      expect(page).to have_css('div.need-table__materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        within (div) do
+          length = find('.need_material_length').text.to_f.round(2)
+          expect(length).to eq(@need_material.length.round(2))
+        end
+        expect(div).to have_content(@need_material.necessary_nums)
+        within(div) do
+          sum = find('.need_material_length_x_necessary_nums').text.to_f.floor
+          expect(sum).to eq((@need_material.length * @need_material.necessary_nums).floor)
+        end
+        expect(div).to have_content(@material.stock * @material.length)
+        expect(div).to have_css('td.need-table_nums', text: '⭕️')
+      end
       # 「部品の発注は必要ありません」という表示の確認
+      expect(page).to have_content('部品の発注は必要ありません')
       # 「材料の発注は必要ありません」という表示の確認
+      expect(page).to have_content('材料の発注は必要ありません')
     end
   end
   context '部品/材料の発注が必要な場合' do
@@ -534,9 +554,9 @@ RSpec.describe '材料計算機能', type: :system do
       # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
       # 「材料計算」ボタンを確認
       # 「材料計算」ボタンをクリック
-      # 必要な部品が表示されているのを確認
+      # 必要な部品に関する情報が表示されているのを確認
       # 必要な部品の在庫状況が「」なのを確認
-      # 必要な材料が表示されているのを確認
+      # 必要な材料に関する情報が表示されているのを確認
       # 必要な材料の在庫状況が「」なのを確認
       # 発注が必要な部品に部品名と発注数が表示されているのを確認
       # 発注が必要な材料に材料名と発注数が表示されているのを確認

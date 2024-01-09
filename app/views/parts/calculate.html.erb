@@ -64,25 +64,26 @@
               <% sum = 0 %>
               <% material_hash.each_with_index do |arr, index| %>
                 <tr>
-                  <% if index == 0 %>
+                  <% if index == 0  || index == material_hash.length - 1%>
                     <td><%= material.display_combine %></td>
                   <% else %>
                     <td></td>
                   <% end %>
-                  <td class="need-table_nums"><%= arr[0] %></td>
+                  <td class="need-table_nums need_material_length"><%= arr[0] %></td>
                   <td class="need-table_nums"><%= arr[1] %></td>
                   <% sum += arr[0] * arr[1] %>
-                  <% if index = material_hash.length - 1 %>
-                    <td class="need-table_nums"><%= sum %></td>
+                  <% if index == material_hash.length - 1 %>
+                    <td class="need-table_nums need_material_length_x_necessary_nums"><%= sum %></td>
                     <td class="need-table_nums"><%= material.stock * material.length %></td>
+                    <% if sum > material.stock * material.length %>
+                      <td class="need-table_nums">❌</td>
+                    <% else %>
+                      <td class="need-table_nums">⭕️</td>
+                    <% end %>
                   <% else %>
                     <td></td>
                     <td></td>
-                  <% end %>
-                  <% if sum > material.stock * material.length %>
-                    <td class="need-table_nums">❌</td>
-                  <% else %>
-                    <td class="need-table_nums">⭕️</td>
+                    <td></td>
                   <% end %>
                 </tr>
               <% end %>
