@@ -470,3 +470,176 @@ RSpec.describe '必要部品の編集', type: :system do
     end
   end
 end
+
+RSpec.describe '材料計算機能', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @parent = FactoryBot.create(:part, user_id: @user.id, finished: true)
+    @child = FactoryBot.create(:part, user_id: @user.id)
+    @parts_relation = PartsRelation.create(parent_id: @parent.id, child_id: @child.id, user_id: @user.id)
+    @material = FactoryBot.create(:material, user_id: @user.id)
+    @need_material = FactoryBot.create(:need_material, part_id: @parent.id, material_id: @material.material_id, user_id: @user.id)
+  end
+  context '材料計算機能が使用できる場合' do
+    it '部品/材料の在庫が必要な部品/材料より多く、部品/材料の発注が必要ない場合' do
+      # 事前データの準備
+      @parts_relation.update(necessary_nums: rand(1..5))
+      @parts_relation.reload
+      child_stock = rand((@parts_relation.necessary_nums + 1)..10)
+      @child.update(stock: child_stock)
+      @child.reload
+
+      len = @need_material.length.ceil * @need_material.necessary_nums
+      material_stock = len / @material.length + 1
+      @material.update(stock: material_stock)
+      @material.reload
+      # ログイン
+      sign_in(@user)
+      # 「完成品」をクリックして折りたたみ要素を開く
+      find('details.products-details').find('summary').click
+      sleep 1
+      # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
+      find_link(@parent.name).click
+      sleep 1
+      expect(current_path).to eq part_path(@parent)
+      # 「材料計算」ボタンを確認
+      expect(page).to have_content('材料計算')
+      # 「材料計算」ボタンをクリックし、@parentの材料計算ページへ遷移しているのを確認
+      click_on '材料計算'
+      sleep 1
+      expect(current_path).to eq calculate_part_path(@parent)
+      # 必要な部品に関する情報が表示されており、在庫状況が「⭕️」なのを確認
+      expect(page).to have_css('div.need-table__parts') do |div|
+        expect(div).to have_content(@child.name)
+        expect(div).to have_content(@parts_relation.necessary_nums)
+        expect(div).to have_content(@child.stock)
+        expect(div).to have_css('td.need-table_nums', text: '⭕️')
+      end
+      # 必要な材料に関する情報が表示されており、在庫状況が「⭕️」なのを確認
+      expect(page).to have_css('div.need-table__materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        within (div) do
+          length = find('.need_material_length').text.to_f.round(2)
+          expect(length).to eq(@need_material.length.round(2))
+        end
+        expect(div).to have_content(@need_material.necessary_nums)
+        within(div) do
+          sum = find('.need_material_length_x_necessary_nums').text.to_f.floor
+          expect(sum).to eq((@need_material.length * @need_material.necessary_nums).floor)
+        end
+        expect(div).to have_content(@material.stock * @material.length)
+        expect(div).to have_css('td.need-table_nums', text: '⭕️')
+      end
+      # 「部品の発注は必要ありません」という表示の確認
+      expect(page).to have_content('部品の発注は必要ありません')
+      # 「材料の発注は必要ありません」という表示の確認
+      expect(page).to have_content('材料の発注は必要ありません')
+    end
+
+    it '部品/材料の在庫が必要な部品/材料より少なく、部品/材料の発注が必要な場合' do
+      # 事前データの準備
+      @child.update(stock: rand(0..5))
+      @child.reload
+      necessary_nums_parts = rand((@child.stock + 1)..10)
+      @parts_relation.update(necessary_nums: necessary_nums_parts)
+      @parts_relation.reload
+
+      @material.update(stock: rand(0..5))
+      len = @material.length * @material.stock
+      necessary_nums_material = len / @need_material.length + 1
+      @need_material.update(necessary_nums: necessary_nums_material)
+      @material.reload
+      @need_material.reload
+      # ログイン
+      sign_in(@user)
+      # 「完成品」をクリックして折りたたみ要素を開く
+      find('details.products-details').find('summary').click
+      sleep 1
+      # 登録済みの@parentの名前をクリックして詳細ページへ遷移する
+      find_link(@parent.name).click
+      sleep 1
+      expect(current_path).to eq part_path(@parent)
+      # 「材料計算」ボタンを確認
+      expect(page).to have_content('材料計算')
+      # 「材料計算」ボタンをクリックし、@parentの材料計算ページへ遷移しているのを確認
+      click_on '材料計算'
+      sleep 1
+      expect(current_path).to eq calculate_part_path(@parent)
+      # 必要な部品に関する情報が表示されており、在庫状況が「❌」なのを確認
+      expect(page).to have_css('div.need-table__parts') do |div|
+        expect(div).to have_content(@child.name)
+        expect(div).to have_content(@parts_relation.necessary_nums)
+        expect(div).to have_content(@child.stock)
+        expect(div).to have_css('td.need-table_nums', text: '❌')
+      end
+      # 必要な材料に関する情報が表示されており、在庫状況が「❌」なのを確認
+      expect(page).to have_css('div.need-table__materials') do |div|
+        expect(div).to have_content(@material.display_combine)
+        within (div) do
+          length = find('.need_material_length').text.to_f.round(2)
+          expect(length).to eq(@need_material.length.round(2))
+        end
+        expect(div).to have_content(@need_material.necessary_nums)
+        within(div) do
+          sum = find('.need_material_length_x_necessary_nums').text.to_f.floor
+          expect(sum).to eq((@need_material.length * @need_material.necessary_nums).floor)
+        end
+        expect(div).to have_content(@material.stock * @material.length)
+        expect(div).to have_css('td.need-table_nums', text: '❌')
+      end
+      # 発注が必要な部品に部品名と発注数が表示されているのを確認
+      expect(page).to have_css('div.need-table__parts-order') do |div|
+        expect(div).to have_selector('table tr:nth-child(1)', text: @child.name)
+        num = @parts_relation.necessary_nums - @child.stock
+        expect(div).to have_selector('table tr:nth-child(1)', text: num)
+      end
+      # 発注が必要な材料に材料名と発注数が表示されているのを確認
+      expect(page).to have_css('div.need-table__materials-order') do |div|
+        expect(div).to have_selector('table tr:nth-child(1)', text: @material.display_combine)
+        len = @need_material.length * @need_material.necessary_nums
+        num = (len / @material.length)
+        if len % @material.length > 0
+          num += 1
+        end
+        num -= @material.stock
+        expect(div).to have_selector('table tr:nth-child(1)', text: num.floor)
+      end
+    end
+    it '必要部品/材料が登録されていない場合' do
+      # ログイン
+      sign_in(@user)
+      # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの@childの名前をクリックして詳細ページへ遷移する
+      find_link(@child.name).click
+      sleep 1
+      # 「材料計算」ボタンを確認
+      expect(page).to have_content('材料計算')
+      # 「材料計算」ボタンをクリックし、@childの材料計算ページへ遷移しているのを確認
+      click_on '材料計算'
+      sleep 1
+      expect(current_path).to eq calculate_part_path(@child)
+      # 「「@child」に外注部品はありません」と表示されているのを確認
+      message = '「' + @child.name + '」に外注部品はありません'
+      expect(page).to have_content(message)
+      # 「「@child」に必要な材料はありません」と表示されているのを確認
+      message = '「' + @child.name + '」に必要な材料はありません'
+      expect(page).to have_content(message)
+      # 「部品の発注は必要ありません」という表示の確認
+      expect(page).to have_content('部品の発注は必要ありません')
+      # 「材料の発注は必要ありません」という表示の確認
+      expect(page).to have_content('材料の発注は必要ありません')
+    end
+  end
+  context '材料計算機能が使用できない場合' do
+    it 'ログインしていないと材料計算機能が使用できない' do
+      # BASIC認証を通過してトップページへ遷移
+      sign_in_basic(root_path)
+      # @parentの材料計算ページへ遷移
+      visit calculate_part_path(@parent)
+      # ログインページへ遷移しているのを確認
+      expect(current_path).to eq new_user_session_path
+    end
+  end
+end

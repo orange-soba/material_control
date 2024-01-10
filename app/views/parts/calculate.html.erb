@@ -4,7 +4,7 @@
 
 <div class="need-parts-materials">
   <%# 必要な部品の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__parts">
     <% if @parts == {} %>
       <p>「<%= link_to @part.name, part_path(@part) %>」に外注部品はありません</p>
     <% else %>
@@ -41,7 +41,7 @@
   <%# /必要な部品の表示 %>
 
   <%# 必要な材料の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__materials">
     <% if @materials == {} %>
       <p>「<%= link_to @part.name, part_path(@part) %>」に必要な材料はありません</p>
     <% else %>
@@ -64,25 +64,26 @@
               <% sum = 0 %>
               <% material_hash.each_with_index do |arr, index| %>
                 <tr>
-                  <% if index == 0 %>
+                  <% if index == 0  || index == material_hash.length - 1%>
                     <td><%= material.display_combine %></td>
                   <% else %>
                     <td></td>
                   <% end %>
-                  <td class="need-table_nums"><%= arr[0] %></td>
+                  <td class="need-table_nums need_material_length"><%= arr[0] %></td>
                   <td class="need-table_nums"><%= arr[1] %></td>
                   <% sum += arr[0] * arr[1] %>
-                  <% if index = material_hash.length - 1 %>
-                    <td class="need-table_nums"><%= sum %></td>
+                  <% if index == material_hash.length - 1 %>
+                    <td class="need-table_nums need_material_length_x_necessary_nums"><%= sum %></td>
                     <td class="need-table_nums"><%= material.stock * material.length %></td>
+                    <% if sum > material.stock * material.length %>
+                      <td class="need-table_nums">❌</td>
+                    <% else %>
+                      <td class="need-table_nums">⭕️</td>
+                    <% end %>
                   <% else %>
                     <td></td>
                     <td></td>
-                  <% end %>
-                  <% if sum > material.stock * material.length %>
-                    <td class="need-table_nums">❌</td>
-                  <% else %>
-                    <td class="need-table_nums">⭕️</td>
+                    <td></td>
                   <% end %>
                 </tr>
               <% end %>
@@ -95,7 +96,7 @@
   <%# /必要な材料の表示 %>
 
   <%# 発注が必要な部品の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__parts-order">
     <% if @parts_order == [] %>
       <p>部品の発注は必要ありません</p>
     <% else %>
@@ -116,7 +117,7 @@
   <%# /発注が必要な部品の表示 %>
 
   <%# 発注が必要な材料の表示 %>
-  <div class="need-table-area">
+  <div class="need-table-area need-table__materials-order">
     <% if @materials_order == [] %>
       <p>材料の発注は必要ありません</p>
     <% else %>
