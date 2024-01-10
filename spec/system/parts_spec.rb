@@ -607,14 +607,29 @@ RSpec.describe '材料計算機能', type: :system do
     end
     it '必要部品/材料が登録されていない場合' do
       # ログイン
+      sign_in(@user)
       # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
       # 登録済みの@childの名前をクリックして詳細ページへ遷移する
+      find_link(@child.name).click
+      sleep 1
       # 「材料計算」ボタンを確認
+      expect(page).to have_content('材料計算')
       # 「材料計算」ボタンをクリックし、@childの材料計算ページへ遷移しているのを確認
+      click_on '材料計算'
+      sleep 1
+      expect(current_path).to eq calculate_part_path(@child)
       # 「「@child」に外注部品はありません」と表示されているのを確認
+      message = '「' + @child.name + '」に外注部品はありません'
+      expect(page).to have_content(message)
       # 「「@child」に必要な材料はありません」と表示されているのを確認
+      message = '「' + @child.name + '」に必要な材料はありません'
+      expect(page).to have_content(message)
       # 「部品の発注は必要ありません」という表示の確認
+      expect(page).to have_content('部品の発注は必要ありません')
       # 「材料の発注は必要ありません」という表示の確認
+      expect(page).to have_content('材料の発注は必要ありません')
     end
   end
   context '材料計算機能が使用できない場合' do
