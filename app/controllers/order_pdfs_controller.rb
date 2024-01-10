@@ -1,0 +1,2 @@
+class OrderPdfsController < ApplicationController
+end
