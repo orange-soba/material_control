@@ -18,4 +18,5 @@ Rails.application.routes.draw do
       patch 'stock_update'
     end
   end
+  resources :order_pdfs, only: :index
 end
