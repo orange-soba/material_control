@@ -13,5 +13,13 @@ class OrderPdf < Prawn::Document
 
     # ページ数
     draw_text '1/1', at: [500, 760]
+
+    # 発注先
+    order_to = [['', '御中']]
+    table order_to, column_widths: [150, 35] do
+      cells.borders = [:bottom]
+      cells.height = 30
+      columns(0).size = 10
+    end
   end
 end
