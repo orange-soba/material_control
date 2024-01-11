@@ -4,5 +4,11 @@ class OrderPdf < Prawn::Document
     stroke_axis
     
     font 'app/assets/fonts/ipaexm.ttf'
+
+    #-------- 以下出力文章 ----------
+
+    # タイトル
+    text '発注書', size: 20, align: :center
+    move_down 20
   end
 end
