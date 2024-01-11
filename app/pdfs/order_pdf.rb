@@ -10,5 +10,8 @@ class OrderPdf < Prawn::Document
     # タイトル
     text '発注書', size: 20, align: :center
     move_down 20
+
+    # ページ数
+    draw_text '1/1', at: [500, 760]
   end
 end
