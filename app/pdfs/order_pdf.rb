@@ -15,11 +15,11 @@ class OrderPdf < Prawn::Document
     draw_text '1/1', at: [500, 760]
 
     # 発注先
-    order_to = [['', '御中']]
+    order_to = [['(株)テスト機械器具', '御中']]
     table order_to, column_widths: [150, 35] do
       cells.borders = [:bottom]
       cells.height = 30
-      columns(0).size = 10
+      columns(1).size = 10
     end
 
     # 発注元
