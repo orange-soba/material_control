@@ -38,13 +38,20 @@ class OrderPdf < Prawn::Document
 
     # 発注内容
     move_cursor_to 600
-    order_details = [['発注内容', '個数', 'その他']]
+    order_details = [['発注内容', '個数(ヶ)', 'その他']]
     (0..16).each do
       order_details << ['', '', '']
     end
+    demo_data = [['モーター', 2, ''], ['減速機', 1, ''], ['#35 防錆油 チェーン 2m', 5, '']]
+    demo_data.each_with_index do |data, index|
+      order_details[index + 1][0] = data[0]
+      order_details[index + 1][1] = data[1]
+      order_details[index + 1][2] = data[2]
+    end
     p order_details
-    table order_details, cell_style: { height: 30 }, column_widths: [400, 50, 70] do
+    table order_details, cell_style: { height: 30 }, column_widths: [400, 60, 60] do
       row(0).align = :center
+      columns(1).align = :center
       row(0).height = 25
       row(0).border_bottom_width = 2
       row(0).border_top_width = 2
