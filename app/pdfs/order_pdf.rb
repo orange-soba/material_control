@@ -23,7 +23,7 @@ class OrderPdf < Prawn::Document
     end
 
     # 発注元
-    bounding_box([330, 720], width: 200) do
+    bounding_box([320, 720], width: 200) do
       rounded_rectangle([0, cursor], 200, 110, 5) 
       text_box '発注元: ', at: [5, cursor - 5], size: 10
       move_down 15
@@ -34,6 +34,25 @@ class OrderPdf < Prawn::Document
       end
       order_from_address = [['〒000-0000'], ['東京都品川区1-1'], ['テストビルディング 2階'], ['Tell: 012-345-6789']]
       table order_from_address, cell_style: { borders: [], size: 10, height: 19 }
+    end
+
+    # 発注内容
+    move_cursor_to 600
+    order_details = [['発注内容', '個数', 'その他']]
+    (0..16).each do
+      order_details << ['', '', '']
+    end
+    p order_details
+    table order_details, cell_style: { height: 30 }, column_widths: [400, 50, 70] do
+      row(0).align = :center
+      row(0).height = 25
+      row(0).border_bottom_width = 2
+      row(0).border_top_width = 2
+      row(-1).border_bottom_width = 2
+      columns(0).border_left_width = 2
+      columns(0).border_right_width = 2
+      columns(1).border_right_width = 2
+      columns(2).border_right_width  =2
     end
   end
 end
