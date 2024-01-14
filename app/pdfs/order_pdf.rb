@@ -39,7 +39,7 @@ class OrderPdf < Prawn::Document
     # 発注内容
     move_cursor_to 600
     order_details = [['発注内容', '個数(ヶ)', 'その他']]
-    (0..16).each do
+    (0..17).each do
       order_details << ['', '', '']
     end
     demo_data = [['モーター', 2, ''], ['減速機', 1, ''], ['#35 防錆油 チェーン 2m', 5, '']]
@@ -48,7 +48,6 @@ class OrderPdf < Prawn::Document
       order_details[index + 1][1] = data[1]
       order_details[index + 1][2] = data[2]
     end
-    p order_details
     table order_details, cell_style: { height: 30 }, column_widths: [400, 60, 60] do
       row(0).align = :center
       columns(1).align = :center
@@ -60,6 +59,11 @@ class OrderPdf < Prawn::Document
       columns(0).border_right_width = 2
       columns(1).border_right_width = 2
       columns(2).border_right_width  =2
+    end
+
+    # 発注日
+    bounding_box([0, 620], width: 100) do
+      text '発注日: 12/31'
     end
   end
 end
