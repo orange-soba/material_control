@@ -283,6 +283,7 @@ DEPENDENCIES
   faker
   importmap-rails
   jbuilder
+  matrix
   mysql2 (~> 0.5)
   pg
   prawn
