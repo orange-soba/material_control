@@ -1,9 +1,12 @@
 class OrderPdf < Prawn::Document
-  def initialize
+  def initialize(orders)
     super(page_size: 'A4')
     stroke_axis
     
     font 'app/assets/fonts/ipaexm.ttf'
+
+    parts_order = orders[:parts].flatten.each_slice(2).to_a
+    materials_order = orders[:materials].flatten.each_slice(2).to_a
 
     #-------- 以下出力文章 ----------
 
