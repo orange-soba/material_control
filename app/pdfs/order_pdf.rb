@@ -69,8 +69,9 @@ class OrderPdf < Prawn::Document
     end
 
     # 発注日
-    bounding_box([0, 620], width: 100) do
-      text '発注日: 12/31'
+    today = Date.today.strftime('%Y/%m/%d')
+    bounding_box([0, 620], width: 130) do
+      text "発注日: #{today}"
     end
   end
 end
