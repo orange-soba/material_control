@@ -73,12 +73,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_18_083011) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "post_code"
-    t.integer "prefecture_id"
-    t.string "city"
-    t.string "house_number"
+    t.string "post_code", null: false
+    t.integer "prefecture_id", null: false
+    t.string "city", null: false
+    t.string "house_number", null: false
     t.string "building"
-    t.string "phone_number"
+    t.string "phone_number", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
