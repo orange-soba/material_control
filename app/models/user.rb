@@ -14,4 +14,9 @@ class User < ApplicationRecord
 
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to :prefecture
+
+  with_options presence: true do
+    validates :post_code, :city, :house_number, :phone_number
+    validates :prefecture_id, numericality: { allow_nil: true, other_than: 0, message: 'は必ず選択してください' }
+  end
 end
