@@ -1,9 +1,12 @@
 class OrderPdf < Prawn::Document
-  def initialize
+  def initialize(orders)
     super(page_size: 'A4')
     stroke_axis
     
     font 'app/assets/fonts/ipaexm.ttf'
+
+    parts_order = orders[:parts].flatten.each_slice(2).to_a
+    materials_order = orders[:materials].flatten.each_slice(2).to_a
 
     #-------- 以下出力文章 ----------
 
@@ -39,15 +42,19 @@ class OrderPdf < Prawn::Document
     # 発注内容
     move_cursor_to 600
     order_details = [['発注内容', '個数(ヶ)', 'その他']]
-    (0..17).each do
-      order_details << ['', '', '']
+    (0..17).each do |index|
+      if index < parts_order.length
+        order_details << [parts_order[index][0], parts_order[index][1], '']
+      else
+        order_details << ['', '', '']
+      end
     end
-    demo_data = [['モーター', 2, ''], ['減速機', 1, ''], ['#35 防錆油 チェーン 2m', 5, '']]
-    demo_data.each_with_index do |data, index|
-      order_details[index + 1][0] = data[0]
-      order_details[index + 1][1] = data[1]
-      order_details[index + 1][2] = data[2]
-    end
+    # demo_data = [['モーター', 2, ''], ['減速機', 1, ''], ['#35 防錆油 チェーン 2m', 5, '']]
+    # demo_data.each_with_index do |data, index|
+    #   order_details[index + 1][0] = data[0]
+    #   order_details[index + 1][1] = data[1]
+    #   order_details[index + 1][2] = data[2]
+    # end
     table order_details, cell_style: { height: 30 }, column_widths: [400, 60, 60] do
       row(0).align = :center
       columns(1).align = :center
@@ -62,8 +69,9 @@ class OrderPdf < Prawn::Document
     end
 
     # 発注日
-    bounding_box([0, 620], width: 100) do
-      text '発注日: 12/31'
+    today = Date.today.strftime('%Y/%m/%d')
+    bounding_box([0, 620], width: 130) do
+      text "発注日: #{today}"
     end
   end
 end
