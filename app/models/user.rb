@@ -11,4 +11,7 @@ class User < ApplicationRecord
   has_many :materials
   has_many :parts_relations
   has_many :need_materials
+
+  extend ActiveHash::Associations::ActiveRecordExtensions
+  belongs_to :prefecture
 end
