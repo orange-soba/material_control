@@ -9,6 +9,37 @@
       <%= f.text_field :name, autofocus: true, placeholder: "name" %>
     </div>
 
+    <%# 住所等 %>
+    <div class="field">
+      <%= f.label :post_code %><br />
+      <%= f.text_field :post_code, autocomplete: "123-4567" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :prefecture_id %><br />
+      <%= f.collection_select(:prefecture_id, Prefecture.all, :id, :name) %>
+    </div>
+
+    <div class="field">
+      <%= f.label :city %><br />
+      <%= f.text_field :city, autocomplete: "蒲郡市〇〇町××" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :house_number %><br />
+      <%= f.text_field :house_number, autocomplete: "1-1" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :building %><br />
+      <%= f.text_field :building, autocomplete: "□□ビルディング3階" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :phone_number %><br />
+      <%= f.text_field :phone_number, autocomplete: "0123-456-789" %>
+    </div>
+
     <div class="field">
       <%= f.label :email %><br />
       <%= f.email_field :email, placeholder: "email" %>
