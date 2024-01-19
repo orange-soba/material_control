@@ -6,6 +6,12 @@ ja:
     attributes:
       user:
         name: 名前
+        post_code: 郵便番号
+        prefecture: 都道府県
+        city: 住所
+        house_number: 番地
+        building: 建物
+        phone_number: 電話番号
       part:
         name: '完成品名/部品名'
         stock: '在庫数'
