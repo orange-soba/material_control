@@ -3,53 +3,57 @@
 <h1 class="function-title">材料一覧ページ</h1>
 
 <div class="history-area no-border-top no-scroll">
-  <% if @errors&.any? %>
-    <div class="error-alert">
-      <ul>
-        <% @errors.each do |error| %>
-          <li class='error-message'>!<%= error %>!</li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <table>
-    <thead>
-      <tr>
-        <th>材料</th>
-        <th>長さ</th>
-        <th>最終更新日時</th>
-        <th>在庫数</th>
-        <th>リンク</th>
-      </tr>
-    </thead>
-    <tbody id="materials-history-data">
-      <% @materials.each do |material| %>
+  <% if @materials.present? %>
+    <% if @errors&.any? %>
+      <div class="error-alert">
+        <ul>
+          <% @errors.each do |error| %>
+            <li class='error-message'>!<%= error %>!</li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <table>
+      <thead>
         <tr>
-          <td>
-            <%= material.display_combine %>
-          </td>
-          <td class="history-stock"><%= "#{material.length}" %></td>
-          <td><%= l material.updated_at %></td>
-          <td class="history-stock">
-            <%= form_with model: material, url: stock_update_material_path(material), local: true do |f| %>
-              <%= f.text_field :stock %>
-              <%= f.submit "更新" %>
-            <% end %>
-          </td>
-          <td>
-            <div class="button-link__history-area">
-              <div class="button-link__history">
-                <%= link_to "編集", edit_material_path(material) %>
-              </div>
-              <span>/</span>
-              <div class="button-link__history">
-                <%= link_to "削除", material_path(material),
-                    data: { turbo_method: :delete, turbo_confirm: "「#{material.display_combine}」を削除してもよろしいですか？" } %>
-              </div>
-            </div>
-          </td>
+          <th>材料</th>
+          <th>長さ</th>
+          <th>最終更新日時</th>
+          <th>在庫数</th>
+          <th>リンク</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody id="materials-history-data">
+        <% @materials.each do |material| %>
+          <tr>
+            <td>
+              <%= material.display_combine %>
+            </td>
+            <td class="history-stock"><%= "#{material.length}" %></td>
+            <td><%= l material.updated_at %></td>
+            <td class="history-stock">
+              <%= form_with model: material, url: stock_update_material_path(material), local: true do |f| %>
+                <%= f.text_field :stock %>
+                <%= f.submit "更新" %>
+              <% end %>
+            </td>
+            <td>
+              <div class="button-link__history-area">
+                <div class="button-link__history">
+                  <%= link_to "編集", edit_material_path(material) %>
+                </div>
+                <span>/</span>
+                <div class="button-link__history">
+                  <%= link_to "削除", material_path(material),
+                      data: { turbo_method: :delete, turbo_confirm: "「#{material.display_combine}」を削除してもよろしいですか？" } %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>材料が登録されていません</p>
+  <% end %>
 </div>
