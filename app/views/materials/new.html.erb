@@ -48,6 +48,11 @@
       ＊ 材料が半分だけ残っている時は「0.5」と入力することも可能です
     </div>
 
+    <div class="input-field">
+      <%= f.label :order_destination, "　　発注先：" %>
+      <%= f.text_field :order_destination, placeholder: "〇〇機械器具（株）" %>
+    </div>
+
     <%= f.submit "登録" %>
   <% end %>
 </div>
