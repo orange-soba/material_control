@@ -81,7 +81,7 @@ class MaterialsController < ApplicationController
   end
 
   def permit_attributes
-    [:material_type, :category, :thickness, :width, :option, :length, :stock]
+    [:material_type, :category, :thickness, :width, :option, :length, :stock, :order_destination]
   end
 
   def set_data

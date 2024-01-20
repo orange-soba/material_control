@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_07_082943) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_18_083011) do
   create_table "materials", charset: "utf8", force: :cascade do |t|
     t.string "material_type", null: false
     t.string "category", null: false
@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_07_082943) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "order_destination"
     t.index ["user_id"], name: "index_materials_on_user_id"
   end
 
@@ -46,6 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_07_082943) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "order_destination"
     t.index ["user_id"], name: "index_parts_on_user_id"
   end
 
@@ -71,6 +73,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_07_082943) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "post_code", null: false
+    t.integer "prefecture_id", null: false
+    t.string "city", null: false
+    t.string "house_number", null: false
+    t.string "building"
+    t.string "phone_number", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

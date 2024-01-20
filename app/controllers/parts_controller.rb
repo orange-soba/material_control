@@ -84,7 +84,7 @@ class PartsController < ApplicationController
   end
 
   def part_params
-    params.require(:part).permit(:name, :stock, :finished).merge(user_id: current_user.id)
+    params.require(:part).permit(:name, :stock, :order_destination, :finished).merge(user_id: current_user.id)
   end
 
   def stock_params
