@@ -10,6 +10,8 @@ RSpec.describe User, type: :model do
       it '必要な情報が揃っていれば登録できる' do
         expect(@user).to be_valid
       end
+      it 'buildingが空でも登録できる' do
+      end
     end
 
     context '新規登録できない場合' do
@@ -83,7 +85,6 @@ RSpec.describe User, type: :model do
       it 'prefecture_idが文字列だと登録できない' do
       end
       it 'prefecture_idが0だと登録できない' do
-      end
       end
       it 'cityが空だと登録できない' do
       end
