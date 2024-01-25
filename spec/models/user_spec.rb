@@ -76,6 +76,22 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include('パスワードは半角英数字（6文字以上）での入力が必須です')
       end
+      it 'post_codeが空だと登録できない' do
+      end
+      it 'prefecture_idが空だと登録できない' do
+      end
+      it 'prefecture_idが文字列だと登録できない' do
+      end
+      it 'prefecture_idが0以下だと登録できない' do
+      end
+      it 'prefecture_idが48以上だと登録できない' do
+      end
+      it 'cityが空だと登録できない' do
+      end
+      it 'house_numberが空だと登録できない' do
+      end
+      it 'phone_numberが空だと登録できない' do
+      end
     end
   end
 end
