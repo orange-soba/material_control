@@ -82,9 +82,8 @@ RSpec.describe User, type: :model do
       end
       it 'prefecture_idが文字列だと登録できない' do
       end
-      it 'prefecture_idが0以下だと登録できない' do
+      it 'prefecture_idが0だと登録できない' do
       end
-      it 'prefecture_idが48以上だと登録できない' do
       end
       it 'cityが空だと登録できない' do
       end
