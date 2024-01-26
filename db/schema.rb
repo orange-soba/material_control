@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_18_083011) do
     t.index ["user_id"], name: "index_need_materials_on_user_id"
   end
 
-  create_table "parts", charset: "utf8mb4", force: :cascade do |t|
+  create_table "parts", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.integer "stock", null: false
     t.boolean "finished", null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_18_083011) do
     t.index ["user_id"], name: "index_parts_relations_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", force: :cascade do |t|
+  create_table "users", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.integer "registered_material_nums", default: 0, null: false
     t.string "email", default: "", null: false

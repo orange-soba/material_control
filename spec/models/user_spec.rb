@@ -10,6 +10,10 @@ RSpec.describe User, type: :model do
       it '必要な情報が揃っていれば登録できる' do
         expect(@user).to be_valid
       end
+      it 'buildingが空でも登録できる' do
+        @user.building = ''
+        expect(@user).to be_valid
+      end
     end
 
     context '新規登録できない場合' do
@@ -75,6 +79,30 @@ RSpec.describe User, type: :model do
         @user.password_confirmation = @user.password
         @user.valid?
         expect(@user.errors.full_messages).to include('パスワードは半角英数字（6文字以上）での入力が必須です')
+      end
+      it 'post_codeが空だと登録できない' do
+        @user.post_code = ''
+        valid_check(@user, '郵便番号を入力してください', true)
+      end
+      it 'prefecture_idが空だと登録できない' do
+        @user.prefecture_id = nil
+        valid_check(@user, '都道府県を入力してください', true)
+      end
+      it 'prefecture_idが0だと登録できない' do
+        @user.prefecture_id = 0
+        valid_check(@user, '都道府県は必ず選択してください', true)
+      end
+      it 'cityが空だと登録できない' do
+        @user.city = ''
+        valid_check(@user, '市区町村を入力してください', true)
+      end
+      it 'house_numberが空だと登録できない' do
+        @user.house_number = ''
+        valid_check(@user, '番地を入力してください', true)
+      end
+      it 'phone_numberが空だと登録できない' do
+        @user.phone_number = ''
+        valid_check(@user, '電話番号を入力してください', true)
       end
     end
   end

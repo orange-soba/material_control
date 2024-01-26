@@ -18,6 +18,10 @@ RSpec.describe Material, type: :model do
         @material.option = ''
         expect(@material).to be_valid
       end
+      it 'order_destinationが空でも登録できる' do
+        @material.order_destination = ''
+        expect(@material).to be_valid
+      end
     end
     context '新規登録できない場合' do
       it 'material_typeが空白だと登録できない' do

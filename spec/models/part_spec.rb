@@ -13,6 +13,10 @@ RSpec.describe Part, type: :model do
         @part.finished = true
         expect(@part).to be_valid
       end
+      it 'order_destinationがからでも登録できる' do
+        @part.order_destination = ''
+        expect(@part).to be_valid
+      end
     end
     context '新規登録できない場合' do
       it 'nameが空白だと登録できない' do
