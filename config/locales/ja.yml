@@ -7,7 +7,7 @@ ja:
       user:
         name: 名前
         post_code: 郵便番号
-        prefecture: 都道府県
+        prefecture_id: 都道府県
         city: 市区町村
         house_number: 番地
         building: 建物
