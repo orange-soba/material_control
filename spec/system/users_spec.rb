@@ -16,6 +16,13 @@ RSpec.describe "ユーザー新規登録", type: :system do
       # ユーザー情報の入力
       fill_in '名前', with: @user.name
       fill_in 'Eメール', with: @user.email
+      fill_in '郵便番号', with: @user.post_code
+      option = 'option[value="' + @user.prefecture_id.to_s + '"]'
+      find('select#user_prefecture_id').find(option).select_option
+      fill_in '市区町村', with: @user.city
+      fill_in '番地', with: @user.house_number
+      fill_in '建物', with: @user.building
+      fill_in '電話番号', with: @user.phone_number
       fill_in 'パスワード', with: @user.password
       fill_in 'パスワード（確認用）', with: @user.password_confirmation
       # 「登録」ボタンを押すとユーザーモデルのカウントが1上がるのを確認
