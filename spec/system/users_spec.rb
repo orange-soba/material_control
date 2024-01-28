@@ -193,6 +193,11 @@ RSpec.describe '編集', type: :system, js: true do
       expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
       expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
       expect(page).to have_field 'Eメール', with: @user.email
       # ユーザー情報(Eメール)を編集し、現在のパスワードを入力
       fill_in 'Eメール', with: 'new_' + @user.email
@@ -238,6 +243,11 @@ RSpec.describe '編集', type: :system, js: true do
       expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
       expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
       expect(page).to have_field 'Eメール', with: @user.email
       # 新しいパスワードと確認用のパスワードを入力し、現在のパスワードを入力
       new_password = 'password1'
@@ -280,16 +290,25 @@ RSpec.describe '編集', type: :system, js: true do
       # ログインページへ遷移しているのを確認
       expect(current_path).to eq new_user_session_path
     end
-    it '名前やEメールが空白だと編集できずに、編集ページに戻る' do
+    it '名前等登録必須の情報が空白だと編集できずに、編集ページに戻る' do
       # ログイン
       sign_in(@user)
       # 編集ページへ遷移
       visit edit_user_registration_path
-      # 名前とEメールを空白にし、他には正しい情報を入力する
+      # 名前とEメールを空白にし、現在のパスワードには正しい情報を入力する
       fill_in '名前', with: ''
+      fill_in '郵便番号', with: ''
+      option = 'option[value="0"]'
+      find('select#user_prefecture_id').find(option).select_option
+      fill_in '市区町村', with: ''
+      fill_in '番地', with: ''
+      fill_in '建物', with: ''
+      fill_in '電話番号', with: ''
       fill_in 'Eメール', with: ''
+      fill_in '現在のパスワード', with: @user.password
       # 更新ボタンをクリック
       click_on '更新'
+      sleep 10
       # マイページへ遷移しておらず、編集ページへ戻るのを確認
       expect(current_path).not_to eq user_path(@user)
       expect(current_path).to eq edit_user_registration_path
