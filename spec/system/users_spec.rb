@@ -280,6 +280,45 @@ RSpec.describe '編集', type: :system, js: true do
       sleep 1
       expect(current_path).to eq user_path(@user)
     end
+    it '建物の情報が空白でも編集できる' do
+      # ログイン
+      sign_in(@user)
+      # 編集リンクを確認
+      expect(page).to have_selector "a.edit-btn"
+      # 編集リンクへカーソルを合わせると「ユーザーの編集」と表示されるのを確認
+      find('.edit-btn').hover
+      expect(page).to have_content('ユーザーの編集')
+      # 編集リンクをクリック
+      find('a.edit-btn').click
+      sleep 1
+      # 編集ページへ遷移するのを確認
+      expect(current_path).to eq edit_user_registration_path
+      # ユーザー情報がすでに入力済みなのを確認
+      expect(page).to have_field '郵便番号', with: @user.post_code
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
+      expect(page).to have_field 'Eメール', with: @user.email
+      # ユーザー情報(建物)を編集し、現在のパスワードを入力
+      fill_in '建物', with: ''
+      fill_in '現在のパスワード', with: @user.password
+      # 編集してもユーザーモデルのカウントは変化しないのを確認
+      expect{
+        click_on '更新'
+        sleep 1
+      }.to change { User.count }.by(0)
+      # マイページへ遷移しているのを確認
+      expect(current_path).to eq user_path(@user)
+      # もう一度編集ページへ遷移
+      find('a.edit-btn').click
+      sleep 1
+
+      expect(current_path).to eq edit_user_registration_path
+      # ユーザー情報(建物)が空白なのを確認
+      expect(page).to have_field '建物', with: ''
+    end
   end
   context 'ユーザー情報の編集ができない場合' do
     it 'ログインしていないユーザーは編集ページに遷移できずに、ログインページへ遷移する' do
