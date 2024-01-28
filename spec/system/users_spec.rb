@@ -156,7 +156,12 @@ RSpec.describe '編集', type: :system, js: true do
       # 編集ページへ遷移するのを確認
       expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
-      expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_field '郵便番号', with: @user.post_code
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
       expect(page).to have_field 'Eメール', with: @user.email
       # ユーザー情報(名前)を編集し、現在のパスワードを入力
       fill_in '名前', with: @user.name + '編集'
