@@ -51,6 +51,13 @@ RSpec.describe "ユーザー新規登録", type: :system do
       # 誤ったユーザー情報の入力
       fill_in '名前', with: ''
       fill_in 'Eメール', with: ''
+      fill_in '郵便番号', with: ''
+      option = 'option[value="0"]'
+      find('select#user_prefecture_id').find(option).select_option
+      fill_in '市区町村', with: ''
+      fill_in '番地', with: ''
+      fill_in '建物', with: ''
+      fill_in '電話番号', with: ''
       fill_in 'パスワード', with: ''
       fill_in 'パスワード（確認用）', with: ''
       # 「登録」ボタンを押すとユーザーモデルのカウントが変化していないのを確認
