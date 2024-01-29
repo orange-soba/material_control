@@ -16,6 +16,13 @@ RSpec.describe "ユーザー新規登録", type: :system do
       # ユーザー情報の入力
       fill_in '名前', with: @user.name
       fill_in 'Eメール', with: @user.email
+      fill_in '郵便番号', with: @user.post_code
+      option = 'option[value="' + @user.prefecture_id.to_s + '"]'
+      find('select#user_prefecture_id').find(option).select_option
+      fill_in '市区町村', with: @user.city
+      fill_in '番地', with: @user.house_number
+      fill_in '建物', with: @user.building
+      fill_in '電話番号', with: @user.phone_number
       fill_in 'パスワード', with: @user.password
       fill_in 'パスワード（確認用）', with: @user.password_confirmation
       # 「登録」ボタンを押すとユーザーモデルのカウントが1上がるのを確認
@@ -44,6 +51,13 @@ RSpec.describe "ユーザー新規登録", type: :system do
       # 誤ったユーザー情報の入力
       fill_in '名前', with: ''
       fill_in 'Eメール', with: ''
+      fill_in '郵便番号', with: ''
+      option = 'option[value="0"]'
+      find('select#user_prefecture_id').find(option).select_option
+      fill_in '市区町村', with: ''
+      fill_in '番地', with: ''
+      fill_in '建物', with: ''
+      fill_in '電話番号', with: ''
       fill_in 'パスワード', with: ''
       fill_in 'パスワード（確認用）', with: ''
       # 「登録」ボタンを押すとユーザーモデルのカウントが変化していないのを確認
@@ -142,7 +156,12 @@ RSpec.describe '編集', type: :system, js: true do
       # 編集ページへ遷移するのを確認
       expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
-      expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_field '郵便番号', with: @user.post_code
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
       expect(page).to have_field 'Eメール', with: @user.email
       # ユーザー情報(名前)を編集し、現在のパスワードを入力
       fill_in '名前', with: @user.name + '編集'
@@ -174,6 +193,11 @@ RSpec.describe '編集', type: :system, js: true do
       expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
       expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
       expect(page).to have_field 'Eメール', with: @user.email
       # ユーザー情報(Eメール)を編集し、現在のパスワードを入力
       fill_in 'Eメール', with: 'new_' + @user.email
@@ -219,6 +243,11 @@ RSpec.describe '編集', type: :system, js: true do
       expect(current_path).to eq edit_user_registration_path
       # ユーザー情報がすでに入力済みなのを確認
       expect(page).to have_field '名前', with: @user.name
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
       expect(page).to have_field 'Eメール', with: @user.email
       # 新しいパスワードと確認用のパスワードを入力し、現在のパスワードを入力
       new_password = 'password1'
@@ -251,6 +280,45 @@ RSpec.describe '編集', type: :system, js: true do
       sleep 1
       expect(current_path).to eq user_path(@user)
     end
+    it '建物の情報が空白でも編集できる' do
+      # ログイン
+      sign_in(@user)
+      # 編集リンクを確認
+      expect(page).to have_selector "a.edit-btn"
+      # 編集リンクへカーソルを合わせると「ユーザーの編集」と表示されるのを確認
+      find('.edit-btn').hover
+      expect(page).to have_content('ユーザーの編集')
+      # 編集リンクをクリック
+      find('a.edit-btn').click
+      sleep 1
+      # 編集ページへ遷移するのを確認
+      expect(current_path).to eq edit_user_registration_path
+      # ユーザー情報がすでに入力済みなのを確認
+      expect(page).to have_field '郵便番号', with: @user.post_code
+      expect(page).to have_select 'user[prefecture_id]', selected: @user.prefecture.name
+      expect(page).to have_field '市区町村', with: @user.city
+      expect(page).to have_field '番地', with: @user.house_number
+      expect(page).to have_field '建物', with: @user.building
+      expect(page).to have_field '電話番号', with: @user.phone_number
+      expect(page).to have_field 'Eメール', with: @user.email
+      # ユーザー情報(建物)を編集し、現在のパスワードを入力
+      fill_in '建物', with: ''
+      fill_in '現在のパスワード', with: @user.password
+      # 編集してもユーザーモデルのカウントは変化しないのを確認
+      expect{
+        click_on '更新'
+        sleep 1
+      }.to change { User.count }.by(0)
+      # マイページへ遷移しているのを確認
+      expect(current_path).to eq user_path(@user)
+      # もう一度編集ページへ遷移
+      find('a.edit-btn').click
+      sleep 1
+
+      expect(current_path).to eq edit_user_registration_path
+      # ユーザー情報(建物)が空白なのを確認
+      expect(page).to have_field '建物', with: ''
+    end
   end
   context 'ユーザー情報の編集ができない場合' do
     it 'ログインしていないユーザーは編集ページに遷移できずに、ログインページへ遷移する' do
@@ -261,16 +329,25 @@ RSpec.describe '編集', type: :system, js: true do
       # ログインページへ遷移しているのを確認
       expect(current_path).to eq new_user_session_path
     end
-    it '名前やEメールが空白だと編集できずに、編集ページに戻る' do
+    it '名前等登録必須の情報が空白だと編集できずに、編集ページに戻る' do
       # ログイン
       sign_in(@user)
       # 編集ページへ遷移
       visit edit_user_registration_path
-      # 名前とEメールを空白にし、他には正しい情報を入力する
+      # 名前とEメールを空白にし、現在のパスワードには正しい情報を入力する
       fill_in '名前', with: ''
+      fill_in '郵便番号', with: ''
+      option = 'option[value="0"]'
+      find('select#user_prefecture_id').find(option).select_option
+      fill_in '市区町村', with: ''
+      fill_in '番地', with: ''
+      fill_in '建物', with: ''
+      fill_in '電話番号', with: ''
       fill_in 'Eメール', with: ''
+      fill_in '現在のパスワード', with: @user.password
       # 更新ボタンをクリック
       click_on '更新'
+      sleep 10
       # マイページへ遷移しておらず、編集ページへ戻るのを確認
       expect(current_path).not_to eq user_path(@user)
       expect(current_path).to eq edit_user_registration_path

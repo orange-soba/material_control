@@ -25,6 +25,36 @@ RSpec.describe "材料の新規登録", type: :system do
       fill_in '　　その他：', with: @material.option
       fill_in '長さ(mm)：', with: @material.length
       fill_in '在庫数(個)：', with: @material.stock
+      fill_in '　　発注先：', with: @material.order_destination
+      # 「登録」をクリックするとMaterialモデルのカウントが１上がるのを確認
+      expect{
+        click_on '登録'
+        sleep 1
+      }.to change { Material.count }.by(1)
+      # 登録履歴に先ほど登録した情報が表示されているのを確認
+      expect(page).to have_selector('table tr:nth-child(1)', text: @material.display_combine)
+      expect(page).to have_selector('table tr:nth-child(1)', text: @material.length)
+      expect(page).to have_selector('table tr:nth-child(1)', text: @material.stock)
+    end
+    it 'order_destinationが空白でも材料の新規登録ができ、登録履歴に入力した情報が表示される' do
+      # ログイン
+      sign_in(@user)
+      # ヘッダーに「材料登録」があるのを確認
+      expect(page).to have_css('div.header') do |div|
+        expect(div).to have_content('材料登録')
+      end
+      # 「材料登録」をクリックして新規登録ページへ遷移
+      click_on '材料登録'
+      sleep 1
+      # 正しい情報を入力
+      fill_in '　　　材質：', with: @material.material_type
+      fill_in '　　　種類：', with: @material.category
+      fill_in '厚さ(mm)：', with: @material.thickness
+      fill_in '　 幅(mm)：', with: @material.width
+      fill_in '　　その他：', with: @material.option
+      fill_in '長さ(mm)：', with: @material.length
+      fill_in '在庫数(個)：', with: @material.stock
+      fill_in '　　発注先：', with: ''
       # 「登録」をクリックするとMaterialモデルのカウントが１上がるのを確認
       expect{
         click_on '登録'
@@ -127,6 +157,7 @@ RSpec.describe '材料の編集', type: :system do
       expect(page).to have_field '　　その他：', with: @material.option
       expect(page).to have_field '長さ(mm)：', with: @material.length
       expect(page).to have_field '在庫数(個)：', with: @material.stock
+      expect(page).to have_field '　　発注先：', with: @material.order_destination
       # 正しい情報を入力
       new_material_type = 'NewMaterial'
       fill_in '　　　材質：', with: new_material_type
@@ -139,6 +170,44 @@ RSpec.describe '材料の編集', type: :system do
       new_material = Material.last
       expect(page).not_to have_selector('table tr:nth-child(1)', text: @material.display_combine)
       expect(page).to have_selector('table tr:nth-child(1)', text: new_material.display_combine)
+    end
+    it 'order_destinationを空白にしても編集できる' do
+      # ログイン
+      sign_in(@user)
+      # マイページに材料一覧ページへのリンクがあるのを確認
+      href = 'a[href="/materials"]'
+      expect(page).to have_css(href)
+      # 「材料一覧」をクリックして材料一覧ページへ遷移する
+      find(href).click
+      sleep 1
+      # 材料の編集ボタンをクリックして編集ページへ遷移
+      href = 'a[href="/materials/' + @material.id.to_s + '/edit"]'
+      find(href).click
+      sleep 1
+      # 情報が入力済みなのを確認
+      expect(page).to have_field '　　　材質：', with: @material.material_type
+      expect(page).to have_field '　　　種類：', with: @material.category
+      expect(page).to have_field '厚さ(mm)：', with: @material.thickness
+      expect(page).to have_field '　 幅(mm)：', with: @material.width
+      expect(page).to have_field '　　その他：', with: @material.option
+      expect(page).to have_field '長さ(mm)：', with: @material.length
+      expect(page).to have_field '在庫数(個)：', with: @material.stock
+      expect(page).to have_field '　　発注先：', with: @material.order_destination
+      # order_destinationを空白にする
+      fill_in '　　発注先：', with: ''
+      # 「更新」をクリックする
+      click_on '更新'
+      sleep 1
+
+      expect(current_path).to eq materials_path
+      # もう１度編集ページへ遷移
+      href = 'a[href="/materials/' + @material.id.to_s + '/edit"]'
+      find(href).click
+      sleep 1
+
+      expect(current_path).to eq edit_material_path(@material)
+      # order_destinationが空白なのを確認
+      expect(page).to have_field '　　発注先：', with: ''
     end
   end
   context '材料の編集ができない場合' do
