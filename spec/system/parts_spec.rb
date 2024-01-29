@@ -17,6 +17,7 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
       # 正しい情報を入力
       fill_in '完成品名/部品名：', with: @part.name
       fill_in '在庫数：', with: @part.stock
+      fill_in '発注先：', with: @part.order_destination
       find('input[name="part[finished]"]').click
       # 登録ボタンをクリックするとpartモデルのカウントが1上がるのを確認
       expect{
@@ -39,6 +40,7 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
       # 正しい情報を入力
       fill_in '完成品名/部品名：', with: @part.name
       fill_in '在庫数：', with: @part.stock
+      fill_in '発注先：', with: @part.order_destination
       # 登録ボタンをクリックするとpartモデルのカウントが1上がるのを確認
       expect{
         find('input[name="commit"]').click
@@ -49,6 +51,29 @@ RSpec.describe "完成品/部品の新規登録", type: :system do
       expect(page).to have_content(@part.name)
       expect(page).to have_content(@part.stock)
       expect(page).to have_content('部品')
+    end
+    it  'order_destinationが空白でも新規登録ができて、登録履歴に入力した情報が入力した情報が表示される(完成品)' do
+      # ログイン
+      sign_in(@user)
+      # 「完成品/部品登録」ボタンを確認
+      expect(page).to have_content('完成品/部品登録')
+      # 登録ページへ遷移
+      visit new_part_path
+      # 正しい情報を入力
+      fill_in '完成品名/部品名：', with: @part.name
+      fill_in '在庫数：', with: @part.stock
+      fill_in '発注先：', with: ''
+      find('input[name="part[finished]"]').click
+      # 登録ボタンをクリックするとpartモデルのカウントが1上がるのを確認
+      expect{
+        find('input[name="commit"]').click
+        sleep 1
+      }.to change { Part.count }.by(1)
+      sleep 1
+      # 登録履歴に先ほど登録した情報が完成品として表示されているのを確認
+      expect(page).to have_content(@part.name)
+      expect(page).to have_content(@part.stock)
+      expect(page).to have_content('完成品')
     end
   end
   context '完成品/部品の新規登録ができない場合' do
@@ -139,6 +164,47 @@ RSpec.describe '完成品/部品の編集', type: :system do
       # 部品情報がすでに入力済みなのを確認
       expect(page).to have_field '完成品名/部品名：', with: @part.name
       expect(page).to have_field '在庫数：', with: @part.stock
+      expect(page).to have_field '発注先：', with: @part.order_destination
+      # 名前を編集(確認用)
+      new_name = @part.name.reverse
+      fill_in '完成品名/部品名：', with: new_name
+      # 更新ボタンをクリックし、部品詳細ページへ遷移するのを確認
+      click_on '更新'
+      sleep 1
+
+      expect(current_path).to eq part_path(@part)
+      # 以前の部品名がなく、編集後の部品名があるのを確認
+      expect(page).to have_no_content(@part.name)
+      expect(page).to have_content(new_name)
+    end
+    it 'order_destinationを編集する際に空白でも編集ができる' do
+      # ログイン
+      sign_in(@user)
+      # 登録済みの部品の名前がまだないのを確認
+      expect(page).to have_no_content @part.name
+      # 「部品」をクリックして折りたたみ要素を開く
+      find('details.parts-details').find('summary').click
+      sleep 1
+      # 登録済みの部品の名前があるのを確認
+      expect(page).to have_content @part.name
+      # 部品名をクリックし、部品詳細ページへ遷移しているのを確認
+      find_link(@part.name).click
+      sleep 1
+      
+      expect(current_path).to eq part_path(@part)
+      # 編集ボタンを確認
+      expect(page).to have_content('編集')
+      # 編集ボタンをクリックして、編集ページへ遷移するのを確認
+      click_on '編集'
+      sleep 1
+
+      expect(current_path).to eq edit_part_path(@part)
+      # 部品情報がすでに入力済みなのを確認
+      expect(page).to have_field '完成品名/部品名：', with: @part.name
+      expect(page).to have_field '在庫数：', with: @part.stock
+      expect(page).to have_field '発注先：', with: @part.order_destination
+      # 発注先を空白にする
+      fill_in '発注先：', with: ''
       # 名前を編集(確認用)
       new_name = @part.name.reverse
       fill_in '完成品名/部品名：', with: new_name
