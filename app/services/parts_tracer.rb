@@ -15,10 +15,13 @@ class PartsTracer
 
   def create_order_list
     order_parts = []
+    order_pdfs = {}
     @part_info[:parts].each do |part_id, necessary_nums|
       part = Part.find(part_id)
       if part.stock < necessary_nums
         order_parts << [part.name, necessary_nums - part.stock]
+        order_pdfs[part.order_destination] ||= []
+        order_pdfs[part.order_destination] << [part.name, necessary_nums - part.stock]
       end
     end
   
@@ -37,12 +40,15 @@ class PartsTracer
       if stock_length < length_sum
         order_nums = ((length_sum - stock_length) / material.length).ceil
         order_materials << [material.display_combine, order_nums]
+        order_pdfs[material.order_destination] ||= []
+        order_pdfs[material.order_destination] << [material.display_combine, order_nums]
       end
     end
   
     order_list = {}
     order_list[:parts] = order_parts
     order_list[:materials] = order_materials
+    order_list[:pdf] = order_pdfs
   
     order_list
   end
