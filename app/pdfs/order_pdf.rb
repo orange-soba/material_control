@@ -1,5 +1,5 @@
 class OrderPdf < Prawn::Document
-  def initialize(orders)
+  def initialize(orders, user)
     super(page_size: 'A4')
     stroke_axis
     
@@ -30,12 +30,12 @@ class OrderPdf < Prawn::Document
       rounded_rectangle([0, cursor], 200, 110, 5) 
       text_box '発注元: ', at: [5, cursor - 5], size: 10
       move_down 15
-      text_box '株式会社テスト', at: [5, cursor - 5], size: 13
+      text_box user.name, at: [5, cursor - 5], size: 13
       move_down 18
       stroke do
         line [5, 0], [100, 0]
       end
-      order_from_address = [['〒000-0000'], ['東京都品川区1-1'], ['テストビルディング 2階'], ['Tell: 012-345-6789']]
+      order_from_address = [[user.post_code], [user.prefecture.name + user.city + user.house_number], [user.building], ["Tell: #{user.phone_number}"]]
       table order_from_address, cell_style: { borders: [], size: 10, height: 19 }
     end
 
