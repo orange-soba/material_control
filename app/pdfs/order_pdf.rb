@@ -5,8 +5,10 @@ class OrderPdf < Prawn::Document
     
     font 'app/assets/fonts/ipaexm.ttf'
 
-    parts_order = orders[:parts].flatten.each_slice(2).to_a
-    materials_order = orders[:materials].flatten.each_slice(2).to_a
+    # parts_order = orders[:parts].flatten.each_slice(2).to_a
+    order_destination = orders.keys[1]
+    parts_order = orders[order_destination].flatten.each_slice(2).to_a
+    # materials_order = orders[:materials].flatten.each_slice(2).to_a
 
     #-------- 以下出力文章 ----------
 
@@ -18,7 +20,7 @@ class OrderPdf < Prawn::Document
     draw_text '1/1', at: [500, 760]
 
     # 発注先
-    order_to = [['(株)テスト機械器具', '御中']]
+    order_to = [[order_destination, '御中']]
     table order_to, column_widths: [150, 35] do
       cells.borders = [:bottom]
       cells.height = 30

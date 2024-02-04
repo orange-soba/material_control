@@ -4,7 +4,7 @@
 
 <div class="button-link__area">
   <div class="button-link__calculate" style="width: 100px;">
-    <%= link_to '発注書の作成', order_pdfs_path(format: :pdf, orders: { parts: @parts_order, materials: @materials_order }) %>
+    <%= link_to '発注書の作成', order_pdfs_path(format: :pdf, orders: @order_pdf) %>
   </div>
 </div>
 
