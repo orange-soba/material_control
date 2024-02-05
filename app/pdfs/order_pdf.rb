@@ -5,47 +5,52 @@ class OrderPdf < Prawn::Document
     
     font 'app/assets/fonts/ipaexm.ttf'
 
-    # parts_order = orders[:parts].flatten.each_slice(2).to_a
-    order_destination = orders.keys[1]
-    parts_order = orders[order_destination].flatten.each_slice(2).to_a
-    # materials_order = orders[:materials].flatten.each_slice(2).to_a
-
     #-------- 以下出力文章 ----------
+    orders.each do |order_destination, value|
+      parts_order = value.flatten.each_slice(2).to_a
+      sum = parts_order.size()
+      page_sum = sum / 18
+      if sum % 18 > 0
+        page_sum += 1
+      end
+      (0...page_sum).each do |page_now|
+        # タイトル
+        title
 
-    # タイトル
-    title
+        move_down 20
 
-    move_down 20
+        # ページ数
+        count_page(page_now + 1, page_sum)
 
-    # ページ数
-    count_page(1, 1)
+        # 発注先
+        order_destinate(order_destination)
 
-    # 発注先
-    order_destinate(order_destination)
+        # 発注元
+        order_source(user)
 
-    # 発注元
-    order_source(user)
+        move_cursor_to 600
 
-    move_cursor_to 600
+        # 発注内容
+        order_contents(parts_order)
 
-    # 発注内容
-    order_contents(parts_order)
-
-    # 発注日
-    order_date
+        # 発注日
+        order_date
+        start_new_page
+      end
+    end
   end
 
   def title
     text '発注書', size: 20, align: :center
   end
 
-  def count_page(now, sum)
-    draw_text "#{now}/#{sum}", at: [500, 760]
+  def count_page(page_now, page_sum)
+    draw_text "#{page_now}/#{page_sum}", at: [500, 760]
   end
 
   def order_destinate(order_destination)
     order_to = [[order_destination, '御中']]
-    table order_to, column_widths: [150, 35] do
+    table order_to, column_widths: [200, 35] do
       cells.borders = [:bottom]
       cells.height = 30
       columns(1).size = 10
