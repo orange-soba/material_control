@@ -43,6 +43,7 @@ class PartsController < ApplicationController
     order_list = parts_tracer.create_order_list
     @parts_order = order_list[:parts]
     @materials_order = order_list[:materials]
+    @order_pdf = order_list[:pdf]
   end
 
   def stock_update
